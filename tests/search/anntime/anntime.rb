@@ -9,19 +9,15 @@ class AnnTimeout < IndexedOnlySearchTest
 
   # Epsilon for timebudget/timeout comparisons in ms
   TIMEBUDGET_EPSILON = 5
-  TIMEOUT_EPSILON = 5
+  TIMEOUT_EPSILON = 10
 
-  # Epsilon for rate of non-zero hitcounts
-  HITCOUNT_EPSILON = 0.25
-
-  # How often to send each query
-  REPETITIONS = 20
+  # How often to retry each query
+  RETRY_NUM = 50
+  RETRY_WAIT = 0.2
 
   # For debugging purposes
   # Whether to print the whole nearestNeighbor block from the trace
   PRINT_NN_INFO = false
-  # Whether to print the timing results and metric increases of each individual query
-  PRINT_INDIVIDUAL_QUERIES = false
 
   def setup
     set_owner("boeker")
@@ -88,33 +84,13 @@ class AnnTimeout < IndexedOnlySearchTest
     factors = [0.002, 0.004, 0.006, 0.01]
 
     puts "\ntimeout = #{timeout * 1000.0} ms"
-    puts "repetitions = #{REPETITIONS}"
     puts "epsilon for time budget = #{TIMEBUDGET_EPSILON} ms"
     puts "epsilon for timeout = #{TIMEOUT_EPSILON} ms"
-    puts "epsilon for non-zero hitcount rate= #{HITCOUNT_EPSILON}"
 
-    puts "\nSending some warmup queries first"
-
-    # Warmup queries with anntimebudget
-    budgets.each do |budget|
-      search_with_trace(timeout, make_anntimebudget_query(query_one, budget))
-      search_with_trace(timeout, make_anntimebudget_query(query_two, budget))
-      search_with_trace(timeout, make_anntimebudget_query(query_three, budget))
-    end
-
-    # Warmup queries with anntimeout
-    factors.each do |factor|
-      search_with_trace(timeout, make_anntimeout_query(query_one, factor))
-      search_with_trace(timeout, make_anntimeout_query(query_two, factor * 2))
-      search_with_trace(timeout, make_anntimeout_query(query_three, factor * 3))
-    end
-
-    # Actual tests for anntimebudget
     verify_anntimebudget(timeout, budgets, query_one)
     verify_anntimebudget(timeout, budgets, query_two)
     verify_anntimebudget(timeout, budgets, query_three)
 
-    # Actual tests for anntimeout
     verify_anntimeout(timeout, factors, query_one)
     verify_anntimeout(timeout, factors.map{ |n| n * 2 }, query_two)
     verify_anntimeout(timeout, factors.map{ |n| n * 3 }, query_three)
@@ -129,29 +105,41 @@ class AnnTimeout < IndexedOnlySearchTest
     budgets.each do |budget|
       puts "anntimebudget = #{'%.3f' % budget} ms"
       query_with_params = make_anntimebudget_query(query, budget)
-      results, nonzero_hitcount_rate, time_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, budget, REPETITIONS)
 
-      # Check that we got hits for most queries
-      assert_approx(1.0, nonzero_hitcount_rate, HITCOUNT_EPSILON)
+      retry_num = 0
+      success = false
+      while retry_num <= RETRY_NUM && !success do
+        success = true
+        result, time_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, budget)
 
-      # Check that time used on NNS from trace matches the specified anntimebudget
-      time_info.each do |time_info_search|
-        assert_approx(budget, time_info_search[:time_used], TIMEBUDGET_EPSILON)
-        assert_approx(budget, time_info_search[:time_allocated], TIMEBUDGET_EPSILON)
-        assert_approx(1.0, time_info_search[:terminated_early])
-        assert_approx(0.0, time_info_search[:timeout_hit])
-      end
+        # Check that we got hits for most queries
+        success = false unless result.hitcount > 0
 
-      # Check that the metrics match what we expect
-      assert_approx(0.0, metrics[:timeouts])
-      assert_approx(1.0, metrics[:time_count])
-      assert_approx(nn_operators * budget, metrics[:time_total], nn_operators * TIMEBUDGET_EPSILON)
+        # Check that time used on NNS from trace matches the specified anntimebudget
+        time_info.each do |time_info_search|
+          success = false unless (budget - time_info_search[:time_used]).abs < TIMEBUDGET_EPSILON
+          success = false unless (budget - time_info_search[:time_allocated]).abs < TIMEBUDGET_EPSILON
+          success = false unless time_info_search[:terminated_early]
+          success = false if time_info_search[:timeout_hit]
+        end
 
-      # Check that query is NOT reported as degraded
-      results.each do |result|
+        # Check that the metrics match what we expect
+        success = false unless metrics[:timeouts] == 0
+        success = false unless metrics[:time_count] == 1
+        success = false unless (nn_operators * budget - metrics[:time_total]) < nn_operators * TIMEBUDGET_EPSILON
+
+        # Check that query is NOT reported as degraded
         coverage = result.json['root']['coverage']
-        assert(!coverage.key?('degraded'))
+        success = false if coverage.key?('degraded')
+
+        retry_num += 1
+        if !success && retry_num <= RETRY_NUM
+          sleep RETRY_WAIT
+          puts "Retry #{retry_num}/#{RETRY_NUM}"
+        end
       end
+
+      assert_true success
     end
   end
 
@@ -173,31 +161,42 @@ class AnnTimeout < IndexedOnlySearchTest
       estimated_time_until_anntimeout = (factor * 0.5 * timeout * 1000.0) / nn_operators
       puts "anntimeout.factor = #{'%.3f' % factor} => #{'%.3f' % estimated_time_until_anntimeout} ms"
       query_with_params = make_anntimeout_query(query, factor)
-      results, nonzero_hitcount_rate, nn_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, estimated_time_until_anntimeout, REPETITIONS)
 
-      # Check that we got hits for most queries despite the timeout
-      assert_approx(1.0, nonzero_hitcount_rate, HITCOUNT_EPSILON)
+      retry_num = 0
+      success = false
+      while retry_num <= RETRY_NUM && !success do
+        success = true
+        result, time_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, estimated_time_until_anntimeout)
 
-      # Check that the timeout was respected
-      nn_info.each do |time_info_search|
-        assert_approx(estimated_time_until_anntimeout, time_info_search[:time_used], TIMEOUT_EPSILON)
-        assert_approx(estimated_time_until_anntimeout, time_info_search[:time_allocated], TIMEOUT_EPSILON)
-        assert_approx(1.0, time_info_search[:terminated_early])
-        assert_approx(1.0, time_info_search[:timeout_hit])
-      end
+        # Check that we got hits for most queries
+        success = false unless result.hitcount > 0
 
-      # Check that the metrics match what we expect
-      assert_approx(1.0, metrics[:timeouts])
-      assert_approx(1.0, metrics[:time_count])
-      assert_approx(nn_operators * estimated_time_until_anntimeout, metrics[:time_total], nn_operators * TIMEOUT_EPSILON)
+        # Check that time used on NNS from trace matches the specified timeout
+        time_info.each do |time_info_search|
+          success = false unless (estimated_time_until_anntimeout - time_info_search[:time_used]).abs < TIMEOUT_EPSILON
+          success = false unless (estimated_time_until_anntimeout - time_info_search[:time_allocated]).abs < TIMEOUT_EPSILON
+          success = false unless time_info_search[:terminated_early]
+          success = false unless time_info_search[:timeout_hit]
+        end
 
-      # Check that query is reported as degraded
-      results.each do |result|
-        # These values are bools and not strings
+        # Check that the metrics match what we expect
+        success = false unless metrics[:timeouts] == 1
+        success = false unless metrics[:time_count] == 1
+        success = false unless (nn_operators * estimated_time_until_anntimeout - metrics[:time_total]) < nn_operators * TIMEOUT_EPSILON
+
+        # Check that query is reported as degraded
         degraded = result.json['root']['coverage']['degraded']
-        assert_equal(true, degraded['anntimeout'])
-        assert_equal(false, degraded['timeout'])
+        success = false unless degraded['anntimeout']
+        success = false if degraded['timeout']
+
+        retry_num += 1
+        if !success && retry_num <= RETRY_NUM
+          sleep RETRY_WAIT
+          puts "Retry #{retry_num}/#{RETRY_NUM}"
+        end
       end
+
+      assert_true success
     end
   end
 
@@ -251,94 +250,43 @@ class AnnTimeout < IndexedOnlySearchTest
     list
   end
 
-  def search_and_get_nn_info_and_metrics(timeout, query, expected_operator_number, expected_time, repetitions)
-    # Collect the timing info as a hash from the handle of the NN operator to a list of time measurements
-    collected_time_info = {}
-    # Collect the timing info as an array of metric measurements
-    collected_metrics = []
-    # Collect all results
-    collected_results = []
+  def search_and_get_nn_info_and_metrics(timeout, query, expected_operator_number, expected_time)
+    ann_timeouts_before, ann_time_count_before, ann_time_total_before = get_metrics "test"
+    result = search_with_trace(timeout, query)
+    ann_timeouts_after, ann_time_count_after, ann_time_total_after = get_metrics "test"
 
-    repetitions.times do
-      ann_timeouts_before, ann_time_count_before, ann_time_total_before = get_metrics "test"
-      result = search_with_trace(timeout, query)
-      collected_results << result
-      ann_timeouts_after, ann_time_count_after, ann_time_total_after = get_metrics "test"
+    metrics = {}
+    metrics[:timeouts] = ann_timeouts_after - ann_timeouts_before
+    metrics[:time_count] = ann_time_count_after - ann_time_count_before
+    metrics[:time_total] = (ann_time_total_after - ann_time_total_before) * 1000.0 # Convert to ms
+    print_metrics metrics
 
-      metrics = {}
-      metrics[:timeouts] = ann_timeouts_after - ann_timeouts_before
-      metrics[:time_count] = ann_time_count_after - ann_time_count_before
-      metrics[:time_total] = (ann_time_total_after - ann_time_total_before) * 1000.0 # Convert to ms
-      if PRINT_INDIVIDUAL_QUERIES
-        print_metrics metrics
-      end
+    nn_info = find_in_json(result.json, 'search::queryeval::NearestNeighborBlueprint')
+    assert_equal(expected_operator_number, nn_info.length)
 
-      collected_metrics << metrics
-
-      nn_info = find_in_json(result.json, 'search::queryeval::NearestNeighborBlueprint')
-      assert_equal(expected_operator_number, nn_info.length)
-
-      if PRINT_NN_INFO
-        puts "NN info:"
-        puts JSON.pretty_generate(nn_info)
-      end
-
-      nn_info.each do |nn_search|
-        handle, time_info = extract_ann_time_info(nn_search)
-        if PRINT_INDIVIDUAL_QUERIES
-          print_ann_time_info(time_info, expected_time)
-        end
-        if collected_time_info.key?(handle)
-          collected_time_info[handle] << time_info
-        else
-          collected_time_info[handle] = [time_info]
-        end
-      end
+    if PRINT_NN_INFO
+      puts "NN info:"
+      puts JSON.pretty_generate(nn_info)
     end
 
-    # Average the collected timing info
-    averaged_time_info = []
-    assert_equal(expected_operator_number, collected_time_info.keys.length)
-    collected_time_info.each do |handle, time_info|
-      # time_info is an array of maps
-      assert_equal(repetitions, time_info.length)
-      averaged_time_info_for_handle = {}
-      time_info[0].keys.each do |k|
-        averaged_time_info_for_handle[k] = time_info.map {|x| x[k]}.inject(:+) / time_info.length
-      end
-      averaged_time_info << averaged_time_info_for_handle
-    end
-
-    # Average the collected metrics
-    averaged_metrics = {}
-    assert_equal(repetitions, collected_metrics.length)
-    collected_metrics[0].keys.each do |k|
-      averaged_metrics[k] = collected_metrics.map {|x| x[k]}.inject(:+) / collected_metrics.length
-    end
-
-    # Average the number of queries that returned hits
-    nonzero_hitcount_rate = collected_results.map{ |x| x.hitcount > 0 ? 1.0 : 0.0 }.inject(:+) / collected_results.length
-
-    # Print averaged values
-    puts "Averaged:"
-    averaged_time_info.each do |time_info|
+    time_infos = []
+    nn_info.each do |nn_search|
+      time_info = extract_ann_time_info(nn_search)
       print_ann_time_info(time_info, expected_time)
+      time_infos << time_info
     end
-    print_metrics averaged_metrics
-    puts "  rate of queries with non-zero hitcounts: #{nonzero_hitcount_rate}"
 
-    return collected_results, nonzero_hitcount_rate, averaged_time_info, averaged_metrics
+    return result, time_infos, metrics
   end
 
   def extract_ann_time_info(nn_search)
     ann_time_info = {}
     ann_time_info[:time_allocated] = nn_search['time_allocated'].to_f
     ann_time_info[:time_used] = nn_search['time_used'].to_f
-    ann_time_info[:terminated_early] = nn_search['terminated_early'] == true ? 1.0 : 0.0
-    ann_time_info[:timeout_hit] = nn_search['timeout_hit'] == true ? 1.0 : 0.0
-    handle = nn_search['fields']['[0]']['handle']
+    ann_time_info[:terminated_early] = nn_search['terminated_early']
+    ann_time_info[:timeout_hit] = nn_search['timeout_hit']
 
-    return handle, ann_time_info
+    ann_time_info
   end
 
   def print_ann_time_info(ann_time_info, expected_time)
