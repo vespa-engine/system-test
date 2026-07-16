@@ -55,7 +55,8 @@ class AnnGistBase < CommonSiftGistBase
 
     num_queries_for_recall = 100
     num_documents = 300_000
-    filter_values = [1, 70, 90, 95, 97, 99]
+    filter_values_denominator = 10_000 # filter_values below are per myriad
+    filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
 
     # Smaller values that can be used for development and testing
     #num_queries_for_recall = 10
@@ -63,12 +64,11 @@ class AnnGistBase < CommonSiftGistBase
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
-    feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
+    feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values, :filter_values_denominator => filter_values_denominator})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    run_target_hits_10_filter_first_tests
-    run_target_hits_100_filter_first_tests
+    run_target_hits_10_filter_first_tests(95_00)
 
     filter_values.each do |filter_percent|
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.40, :filter_first_exploration => 0.3})

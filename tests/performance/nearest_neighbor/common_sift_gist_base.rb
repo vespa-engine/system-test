@@ -95,6 +95,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     start_with_docid = params[:start_with_docid] || 0
     start_with_vector = params[:start_with_vector] || 0
     filter_values = params[:filter_values] || nil
+    filter_values_denominator = params[:filter_values_denominator] || 100
     latitude_lower = params[:latitude_lower] || 0.0
     latitude_upper = params[:latitude_upper] || -1.0
     longitude_lower = params[:longitude_lower] || 0.0
@@ -110,6 +111,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                                                     "#{start_with_docid} "\
                                                     "#{start_with_vector} #{start_with_vector + num_documents} "\
                                                     "#{filter_values.nil? ? "[]" : filter_values.join(",")} "\
+                                                    "#{filter_values_denominator} "\
                                                     "[#{latitude_lower},#{latitude_upper}] "\
                                                     "[#{longitude_lower},#{longitude_upper}] "\
                                                     "#{mixed} "\
@@ -228,27 +230,18 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
   end
 
-  def run_target_hits_10_filter_first_tests
-    [0, 50, 100].each do |explore_hits|
-      query_and_benchmark(HNSW, 10, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-      calc_recall_for_queries(10, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+  def run_target_hits_10_filter_first_tests(filter_percent)
+    query_and_benchmark(HNSW, 10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+    calc_recall_for_queries(10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+
+    [50, 100].each do |explore_hits|
+      query_and_benchmark(HNSW, 10, explore_hits, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+      calc_recall_for_queries(10, explore_hits, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
     end
 
-    [0.0, 0.1, 0.2].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-    end
-  end
-
-  def run_target_hits_100_filter_first_tests
-    [0, 100, 200].each do |explore_hits|
-      query_and_benchmark(HNSW, 100, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-      calc_recall_for_queries(100, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-    end
-
-    [0.0, 0.1, 0.2].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+    [0.1, 0.2].each do |slack|
+      query_and_benchmark(HNSW, 10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+      calc_recall_for_queries(10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
     end
   end
 

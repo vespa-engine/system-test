@@ -37,11 +37,11 @@ parse_filters(const std::string &str) {
 }
 
 IntVector
-gen_filter_values(size_t docid, const IntVector &filters)
+gen_filter_values(size_t docid, const IntVector &filters, size_t filter_values_denominator)
 {
     IntVector result;
     for (auto filter_percent : filters) {
-        if ((docid % 100) >= filter_percent) {
+        if ((docid % filter_values_denominator) >= filter_percent) {
             // This document is NOT filtered away for this filter percent.
             result.push_back(filter_percent);
         }
@@ -101,14 +101,14 @@ print_assign_vector_field(std::ostream& os, const std::string& field_name, const
 using StringVector = std::vector<std::string>;
 
 void
-print_put(std::ostream& os, size_t docid, const IntVector &filters, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
+print_put(std::ostream& os, size_t docid, const IntVector &filters, size_t filter_values_denominator, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
 {
     os << "{" << std::endl;
     os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
     os << "  \"fields\": {" << std::endl;
     os << "    \"id\": " << docid << "," << std::endl;
     if (!filters.empty()) {
-        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid, filters)); os << "," << std::endl;
+        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid, filters, filter_values_denominator)); os << "," << std::endl;
     }
     if (latitude.non_empty() && longitude.non_empty()) {
         os << "    \"latlng\": "
@@ -151,7 +151,7 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <latitude-interval> <longitude-interval> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <filter-values-denominator> <latitude-interval> <longitude-interval> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
@@ -164,6 +164,7 @@ main(int argc, char **argv)
     size_t end_vector = 1000000; // exclusive
     size_t dim_size = 128;
     IntVector filters;
+    size_t filter_values_denominator = 100;
     Interval latitude;
     Interval longitude;
     bool mixed_tensor = false;
@@ -190,15 +191,18 @@ main(int argc, char **argv)
         filters = parse_filters(argv[7]);
     }
     if (argc > 8) {
-        latitude = parse_interval(argv[8]);
+        filter_values_denominator = std::stoll(argv[8]);
     }
     if (argc > 9) {
-        longitude = parse_interval(argv[9]);
+        latitude = parse_interval(argv[9]);
     }
     if (argc > 10) {
-        mixed_tensor = (argv[10] == std::string("true"));
+        longitude = parse_interval(argv[10]);
     }
-    for (int i = 11; i < argc; ++i) {
+    if (argc > 11) {
+        mixed_tensor = (argv[11] == std::string("true"));
+    }
+    for (int i = 12; i < argc; ++i) {
         tensor_fields.push_back(std::string(argv[i]));
     }
     std::ifstream is(vector_file, std::ifstream::binary);
@@ -224,7 +228,7 @@ main(int argc, char **argv)
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, begin_doc + vector_num - start_vector, filters, latitude, longitude, tensor_fields, vector, mixed_tensor);
+            print_put(std::cout, begin_doc + vector_num - start_vector, filters, filter_values_denominator, latitude, longitude, tensor_fields, vector, mixed_tensor);
         } else {
             print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor);
         }
