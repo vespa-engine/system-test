@@ -16,7 +16,7 @@ class AnnSiftMixedPerfTest < AnnSiftBase
 
   def test_filter_first_sift_data_set_mixed
     set_description("Test performance and recall using nearestNeighbor operator (filter-first heuristic) over the 1M SIFT (128 dim) dataset using a mixed tensor")
-    run_sift_filter_first_test("sift_test", true)
+    run_sift_filter_first_test("sift_test_mixed", true)
   end
 
 end
