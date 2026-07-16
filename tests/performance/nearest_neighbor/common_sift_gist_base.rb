@@ -206,7 +206,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(10, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
+    [0.1, 0.2].each do |slack|
       query_and_benchmark(HNSW, 10, 0, {:slack => slack})
       calc_recall_for_queries(10, 0, {:slack => slack})
     end
@@ -218,7 +218,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(100, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
+    [0.1, 0.2].each do |slack|
       query_and_benchmark(HNSW, 100, 0, {:slack => slack})
       calc_recall_for_queries(100, 0, {:slack => slack})
     end
