@@ -204,6 +204,8 @@ class AnnTimeout < IndexedOnlySearchTest
     query.merge({ 'hits' => 1,
                   'summary' => 'minimal',
                   'ranking.matching.explorationSlack' => 1.0,
+                  'ranking.softtimeout.enable' => "true", # Not necessary, should be true by default
+                  'ranking.softtimeout.factor' => 0.5, # Override manually to avoid automatic adjustment
                   'ranking.matching.anntimeout.enable' => "true", # Not necessary, should be true by default
                   'ranking.matching.anntimeout.factor' => "#{factor}",
                   })
