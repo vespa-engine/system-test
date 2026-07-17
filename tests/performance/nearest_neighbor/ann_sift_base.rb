@@ -91,17 +91,17 @@ class AnnSiftBase < CommonSiftGistBase
     filter_values.each do |filter_percent|
       # Classic HNSW
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
-      # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.35})
       # Resilient filter-first heuristic
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => false})
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => false})
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => true})
 
       # Recall for classic HNSW
       calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
-      # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.35})
       # Resilient filter-first heuristic
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => false})
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => false})
       calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
       calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => true})
     end
