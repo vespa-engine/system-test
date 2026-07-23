@@ -268,8 +268,11 @@ ENDER
     else
       sudo_cmd = ""
     end
-    command = "#{sudo_cmd} jinfo -sysprops #{pid.to_s} 2>&1 | grep jute.maxbuffer"
-    assert_equal('jute.maxbuffer=12345', vespa.adminserver.execute(command).strip)
+    jinfo_command = "#{sudo_cmd} jinfo -sysprops #{pid.to_s}"
+    command = "#{jinfo_command} | grep jute.maxbuffer"
+    output = vespa.adminserver.execute(command, :stderr => true)
+    # Rerun and output everything from 'jinfo' command if assert fails
+    assert_equal('jute.maxbuffer=12345', output.strip, vespa.adminserver.execute(jinfo_command, :stderr => true))
 
     remove_xml_file_from_configserver_app(@configserver, override, "jutemaxbuffer.xml")
   end
