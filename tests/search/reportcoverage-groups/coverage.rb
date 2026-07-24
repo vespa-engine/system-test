@@ -128,38 +128,4 @@ class Coverage < IndexedOnlySearchTest
     fail("Timeout after #{trynum} tries: Expected #{wanted_hitcount} hits from group #{wanted_group}, got #{hitcount} hits from group #{group}")
   end
 
-  def wait_for_coverage_from_group(query, wanted_group, wanted_coverage, timeout_in=60, qrserver_id=0, params={})
-    query = query.merge({"hits" => "1", "model.searchGroup" => "#{wanted_group}"})
-
-    coverage = -1
-    group = -1
-    timeout = timeout_in
-    timeout = calculateQueryTimeout(timeout)
-
-    puts "Waiting for #{wanted_coverage} coverage from group #{wanted_group}, timeout: #{timeout}"
-    trynum = 0
-    start = Time.now.to_i
-
-    while Time.now.to_i < start + timeout
-      begin
-        trynum += 1
-        result = search_with_timeout(timeout_in, query, qrserver_id, {}, false, params)
-        coverage = result.json['root']['coverage']['coverage']
-        group = result.json['root']['fields']['searchGroup']
-        if coverage == wanted_coverage && (wanted_group == nil || group == wanted_group)
-          puts "Success on try #{trynum}: Got #{wanted_coverage} coverage from group #{wanted_group}"
-          return true
-        else
-          puts "Failure on try #{trynum}: Expected #{wanted_coverage} coverage from group #{wanted_group}, got #{coverage} coverage from group #{group}"
-        end
-      rescue StandardError => e
-        puts "error #{e}: #{e.backtrace}"
-      rescue Interrupt
-        puts "low-level timeout, retry"
-      end
-      sleep 1
-    end
-    fail("Timeout after #{trynum} tries: Expected #{wanted_coverage} coverage from group #{wanted_group}, got #{coverage} coverage from group #{group}")
-  end
-
 end

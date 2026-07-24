@@ -58,6 +58,11 @@ class DispatchTest < IndexedOnlySearchTest
     start
     generate_and_feed_docs
 
+    @simple_query = {"query" => "sddocname:test"}
+    # Make sure we have full coverage from both groups before proceeding
+    wait_for_coverage_from_group(@simple_query, 0, 100)
+    wait_for_coverage_from_group(@simple_query, 1, 100)
+
     # Without searchGroup: response should expose the group the query ran on
     default_result = search("yql=select+*+from+sources+*+where+f1+contains+%22word%22%3B&nocache")
     assert_result_hitcount(default_result, @num_docs)
