@@ -1,0 +1,25 @@
+[
+  {
+    "update": "id:default:test_field_path::1",
+    "fields": {
+      "attr_str": {
+        "remove": ["a"]
+      },
+      "attr_str[1]": {
+        "assign": "x"
+      },
+      "doc_str": {
+        "remove": ["a"]
+      },
+      "doc_str[1]": {
+        "assign": "x"
+      },
+      "idx_attr_str": {
+        "remove": ["a"]
+      },
+      "idx_attr_str[1]": {
+        "assign": "x"
+      }
+    }
+  }
+]

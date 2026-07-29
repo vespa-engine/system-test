@@ -1,0 +1,16 @@
+[
+  {
+    "put": "id:default:test_field_path::1",
+    "fields": {
+      "docid": 1,
+      "attr_int": [1, 2, 3],
+      "doc_int": [1, 2, 3],
+      "attr_str": ["a", "b", "c"],
+      "doc_str": ["a", "b", "c"],
+      "attr_map": {"a": 1, "b": 2, "c": 3},
+      "doc_map": {"a": 1, "b": 2, "c": 3},
+      "idx_str": ["a", "b", "c"],
+      "idx_attr_str": ["a", "b", "c"]
+    }
+  }
+]

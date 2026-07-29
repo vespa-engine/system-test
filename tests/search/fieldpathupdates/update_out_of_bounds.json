@@ -1,0 +1,25 @@
+[
+  {
+    "update": "id:default:test_field_path::1",
+    "fields": {
+      "attr_int[5]": {
+        "assign": 9
+      },
+      "doc_int[5]": {
+        "assign": 9
+      },
+      "attr_str[5]": {
+        "assign": "z"
+      },
+      "doc_str[5]": {
+        "assign": "z"
+      },
+      "idx_str[5]": {
+        "assign": "z"
+      },
+      "idx_attr_str[5]": {
+        "assign": "z"
+      }
+    }
+  }
+]
