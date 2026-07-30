@@ -26,18 +26,6 @@
           "assign": "d"
         }
       },
-      "attr_map": {
-        "match": {
-          "element": "a",
-          "assign": 5
-        }
-      },
-      "doc_map": {
-        "match": {
-          "element": "a",
-          "assign": 5
-        }
-      },
       "idx_str": {
         "match": {
           "element": 0,

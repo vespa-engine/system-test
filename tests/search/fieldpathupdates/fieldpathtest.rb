@@ -27,6 +27,15 @@ class FieldPath < IndexedStreamingSearchTest
     "idx_attr_str" => ["d", "b", "c"]
   )
 
+  # The match encoding cannot address map fields: MapValueUpdate supports array, weighted
+  # set and struct, and a match on a map field is rejected when the update is parsed
+  # (which would reject the whole update document). Map fields are only updatable with
+  # the field path encoding, so the match update omits them.
+  AFTER_ASSIGN_ELEMENT_USING_MATCH = AFTER_ASSIGN_ELEMENT.merge(
+    "attr_map" => BEFORE["attr_map"],
+    "doc_map"  => BEFORE["doc_map"]
+  )
+
   # Every element of a field assigned in the same update document.
   AFTER_ASSIGN_EVERY_ELEMENT = BEFORE.merge(
     "attr_int"     => [7, 8, 9],
@@ -69,7 +78,7 @@ class FieldPath < IndexedStreamingSearchTest
 
     feedfile(selfdir + "update_assign_element_using_match.json")
 
-    assert_document(AFTER_ASSIGN_ELEMENT)
+    assert_document(AFTER_ASSIGN_ELEMENT_USING_MATCH)
     assert_search(%w[attr_int:4 idx_str:d idx_attr_str:d], %w[attr_int:1 idx_str:a idx_attr_str:a])
   end
 
