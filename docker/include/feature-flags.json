@@ -55,8 +55,6 @@
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 0.5 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
-        { "id" : "require-explicit-docproc-cluster", "rules" : [ { "value" : true } ] },
-        { "id" : "fail-when-configuring-indexed-map-of-array", "rules" : [ { "value" : true } ] },
         { "id" : "proton-log-warning-on-disk-capacity-change", "rules" : [ { "value" : true } ] },
         { "id" : "proton-resample-disk-capacity", "rules" : [ { "value" : true } ] }
     ]
