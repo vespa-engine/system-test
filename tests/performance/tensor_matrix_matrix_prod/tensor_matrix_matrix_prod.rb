@@ -14,7 +14,6 @@ class TensorMatrixMatrixProduct < PerformanceTest
     set_owner("hmusum")
   end
 
-
   def test_tensor_matrix_matrix_products
     set_description("Test of various matrix-matrix products")
 
@@ -28,8 +27,12 @@ class TensorMatrixMatrixProduct < PerformanceTest
     copy_query_file
     warmup
     t = Thread.new() { watch(@container) }
-    run_queries
-    t.kill
+    begin
+      run_queries
+    ensure
+      t.kill
+      t.join
+    end
   end
 
   def watch(node)
