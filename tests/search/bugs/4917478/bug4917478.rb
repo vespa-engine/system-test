@@ -9,7 +9,7 @@ class Bug4917478 < IndexedStreamingSearchTest
   end
 
   def test_bug4917478
-    timeout=2.0
+    timeout = 2.0
     deploy_app(SearchApp.new.sd(selfdir+"bold.sd"))
     start
     feed(:file => selfdir+"feed.json")
@@ -27,8 +27,6 @@ class Bug4917478 < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2A}", selfdir+"result2.xml")
     assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2B}", selfdir+"result3.xml")
     assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4_correct.xml")
-
   end
-
 
 end
