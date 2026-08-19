@@ -1,0 +1,20 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": { "totalCount": 1 },
+        "children": [
+            {
+                "id": "id:bold:bold::1",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "bold",
+                    "pttl": "buy <hi>iPhone</hi> 4 for BlingBling",
+                    "pdkw": "iphone",
+                    "documentid": "id:bold:bold::1"
+                }
+            }
+        ]
+    }
+}

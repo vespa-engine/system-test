@@ -1,0 +1,73 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": { "totalCount": 1 },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": { "this": "" },
+                "children": [
+                    {
+                        "id": "grouplist:iprd",
+                        "relevance": 1.0,
+                        "label": "iprd",
+                        "children": [
+                            {
+                                "id": "group:long:1",
+                                "relevance": 0.16343879032006287,
+                                "value": "1",
+                                "fields": { "count()": 1 }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "grouplist:pmid",
+                        "relevance": 1.0,
+                        "label": "pmid",
+                        "children": [
+                            {
+                                "id": "group:long:2",
+                                "relevance": 0.16343879032006287,
+                                "value": "2",
+                                "fields": { "count()": 1 },
+                                "children": [
+                                    {
+                                        "id": "hitlist:hits",
+                                        "relevance": 1.0,
+                                        "label": "hits",
+                                        "children": [
+                                            {
+                                                "id": "id:bold:bold::1",
+                                                "relevance": 0.16343879032006287,
+                                                "source": "search",
+                                                "fields": {
+                                                    "sddocname": "bold",
+                                                    "pttl": "buy <hi>iPhone</hi> 4 for BlingBling",
+                                                    "pdkw": "iphone",
+                                                    "documentid": "id:bold:bold::1"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "id:bold:bold::1",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "bold",
+                    "pttl": "buy <hi>iPhone</hi> 4 for BlingBling",
+                    "pdkw": "iphone",
+                    "documentid": "id:bold:bold::1"
+                }
+            }
+        ]
+    }
+}
