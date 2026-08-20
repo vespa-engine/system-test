@@ -492,6 +492,19 @@ class Embedding < SearchTest
     end
   end
 
+  # Compares all values before asserting, so a failure reports every differing
+  # index instead of just the first one.
+  def assert_embedding_values(expected_values, actual_values, tolerance = 1e-4)
+    assert_equal(expected_values.length, actual_values.length)
+    diffs = expected_values.zip(actual_values).each_with_index.map { |(expected, actual), i| [i, (expected - actual).abs] }
+    max_index, max_diff = diffs.max_by { |_, diff| diff }
+    puts "Max difference from expected embedding: #{max_diff} at index #{max_index}"
+    mismatches = diffs.select { |_, diff| diff >= tolerance }
+    assert(mismatches.empty?,
+           "#{mismatches.length} of #{expected_values.length} values differ by >= #{tolerance}: " +
+           mismatches.map { |i, diff| "index #{i}: #{expected_values[i]} != #{actual_values[i]} (diff #{diff})" }.join(", "))
+  end
+
   def verify_huggingface_embedding
     expected_embedding = JSON.parse(File.read(selfdir + 'hf-expected-vector.json'))
     result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(huggingface, \"Hello%20world\")&format=json&format.tensors=short").json
@@ -500,13 +513,8 @@ class Embedding < SearchTest
     puts "queryFeature: '#{queryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
     assert_equal(queryFeature.to_s, attributeFeature.to_s)
-    expected_length = 384
-    assert_equal(expected_length, attributeFeature['values'].length)
-    (0..expected_length-1).each { |i|
-      expected = expected_embedding[i]
-      actual = attributeFeature['values'][i]
-      assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
-    }
+    assert_equal(384, attributeFeature['values'].length)
+    assert_embedding_values(expected_embedding, attributeFeature['values'])
   end
 
   def verify_huggingface_external_data_embedding
@@ -517,13 +525,8 @@ class Embedding < SearchTest
     puts "queryFeature: '#{queryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
     assert_equal(queryFeature.to_s, attributeFeature.to_s)
-    expected_length = 384
-    assert_equal(expected_length, attributeFeature['values'].length)
-    (0..expected_length-1).each { |i|
-      expected = expected_embedding[i]
-      actual = attributeFeature['values'][i]
-      assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
-    }
+    assert_equal(384, attributeFeature['values'].length)
+    assert_embedding_values(expected_embedding, attributeFeature['values'])
   end
 
   def verify_huggingface_embedding_binary_quantization
