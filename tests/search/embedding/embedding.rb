@@ -497,8 +497,6 @@ class Embedding < SearchTest
   def assert_embedding_values(expected_values, actual_values, tolerance = 1e-4)
     assert_equal(expected_values.length, actual_values.length)
     diffs = expected_values.zip(actual_values).each_with_index.map { |(expected, actual), i| [i, (expected - actual).abs] }
-    max_index, max_diff = diffs.max_by { |_, diff| diff }
-    puts "Max difference from expected embedding: #{max_diff} at index #{max_index}"
     mismatches = diffs.select { |_, diff| diff >= tolerance }
     assert(mismatches.empty?,
            "#{mismatches.length} of #{expected_values.length} values differ by >= #{tolerance}: " +
