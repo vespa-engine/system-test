@@ -56,7 +56,8 @@
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 1.0 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
         { "id" : "proton-log-warning-on-disk-capacity-change", "rules" : [ { "value" : true } ] },
-        { "id" : "proton-resample-disk-capacity", "rules" : [ { "value" : true } ] }
+        { "id" : "proton-resample-disk-capacity", "rules" : [ { "value" : true } ] },
+        { "id" : "fast-map-search", "rules" : [ { "value" : true } ] },
     ]
 
 }
