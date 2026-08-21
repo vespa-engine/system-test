@@ -1,0 +1,31 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 1
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 1,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:fast_map_search:fast_map_search::0",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "fast_map_search",
+          "documentid": "id:fast_map_search:fast_map_search::0",
+          "my_map": {
+            "foo": "bar"
+          }
+        }
+      }
+    ]
+  }
+}
