@@ -1,0 +1,23 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+     field id type int {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
+     field string_single type string {
+         indexing: attribute | summary
+     }
+     field string_single_fast type string {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
+     field string_multi type array<string> {
+         indexing: attribute | summary
+     }
+     field string_multi_fast type array<string> {
+         indexing: attribute | summary
+         #attribute: fast-search
+     }
+  }
+}
