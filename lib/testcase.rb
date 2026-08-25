@@ -130,6 +130,7 @@ class TestCase
       @@log_messages[:wanted_higher_limit],
       @@log_messages[:using_incubator_modules],
       @@log_messages[:unknown_cpu_vendor],
+      @@log_messages[:onnxruntime_informational],
       @@log_messages[:sve_vector_length]
     ]
     @valgrind_ignorable_messages = [
@@ -783,6 +784,7 @@ class TestCase
     :wanted_higher_limit => /Wanted 102400 as limit for max user processes/,
     :using_incubator_modules => /Using incubator modules: jdk\.incubator\.foreign/ ,
     :unknown_cpu_vendor => /Unknown CPU vendor/,
+    :onnxruntime_informational => /I:onnxruntime/,
     :sve_vector_length => /Unable to get SVE vector length on this system/
   }
 
