@@ -1,0 +1,14 @@
+[
+  {"id":"id:test:structsel::1","fields":{
+    "score":1,
+    "title":"doc one",
+    "arr":[{"name":"foo","weight":10,"aliases":["f1","f2"]},{"name":"bar","weight":20,"aliases":["b1"]}],
+    "smap":{"@k1":{"p1":"v1","p2":11},"@k2":{"p1":"v2","p2":22}},
+    "imap":{"@a":1}}},
+  {"id":"id:test:structsel::2","fields":{
+    "score":2,
+    "title":"doc two",
+    "arr":[{"name":"baz","weight":30,"aliases":["z1"]}],
+    "smap":{"@k3":{"p1":"v3","p2":33}},
+    "imap":{"@b":2}}}
+]

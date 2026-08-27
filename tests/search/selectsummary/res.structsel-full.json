@@ -1,0 +1,81 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 2
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 2,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "index:search/0/0",
+        "relevance": 99.0,
+        "source": "search",
+        "fields": {
+          "arr": [
+            {
+              "name": "foo",
+              "weight": 10,
+              "aliases": [
+                "f1",
+                "f2"
+              ]
+            },
+            {
+              "name": "bar",
+              "weight": 20,
+              "aliases": [
+                "b1"
+              ]
+            }
+          ],
+          "smap": {
+            "@k1": {
+              "p1": "v1",
+              "p2": 11
+            },
+            "@k2": {
+              "p1": "v2",
+              "p2": 22
+            }
+          },
+          "imap": {
+            "@a": 1
+          }
+        }
+      },
+      {
+        "id": "index:search/0/1",
+        "relevance": 98.0,
+        "source": "search",
+        "fields": {
+          "arr": [
+            {
+              "name": "baz",
+              "weight": 30,
+              "aliases": [
+                "z1"
+              ]
+            }
+          ],
+          "smap": {
+            "@k3": {
+              "p1": "v3",
+              "p2": 33
+            }
+          },
+          "imap": {
+            "@b": 2
+          }
+        }
+      }
+    ]
+  }
+}
