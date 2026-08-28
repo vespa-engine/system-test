@@ -1,5 +1,8 @@
 # Copyright Vespa.ai. All rights reserved.
-module FastMapSearchBase
+
+require 'indexed_only_search_test'
+
+class FastMapSearch < IndexedOnlySearchTest
 
   def setup
     set_description("Tests fast map search feature")
@@ -53,11 +56,8 @@ module FastMapSearchBase
     sd_file
   end
 
-  # Indexed and streaming config can discover these tests.
-  def self.included(base)
-    public_instance_methods.grep(/^test_/).each do |name|
-      base.send(:define_method, name, instance_method(name))
-    end
+  def teardown
+    stop
   end
 
 end
