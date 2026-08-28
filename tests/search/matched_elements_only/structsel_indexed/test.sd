@@ -1,0 +1,110 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+
+  struct elem {
+    field name type string {}
+    field weight type int {}
+    # An array inside an array of struct cannot be a struct field attribute, so "arr" as a whole is
+    # not an attribute combiner; a selection which leaves this out is.
+    field aliases type array<string> {}
+  }
+
+  struct pair {
+    field p1 type string {}
+    field p2 type int {}
+  }
+
+  document test {
+
+    field arr type array<elem> {
+      indexing: summary
+      struct-field name {
+        indexing: attribute
+      }
+      struct-field weight {
+        indexing: attribute
+      }
+    }
+
+    field smap type map<string, pair> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.p1 {
+        indexing: attribute
+      }
+      struct-field value.p2 {
+        indexing: attribute
+      }
+    }
+
+    field imap type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
+  }
+
+  # A subset of the struct fields, without filtering, for comparison: all the elements are there.
+  document-summary sel {
+    summary arr_sel {
+      source: arr
+      struct-field: name
+      struct-field: weight
+    }
+    summary smap_sel {
+      source: smap
+      struct-field: key
+      struct-field: value.p2
+    }
+    summary imap_sel {
+      source: imap
+      struct-field: key
+      struct-field: value
+    }
+  }
+
+  # The same subsets combined with 'matched-elements-only'.
+  document-summary sel_meo {
+    # Only struct field attributes are selected, so this is an attribute combiner even though "arr"
+    # as a whole is not one.
+    summary arr_sel_meo {
+      source: arr
+      struct-field: name
+      struct-field: weight
+      matched-elements-only
+    }
+    # The struct field which the query matches is not selected here; the matching element is kept
+    # all the same, since the selection does not decide which elements there are.
+    summary arr_weight_meo {
+      source: arr
+      struct-field: weight
+      matched-elements-only
+    }
+    # "aliases" cannot be a struct field attribute, so this one is filled from the document store,
+    # with both the selection and the element filtering applied there.
+    summary arr_aliases_meo {
+      source: arr
+      struct-field: name
+      struct-field: aliases
+      matched-elements-only
+    }
+    summary smap_sel_meo {
+      source: smap
+      struct-field: key
+      struct-field: value.p2
+      matched-elements-only
+    }
+    summary imap_sel_meo {
+      source: imap
+      struct-field: key
+      struct-field: value
+      matched-elements-only
+    }
+  }
+}
