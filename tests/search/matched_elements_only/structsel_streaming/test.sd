@@ -1,0 +1,87 @@
+# Copyright Vespa.ai. All rights reserved.
+
+# The streaming variant of structsel_indexed/test.sd: the same fields and document-summaries, but
+# indexed for streaming search.  Both the struct field selection and the element filtering are then
+# always applied when the summary field is filled from the document.
+schema test {
+
+  struct elem {
+    field name type string {}
+    field weight type int {}
+    field aliases type array<string> {}
+  }
+
+  struct pair {
+    field p1 type string {}
+    field p2 type int {}
+  }
+
+  document test {
+
+    field arr type array<elem> {
+      indexing: index | summary
+    }
+
+    field smap type map<string, pair> {
+      indexing: index | summary
+    }
+
+    field imap type map<string, int> {
+      indexing: index | summary
+    }
+  }
+
+  # A subset of the struct fields, without filtering, for comparison: all the elements are there.
+  document-summary sel {
+    summary arr_sel {
+      source: arr
+      struct-field: name
+      struct-field: weight
+    }
+    summary smap_sel {
+      source: smap
+      struct-field: key
+      struct-field: value.p2
+    }
+    summary imap_sel {
+      source: imap
+      struct-field: key
+      struct-field: value
+    }
+  }
+
+  # The same subsets combined with 'matched-elements-only'.
+  document-summary sel_meo {
+    summary arr_sel_meo {
+      source: arr
+      struct-field: name
+      struct-field: weight
+      matched-elements-only
+    }
+    # The struct field which the query matches is not selected here; the matching element is kept
+    # all the same, since the selection does not decide which elements there are.
+    summary arr_weight_meo {
+      source: arr
+      struct-field: weight
+      matched-elements-only
+    }
+    summary arr_aliases_meo {
+      source: arr
+      struct-field: name
+      struct-field: aliases
+      matched-elements-only
+    }
+    summary smap_sel_meo {
+      source: smap
+      struct-field: key
+      struct-field: value.p2
+      matched-elements-only
+    }
+    summary imap_sel_meo {
+      source: imap
+      struct-field: key
+      struct-field: value
+      matched-elements-only
+    }
+  }
+}

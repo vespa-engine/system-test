@@ -1,0 +1,20 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "arr": [
+        { "name": "foo", "weight": 10, "aliases": ["a1", "a2"] },
+        { "name": "bar", "weight": 20, "aliases": ["b1"] },
+        { "name": "baz", "weight": 30, "aliases": ["c1"] }
+      ],
+      "smap": {
+        "kone": { "p1": "v1", "p2": 11 },
+        "ktwo": { "p1": "v2", "p2": 22 }
+      },
+      "imap": {
+        "ione": 1,
+        "itwo": 2
+      }
+    }
+  }
+]

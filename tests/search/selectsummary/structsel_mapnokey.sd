@@ -1,0 +1,40 @@
+# Copyright Vespa.ai. All rights reserved.
+
+# A 'struct-field' selection for a map which leaves out the key; must fail validation.
+schema structsel_mapnokey {
+
+  struct pair {
+    field p1 type string {}
+    field p2 type int {}
+  }
+
+  document structsel_mapnokey {
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field smap type map<string, pair> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.p1 {
+        indexing: attribute
+      }
+      struct-field value.p2 {
+        indexing: attribute
+      }
+    }
+  }
+
+  fieldset default {
+    fields: title
+  }
+
+  document-summary badsum {
+    summary smap {
+      struct-field: value.p2
+    }
+  }
+}

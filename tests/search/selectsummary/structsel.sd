@@ -1,0 +1,107 @@
+# Copyright Vespa.ai. All rights reserved.
+schema structsel {
+
+  struct elem {
+    field name type string {}
+    field weight type int {}
+    # An array inside an array of struct cannot be a struct field attribute, so "arr" as a
+    # whole is not an attribute combiner; a selection which leaves this out still is.
+    field aliases type array<string> {}
+  }
+
+  struct pair {
+    field p1 type string {}
+    field p2 type int {}
+  }
+
+  document structsel {
+
+    field score type int {
+      indexing: attribute
+    }
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field arr type array<elem> {
+      indexing: summary
+      struct-field name {
+        indexing: attribute
+      }
+      struct-field weight {
+        indexing: attribute
+      }
+    }
+
+    field smap type map<string, pair> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.p1 {
+        indexing: attribute
+      }
+      struct-field value.p2 {
+        indexing: attribute
+      }
+    }
+
+    field imap type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
+  }
+
+  fieldset default {
+    fields: title
+  }
+
+  # No selection: all struct fields, "arr" from the document store since "aliases" is not an attribute.
+  document-summary fullsum {
+    summary arr {}
+    summary smap {}
+    summary imap {}
+  }
+
+  # One sub-field of an array of struct.
+  document-summary arrname {
+    summary arr {
+      struct-field: name
+    }
+  }
+
+  # The sub-fields of an array of struct which are usable as attributes, leaving out "aliases".
+  document-summary arrnamew {
+    summary arr {
+      struct-field: name
+      struct-field: weight
+    }
+  }
+
+  # The key and one sub-field of the value struct of a map.  A selection from a map must name the
+  # key and at least one field from the value; the invalid alternatives live in their own schemas,
+  # structsel_mapnokey.sd and structsel_mapnovalue.sd.  Selecting the key has no effect on the
+  # output, since the key is always part of it.
+  document-summary smapp2 {
+    summary smap {
+      struct-field: key
+      struct-field: value.p2
+    }
+  }
+
+  # The selection is inherited along with the summary field.
+  document-summary inhsum inherits arrnamew {
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 100 - attribute(score)
+    }
+  }
+}

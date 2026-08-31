@@ -1,0 +1,49 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 2
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 2,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "index:search/0/0",
+        "relevance": 99.0,
+        "source": "search",
+        "fields": {
+          "arr": [
+            {
+              "name": "foo",
+              "weight": 10
+            },
+            {
+              "name": "bar",
+              "weight": 20
+            }
+          ]
+        }
+      },
+      {
+        "id": "index:search/0/1",
+        "relevance": 98.0,
+        "source": "search",
+        "fields": {
+          "arr": [
+            {
+              "name": "baz",
+              "weight": 30
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

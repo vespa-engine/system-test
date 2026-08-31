@@ -27,6 +27,53 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     run_test("indexed_fs")
   end
 
+  def test_struct_field_select_and_matched_elements_only
+    set_description("Test 'matched-elements-only' combined with a selection of a subset of the struct " +
+                    "fields ('struct-field' in a document-summary)")
+    deploy_app(create_app(is_streaming ? "structsel_streaming" : "structsel_indexed"))
+    start
+    feed(:file => selfdir + "structsel-docs.json")
+
+    foo = { "name" => "foo", "weight" => 10 }
+    bar = { "name" => "bar", "weight" => 20 }
+    baz = { "name" => "baz", "weight" => 30 }
+    smap_full = { "kone" => { "p2" => 11 }, "ktwo" => { "p2" => 22 } }
+    imap_full = { "ione" => 1, "itwo" => 2 }
+    # Note: Empty arrays and empty maps are not rendered in search results
+    empty = nil
+
+    # The selection alone: only the selected struct fields, but all the elements.
+    assert_summary_field("arr.name contains 'bar'", "arr_sel", [foo, bar, baz], "sel")
+    assert_summary_field("smap.value.p1 contains 'v2'", "smap_sel", smap_full, "sel")
+    assert_summary_field("imap.key contains 'itwo'", "imap_sel", imap_full, "sel")
+
+    # The selection combined with 'matched-elements-only': only the selected struct fields of the
+    # matched elements.
+    assert_summary_field("arr.name contains 'bar'", "arr_sel_meo", [bar], "sel_meo")
+    assert_summary_field("arr.name contains 'bar' or arr.name contains 'baz'", "arr_sel_meo", [bar, baz], "sel_meo")
+    assert_summary_field("arr.weight contains '20'", "arr_sel_meo", [bar], "sel_meo")
+    assert_summary_field("arr contains sameElement(name contains 'bar', weight contains '20')", "arr_sel_meo", [bar], "sel_meo")
+    assert_summary_field("smap.value.p1 contains 'v2'", "smap_sel_meo", { "ktwo" => { "p2" => 22 } }, "sel_meo")
+    assert_summary_field("imap.key contains 'itwo'", "imap_sel_meo", { "itwo" => 2 }, "sel_meo")
+    assert_summary_field("imap.value contains '2'", "imap_sel_meo", { "itwo" => 2 }, "sel_meo")
+
+    # The struct field which the query matches need not be one of the selected ones.
+    assert_summary_field("arr.name contains 'bar'", "arr_weight_meo", [{ "weight" => 20 }], "sel_meo")
+
+    # A selection including a struct field which cannot be a struct field attribute ("aliases"),
+    # which is filled from the document store also with indexed search.
+    assert_summary_field("arr.name contains 'bar'", "arr_aliases_meo",
+                         [{ "name" => "bar", "aliases" => ["b1"] }], "sel_meo")
+    assert_summary_field("arr.weight contains '20'", "arr_aliases_meo",
+                         [{ "name" => "bar", "aliases" => ["b1"] }], "sel_meo")
+
+    # No elements matches in the other fields.
+    assert_summary_field("imap.key contains 'itwo'", "arr_sel_meo", empty, "sel_meo")
+    assert_summary_field("imap.key contains 'itwo'", "arr_aliases_meo", empty, "sel_meo")
+    assert_summary_field("imap.key contains 'itwo'", "smap_sel_meo", empty, "sel_meo")
+    assert_summary_field("arr.name contains 'bar'", "imap_sel_meo", empty, "sel_meo")
+  end
+
   def run_test(test_dir)
     deploy_app(create_app(test_dir))
     start

@@ -53,6 +53,51 @@ class SelectSummary < IndexedStreamingSearchTest
     check_yql('select  a,b  from complex where true', 'complex-abc', 'mysummary', 'b,c')
   end
 
+  def check_struct_summary(res, summ, fields)
+    q = '/search/?query=doc&summary=' + summ
+    # save_result(q, "#{selfdir}res.#{res}.json")
+    assert_result(q, "#{selfdir}res.#{res}.json", nil, fields)
+  end
+
+  def test_select_struct_fields
+    deploy_app(SearchApp.new.sd(selfdir + 'structsel.sd'))
+    start
+    feed_and_wait_for_docs('structsel', 2, :file => selfdir + 'structsel-docs.json')
+    # No selection, for comparison: all struct fields, where "arr" comes from the document
+    # store since its "aliases" sub-field cannot be a struct field attribute.
+    check_struct_summary('structsel-full', 'fullsum', [ 'arr', 'smap', 'imap' ])
+    # A subset of the struct fields of an array of struct.  Selecting only the sub-fields
+    # which are attributes makes "arr" an attribute combiner even though the field as a
+    # whole is not eligible.
+    check_struct_summary('structsel-arrname', 'arrname', [ 'arr' ])
+    check_struct_summary('structsel-arrnamew', 'arrnamew', [ 'arr' ])
+    # The selection follows the summary field when the document-summary is inherited.
+    check_struct_summary('structsel-arrnamew', 'inhsum', [ 'arr' ])
+    # The key and one sub-field of the value struct of a map; selecting the key does not
+    # change the output, since it is always part of it.  Selecting the key alone is rejected,
+    # see test_select_struct_fields_must_include_key_and_value.
+    check_struct_summary('structsel-smapp2', 'smapp2', [ 'smap' ])
+  end
+
+  # A selection from a map must name the key and at least one field from the value, since that is
+  # the only shape the backend is known to handle.
+  def test_select_struct_fields_must_include_key_and_value
+    assert_deploy_fails(selfdir + 'structsel_mapnokey.sd',
+                        "document-summary 'badsum', summary field 'smap'",
+                        "a 'struct-field' selection for a map must include 'key'")
+    assert_deploy_fails(selfdir + 'structsel_mapnovalue.sd',
+                        "document-summary 'badsum', summary field 'smap'",
+                        "must include at least one field from the value",
+                        "one of \\[value.p1, value.p2\\]")
+  end
+
+  def assert_deploy_fails(sd, *error_messages)
+    exception = assert_raise(ExecuteError) {
+      deploy_app(SearchApp.new.sd(sd))
+    }
+    error_messages.each { |msg| assert_match(Regexp.new(msg), exception.output) }
+  end
+
   def test_selectsummary_twophase
     puts "Details: Setting up twophase config"
     deploy_app(SearchApp.new.sd(selfdir + "selsum.sd"))
