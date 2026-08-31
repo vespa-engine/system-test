@@ -1,0 +1,76 @@
+# Copyright Vespa.ai. All rights reserved.
+schema rankfeatures {
+
+  document rankfeatures {
+
+    # query field, repeated "alpha" gives each document a distinct bm25 score
+    field title type string {
+      indexing: summary | index
+      index: enable-bm25
+    }
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field price type double {
+      indexing: summary | attribute
+    }
+
+    field category type string {
+      indexing: summary | attribute
+    }
+  }
+
+  fieldset default {
+    fields: title
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(year)
+    }
+  }
+
+  # The rank features listed in sort-features may be used as sorting keys
+  # from a query, as sortspec=feature(<name>)
+  rank-profile sorting inherits default {
+    function inv_price() {
+      expression: 1000.0 - attribute(price)
+    }
+    function decade() {
+      expression: floor(attribute(year) / 10)
+    }
+    function title_bm25() {
+      expression: bm25(title)
+    }
+    sort-features {
+      inv_price
+      decade
+      title_bm25
+      nativeRank
+    }
+  }
+
+  # sort-features are inherited
+  rank-profile sorting_child inherits sorting {
+  }
+
+  # ... but an empty block clears what was inherited
+  rank-profile sorting_cleared inherits sorting {
+    sort-features {}
+  }
+
+  rank-profile with_second_phase inherits sorting {
+    second-phase {
+      expression: firstPhase * 100
+    }
+  }
+
+  # same functions, but none of them declared sortable
+  rank-profile no_sort_features inherits default {
+    function inv_price() {
+      expression: 1000.0 - attribute(price)
+    }
+  }
+}

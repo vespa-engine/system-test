@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:rankfeatures::0","fields":{"title":"alpha zero","year":2001,"price":10.0,"category":"red"}},
+  {"id":"id:test:rankfeatures::1","fields":{"title":"alpha alpha one","year":2002,"price":30.0,"category":"blue"}},
+  {"id":"id:test:rankfeatures::2","fields":{"title":"alpha alpha alpha two","year":2013,"price":20.0,"category":"red"}},
+  {"id":"id:test:rankfeatures::3","fields":{"title":"alpha alpha alpha alpha three","year":2014,"price":50.0,"category":"blue"}},
+  {"id":"id:test:rankfeatures::4","fields":{"title":"alpha alpha alpha alpha alpha four","year":2025,"price":40.0,"category":"red"}}
+]
