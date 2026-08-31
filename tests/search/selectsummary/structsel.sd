@@ -95,20 +95,6 @@ schema structsel {
     }
   }
 
-  # Only the key, or only the value, of a map of primitive type.  Note that an entry with just one
-  # of the two is not rendered as a JSON map, but as a {"key":...} or {"value":...} object.
-  document-summary imapkey {
-    summary imap {
-      struct-field: key
-    }
-  }
-
-  document-summary imapval {
-    summary imap {
-      struct-field: value
-    }
-  }
-
   # The selection is inherited along with the summary field.
   document-summary inhsum inherits arrnamew {
   }

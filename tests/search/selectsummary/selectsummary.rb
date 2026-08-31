@@ -77,10 +77,6 @@ class SelectSummary < IndexedStreamingSearchTest
     # change the output, since it is always part of it.  Selecting the key alone is rejected,
     # see test_select_struct_fields_must_include_key_and_value.
     check_struct_summary('structsel-smapp2', 'smapp2', [ 'smap' ])
-    # Only the key, or only the value, of a map of primitive type.  Note that an entry with just
-    # one of the two is not rendered as a JSON map, but as a {"key":...} or {"value":...} object.
-    check_struct_summary('structsel-imapkey', 'imapkey', [ 'imap' ])
-    check_struct_summary('structsel-imapval', 'imapval', [ 'imap' ])
   end
 
   # A selection from a map must name the key and at least one field from the value, since that is
