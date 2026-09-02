@@ -48,15 +48,12 @@
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 130000 } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
-        { "id" : "send-protobuf-querytree", "rules" : [ { "value" : true } ] },
         { "id" : "use-simple-annotations", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 1.0 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
-        { "id" : "proton-log-warning-on-disk-capacity-change", "rules" : [ { "value" : true } ] },
-        { "id" : "proton-resample-disk-capacity", "rules" : [ { "value" : true } ] },
         { "id" : "fast-map-search", "rules" : [ { "value" : true } ] },
         { "id" : "relax-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] }
     ]
