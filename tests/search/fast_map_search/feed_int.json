@@ -1,0 +1,19 @@
+[
+  {
+    "id": "id:fast_map_search:fast_map_search::0",
+    "fields": {
+      "my_map": {
+        "foo": 42
+      }
+    }
+  },
+  {
+    "id": "id:fast_map_search:fast_map_search::1",
+    "fields": {
+      "my_map": {
+        "foo": 13,
+        "baz": 42
+      }
+    }
+  }
+]
