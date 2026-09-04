@@ -5,6 +5,8 @@ schema test {
          indexing: attribute | summary
          attribute: fast-search
      }
+
+     # String fields
      field string_single type string {
          indexing: attribute | summary
      }
@@ -17,7 +19,39 @@ schema test {
      }
      field string_multi_fast type array<string> {
          indexing: attribute | summary
-         #attribute: fast-search
+         attribute: fast-search
      }
+
+     # String fields with cased matching
+     field string_single_cased type string {
+         indexing: attribute | summary
+         match: cased
+     }
+     field string_single_fast_cased type string {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+     }
+     field string_multi_cased type array<string> {
+         indexing: attribute | summary
+         match: cased
+     }
+     field string_multi_fast_cased type array<string> {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+     }
+  }
+  rank-profile my-rank-profile {
+    match-features {
+      matches(string_single)
+      matches(string_single_fast)
+      matches(string_multi)
+      matches(string_multi_fast)
+      matches(string_single_cased)
+      matches(string_single_fast_cased)
+      matches(string_multi_cased)
+      matches(string_multi_fast_cased)
+    }
   }
 }
