@@ -11,6 +11,9 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   CASED_FIELDS = %w[string_single_cased string_single_fast_cased string_multi_cased string_multi_fast_cased]
   UNCASED_FIELDS = %w[string_single string_single_fast string_multi string_multi_fast]
 
+  SINGLE_VALUE_FIELDS = %w[string_single_cased string_single_fast_cased string_single string_single_fast]
+  MULTI_VALUE_FIELDS = %w[string_multi_cased string_multi_fast_cased string_multi string_multi_fast]
+
   def setup
     set_owner("boeker")
     set_description("Test lexi(cographi)cal range search")
@@ -20,6 +23,27 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   ######################################################################################################################
   # Test case verifying that string ranges work as expected when matching is uncased
   ######################################################################################################################
+
+  def feed_words(words)
+    puts "Creating documents from #{words}"
+    puts "Sorted: #{words.sort}"
+    id = 0
+    words.each do |word|
+      vespa.document_api_v1.put(Document.new("id:test:test::#{id}")
+                                        .add_field("id", id)
+                                        .add_field("string_single", word)
+                                        .add_field("string_single_fast", word)
+                                        .add_field("string_multi", [word])
+                                        .add_field("string_multi_fast", [word])
+                                        .add_field("string_single_cased", word)
+                                        .add_field("string_single_fast_cased", word)
+                                        .add_field("string_multi_cased", [word])
+                                        .add_field("string_multi_fast_cased", [word])
+      )
+      id += 1
+    end
+    wait_for_hitcount('query=sddocname:test', words.size)
+  end
 
   def test_uncased_string_range
     deploy_app(SearchApp.new.cluster_name("test").sd(selfdir+"test.sd"))
@@ -92,27 +116,6 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     end
   end
 
-  def feed_words(words)
-    puts "Creating documents from #{words}"
-    puts "Sorted: #{words.sort}"
-    id = 0
-    words.each do |word|
-      vespa.document_api_v1.put(Document.new("id:test:test::#{id}")
-                                        .add_field("id", id)
-                                        .add_field("string_single", word)
-                                        .add_field("string_single_fast", word)
-                                        .add_field("string_multi", [word])
-                                        .add_field("string_multi_fast", [word])
-                                        .add_field("string_single_cased", word)
-                                        .add_field("string_single_fast_cased", word)
-                                        .add_field("string_multi_cased", [word])
-                                        .add_field("string_multi_fast_cased", [word])
-      )
-      id += 1
-    end
-    wait_for_hitcount('query=sddocname:test', words.size)
-  end
-
   def verify_words_cased(words, field_name)
     (0..words.length-1).each do |from|
       (0..words.length-1).each do |to|
@@ -147,30 +150,23 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   # Test case using hexadecimal representations of numbers as strings
   ######################################################################################################################
 
-  def test_hex_string_range
-    deploy_app(SearchApp.new.cluster_name("test").sd(selfdir+"test.sd"))
-    start
-
-    range = (0..20)
-    feed_hex_docs(range)
-
-    # Cased and uncased fields should yield the same results
-    CASED_FIELDS.each do |field_name|
-      verify_hex_range(range, field_name)
-    end
-    UNCASED_FIELDS.each do |field_name|
-      verify_hex_range(range, field_name)
-    end
-  end
-
   def to_hex(n)
     "%08X" % n
   end
 
   def feed_hex_docs(range)
     range.each do |n|
-      hex_string = to_hex(n)
-      hex_strings = [to_hex(n)]
+      hex_string = to_hex(n) # Single hex string for single-value fields
+
+      hex_strings = []
+      hex_strings << "foo" + to_hex(n) # Searching with prefix "foo" should work
+      # Add some more junk values to the array: these should not influence the search
+      (0..20).each do |i|
+        hex_strings << "junk" + to_hex(i)
+      end
+      hex_strings << "bar" + to_hex(2 * n) # Searching with prefix "bar" for twice the number should also work
+
+
       vespa.document_api_v1.put(Document.new("id:test:test::#{n}")
                                         .add_field("id", n)
                                         .add_field("string_single", hex_string)
@@ -186,29 +182,60 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     wait_for_hitcount('query=sddocname:test', range.size)
   end
 
-  def verify_hex_range(range, field_name)
-    puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}"
+  def test_hex_string_range
+    deploy_app(SearchApp.new.cluster_name("test").sd(selfdir+"test.sd"))
+    start
 
-    # Unbounded ranges
+    range = (8..18)
+    feed_hex_docs(range)
+
+    SINGLE_VALUE_FIELDS.each do |field_name|
+      verify_bounded_hex_range(range, field_name)
+      verify_unbounded_hex_range(range, field_name)
+    end
+
+    MULTI_VALUE_FIELDS.each do |field_name|
+      verify_bounded_hex_range(range, field_name, "foo") # Hexadecimal strings prefixed with "foo"
+      verify_bounded_hex_range(range, field_name, "bar", 2) # Hexadecimal strings prefixed with "bar", numbers multiplied with 2
+
+      # Using Infinity on the right with "foo" or "bar" also selects all the values with the "junk" prefix => Matches everything
+      # Same for "foo" and -Infinity on the left
+      puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
+      range.each do |mid|
+        search_and_verify(range.first..range.last, get_hex_query("", field_name, nil, mid, "foo"))
+        search_and_verify(range.first..mid, get_hex_query("", field_name, nil, mid, "bar", 2))
+        search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "foo", 1))
+        search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "bar", 2))
+      end
+
+    end
+  end
+
+  def verify_unbounded_hex_range(range, field_name)
+    puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
+
     range.each do |mid|
       search_and_verify(range.first..mid, get_hex_query("", field_name, nil, mid))
       search_and_verify(mid..range.last, get_hex_query("", field_name, mid, nil))
     end
+  end
 
-    # Bounded ranges
+  def verify_bounded_hex_range(range, field_name, prefix = "", factor = 1)
+    puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Bounded ranges"
+
     range.each do |from|
       range.each do |to|
-        search_and_verify(from..to, get_hex_query(CLOSED, field_name, from, to))
-        search_and_verify((from+1)..to, get_hex_query(LEFT_OPEN, field_name, from, to))
-        search_and_verify(from..(to-1), get_hex_query(RIGHT_OPEN, field_name, from, to))
-        search_and_verify((from+1)..(to-1), get_hex_query(OPEN, field_name, from, to))
+        search_and_verify(from..to, get_hex_query(CLOSED, field_name, from, to, prefix, factor))
+        search_and_verify((from+1)..to, get_hex_query(LEFT_OPEN, field_name, from, to, prefix, factor))
+        search_and_verify(from..(to-1), get_hex_query(RIGHT_OPEN, field_name, from, to, prefix, factor))
+        search_and_verify((from+1)..(to-1), get_hex_query(OPEN, field_name, from, to, prefix, factor))
       end
     end
   end
 
-  def get_hex_query(annotation, field_name, from, to)
-    from_str = from.nil? ? "-Infinity" : "\"#{to_hex(from)}\""
-    to_str = to.nil? ? "Infinity" : "\"#{to_hex(to)}\""
+  def get_hex_query(annotation, field_name, from, to, prefix = "", factor = 1)
+    from_str = from.nil? ? "-Infinity" : "\"#{prefix}#{to_hex(factor * from)}\""
+    to_str = to.nil? ? "Infinity" : "\"#{prefix}#{to_hex(factor * to)}\""
     {"yql" => "select * from sources * where (#{annotation}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
   end
 
