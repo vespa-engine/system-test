@@ -42,4 +42,16 @@ schema test {
          match: cased
      }
   }
+  rank-profile my-rank-profile {
+    match-features {
+      matches(string_single)
+      matches(string_single_fast)
+      matches(string_multi)
+      matches(string_multi_fast)
+      matches(string_single_cased)
+      matches(string_single_fast_cased)
+      matches(string_multi_cased)
+      matches(string_multi_fast_cased)
+    }
+  }
 }

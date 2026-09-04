@@ -10,6 +10,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
 
   CASED_FIELDS = %w[string_single_cased string_single_fast_cased string_multi_cased string_multi_fast_cased]
   UNCASED_FIELDS = %w[string_single string_single_fast string_multi string_multi_fast]
+  FIELDS = CASED_FIELDS + UNCASED_FIELDS
 
   SINGLE_VALUE_FIELDS = %w[string_single_cased string_single_fast_cased string_single string_single_fast]
   MULTI_VALUE_FIELDS = %w[string_multi_cased string_multi_fast_cased string_multi string_multi_fast]
@@ -159,6 +160,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       hex_string = to_hex(n) # Single hex string for single-value fields
 
       hex_strings = []
+      hex_strings << to_hex(n) # Searching without prefix should work
       hex_strings << "foo" + to_hex(n) # Searching with prefix "foo" should work
       # Add some more junk values to the array: these should not influence the search
       (0..20).each do |i|
@@ -198,12 +200,11 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       verify_bounded_hex_range(range, field_name, "foo") # Hexadecimal strings prefixed with "foo"
       verify_bounded_hex_range(range, field_name, "bar", 2) # Hexadecimal strings prefixed with "bar", numbers multiplied with 2
 
-      # Using Infinity on the right with "foo" or "bar" also selects all the values with the "junk" prefix => Matches everything
-      # Same for "foo" and -Infinity on the left
+      # Using Infinity on the left or right with "foo" or "bar" also selects all the values without a prefix or with the "junk" prefix => Matches everything
       puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
       range.each do |mid|
         search_and_verify(range.first..range.last, get_hex_query("", field_name, nil, mid, "foo"))
-        search_and_verify(range.first..mid, get_hex_query("", field_name, nil, mid, "bar", 2))
+        search_and_verify(range.first..range.last, get_hex_query("", field_name, nil, mid, "bar", 2))
         search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "foo", 1))
         search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "bar", 2))
       end
@@ -239,4 +240,44 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     {"yql" => "select * from sources * where (#{annotation}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
   end
 
+  ######################################################################################################################
+  # Test case for verifying that ranking works (using hexadecimal representations of numbers as strings)
+  ######################################################################################################################
+
+  def test_ranking
+    deploy_app(SearchApp.new.cluster_name("test").sd(selfdir+"test.sd"))
+    start
+
+    range = [1, 2]
+    feed_hex_docs(range)
+
+    FIELDS.each do |field_name|
+      puts "Checking ranking for field '#{field_name}'"
+
+      # Range matches document 2, but query matches document 1 and 2
+      query = {"yql" => "select * from sources * where true or range(#{field_name}, \"#{to_hex(2)}\", \"#{to_hex(2)}\") order by id asc",
+               "ranking" => "my-rank-profile"}
+      puts "Query: #{query}"
+      result = search(query)
+      #puts result
+      assert_equal(2, result.hit.size)
+
+      # Verify that range matching document 2 (and not document 1) is correctly reported
+      puts "Hit 0 matchfeatures: #{result.hit[0].field["matchfeatures"]}"
+      FIELDS.each do |match_field_name|
+        puts "Verifying that field '#{match_field_name}' does not match"
+        assert_equal(0.0, result.hit[0].field["matchfeatures"]["matches(#{match_field_name})"])
+      end
+
+      puts "Hit 1 matchfeatures: #{result.hit[1].field["matchfeatures"]}"
+      # Match reported for field_name
+      puts "Verifying that field '#{field_name}' does match"
+      assert_equal(1.0, result.hit[1].field["matchfeatures"]["matches(#{field_name})"])
+      # No match reported for the other fields
+      (FIELDS - [field_name]).each do |match_field_name|
+        puts "Verifying that field '#{match_field_name}' does not match"
+        assert_equal(0.0, result.hit[1].field["matchfeatures"]["matches(#{match_field_name})"])
+      end
+    end
+  end
 end
