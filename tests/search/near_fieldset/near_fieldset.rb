@@ -24,8 +24,6 @@ class NearFieldSet < IndexedStreamingSearchTest
     deploy_app(SearchApp.new
       .sd(selfdir+"test.sd")
       .container(Container.new
-        .config(ConfigOverride.new("container.qr-searchers")
-          .add("sendProtobufQuerytree", true))
         .search(Searching.new)
         .docproc(DocumentProcessing.new)
         .documentapi(ContainerDocumentApi.new)))
