@@ -3,6 +3,10 @@
 require 'indexed_only_search_test'
 
 class FastMapSearch < IndexedOnlySearchTest
+  CLOSED = ""
+  LEFT_OPEN = "{bounds:\"leftOpen\"}"
+  RIGHT_OPEN = "{bounds:\"rightOpen\"}"
+  OPEN = "{bounds:\"open\"}"
 
   def setup
     set_description("Tests fast map search feature")
@@ -19,6 +23,19 @@ class FastMapSearch < IndexedOnlySearchTest
       }
     SD
     sd_file
+  end
+
+  def search_and_verify(expected_ids, query)
+    result = search(query)
+    #puts "#{query["yql"]}"
+    #puts result
+    verify_ids(expected_ids, result)
+  end
+
+  def verify_ids(expected_ids, result)
+    expected_ids_array = Array(expected_ids)
+    got_ids_array = result.hit.map{ |hit| hit.field["id"] }
+    assert_equal(expected_ids_array, got_ids_array)
   end
 
   def teardown
@@ -165,6 +182,69 @@ class FastMapSearch < IndexedOnlySearchTest
     form = [['yql', yql]]
     form << ['tracelevel', tracelevel.to_s] if tracelevel
     URI.encode_www_form(form)
+  end
+
+  def test_int_range_corner_cases
+    fields = <<~FIELDS
+      field id type int {
+          indexing: attribute | summary
+          attribute: fast-search
+      }
+      field my_map type map<string, int> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+
+    int_min = -2147483648
+    int_max = 2147483647
+
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("id", 0).add_field("my_map", { "number" =>  int_min }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1").add_field("id", 1).add_field("my_map", { "number" => -10 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2").add_field("id", 2).add_field("my_map", { "number" => -1 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::3").add_field("id", 3).add_field("my_map", { "number" => 0 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::4").add_field("id", 4).add_field("my_map", { "number" => 1 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::5").add_field("id", 5).add_field("my_map", { "number" => 10 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::6").add_field("id", 6).add_field("my_map", { "number" => int_max }))
+    wait_for_hitcount('query=sddocname:fast_map_search', 7)
+
+    def make_query(annotation, from, to)
+      {"yql" => "select * from sources * where (#{annotation}range(my_map{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc" }
+    end
+
+    # When using (-)Infinity, whether the bound is closed or not should not matter
+    search_and_verify([0, 1, 2, 3, 4, 5, 6], make_query(CLOSED, nil, nil))
+    search_and_verify([0, 1, 2, 3, 4, 5, 6], make_query(LEFT_OPEN, nil, nil))
+    search_and_verify([0, 1, 2, 3, 4, 5, 6], make_query(RIGHT_OPEN, nil, nil))
+    search_and_verify([0, 1, 2, 3, 4, 5, 6], make_query(OPEN, nil, nil))
+
+    # When using the min/max int value, whether the bound is closed or not SHOULD matter
+    search_and_verify([0, 1, 2, 3, 4, 5, 6], make_query(CLOSED, int_min, int_max))
+    search_and_verify([1, 2, 3, 4, 5, 6], make_query(LEFT_OPEN, int_min, int_max))
+    search_and_verify([0, 1, 2, 3, 4, 5], make_query(RIGHT_OPEN, int_min, int_max))
+    search_and_verify([1, 2, 3, 4, 5], make_query(OPEN, int_min, int_max))
+
+    # Behavior around 0
+    search_and_verify([2, 3, 4], make_query(CLOSED, -1, 1))
+    search_and_verify([3, 4], make_query(LEFT_OPEN, -1, 1))
+    search_and_verify([2, 3], make_query(RIGHT_OPEN, -1, 1))
+    search_and_verify([3], make_query(OPEN, -1, 1))
+
+    # Behavior from -Infinity to 0
+    search_and_verify([0, 1, 2, 3], make_query(CLOSED, nil, 0))
+    search_and_verify([0, 1, 2, 3], make_query(LEFT_OPEN, nil, 0))
+    search_and_verify([0, 1, 2], make_query(RIGHT_OPEN, nil, 0))
+    search_and_verify([0, 1, 2], make_query(OPEN, nil, 0))
+
+    # Behavior from 0 to Infinity
+    search_and_verify([3, 4, 5, 6], make_query(CLOSED, 0, nil))
+    search_and_verify([4, 5, 6], make_query(LEFT_OPEN, 0, nil))
+    search_and_verify([3, 4, 5, 6], make_query(RIGHT_OPEN, 0, nil))
+    search_and_verify([4, 5, 6], make_query(OPEN, 0, nil))
   end
 
   ######################################################################################################################
