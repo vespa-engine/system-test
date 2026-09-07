@@ -252,4 +252,43 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"CASE_MATTERS\"} contains 43"}, 1)
   end
 
+  def assert_deploy_app_fail(application)
+    begin
+      deploy_app(application)
+    rescue ExecuteError => e
+      return
+    end
+    assert(nil, "Expected deployment to fail")
+  end
+
+  def test_key_only_cased_deployment_fails
+    fields = <<~FIELDS
+      field cased_key_only type map<string, string> {
+        indexing: summary
+        map: fast-search
+        struct-field key {
+          indexing: attribute
+          match: cased
+        }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+  end
+
+  def test_value_only_cased_deployment_fails
+    fields = <<~FIELDS
+      field cased_value_only type map<string, string> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value {
+          indexing: attribute
+          match: cased
+        }
+      }
+    FIELDS
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+  end
+
 end
