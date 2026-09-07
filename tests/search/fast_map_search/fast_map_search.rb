@@ -174,10 +174,9 @@ class FastMapSearch < IndexedOnlySearchTest
     verify_letter_case("# No fast search!")
   end
 
-  # TODO: This should work!
-  #def test_letter_case_fast_search
-  #  verify_letter_case("map: fast-search")
-  #end
+  def test_letter_case_fast_search
+    verify_letter_case("map: fast-search")
+  end
 
   def verify_letter_case(fs)
     puts "Verifying with attribute setting '#{fs}'"
