@@ -203,13 +203,15 @@ class FastMapSearch < IndexedOnlySearchTest
     int_min = -2147483648
     int_max = 2147483647
 
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("id", 0).add_field("my_map", { "number" =>  int_min }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1").add_field("id", 1).add_field("my_map", { "number" => -10 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2").add_field("id", 2).add_field("my_map", { "number" => -1 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::3").add_field("id", 3).add_field("my_map", { "number" => 0 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::4").add_field("id", 4).add_field("my_map", { "number" => 1 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::5").add_field("id", 5).add_field("my_map", { "number" => 10 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::6").add_field("id", 6).add_field("my_map", { "number" => int_max }))
+    # Every document gets some junk "aaa" and "zzz" values to make sure that (-)Infinity with fast map search
+    # does not suddenly get you values from different keys
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("id", 0).add_field("my_map", { "aaa" => -42, "number" =>  int_min, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1").add_field("id", 1).add_field("my_map", { "aaa" => -42, "number" => -10, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2").add_field("id", 2).add_field("my_map", { "aaa" => -42, "number" => -1, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::3").add_field("id", 3).add_field("my_map", { "aaa" => -42, "number" => 0, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::4").add_field("id", 4).add_field("my_map", { "aaa" => -42, "number" => 1, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::5").add_field("id", 5).add_field("my_map", { "aaa" => -42, "number" => 10, "zzz" => 42 }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::6").add_field("id", 6).add_field("my_map", { "aaa" => -42, "number" => int_max, "zzz" => 42 }))
     wait_for_hitcount('query=sddocname:fast_map_search', 7)
 
     def make_query(annotation, from, to)
