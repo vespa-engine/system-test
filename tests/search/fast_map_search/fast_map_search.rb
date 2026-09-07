@@ -25,6 +25,7 @@ class FastMapSearch < IndexedOnlySearchTest
 
     run_queries(:same_element_query, 42, 43, "result_int.json")
     run_queries(:shortform_query, 42, 43, "result_int.json")
+    run_queries(:shortform_equals_query, 42, 43, "result_int.json")
   end
 
   def test_fast_map_search_range_int
@@ -98,6 +99,15 @@ class FastMapSearch < IndexedOnlySearchTest
   # fancy syntax: field{key} contains value.
   def shortform_query(key, value, tracelevel = nil)
     yql = "select * from sources * where my_map{'#{key}'} contains '#{value}'"
+    form = [['yql', yql]]
+    form << ['tracelevel', tracelevel.to_s] if tracelevel
+    URI.encode_www_form(form)
+  end
+
+  # fancy syntax: field{key} = value. Unquoted, so the value stays a numeric term
+  # rather than the word term the quoted 'contains' spelling produces.
+  def shortform_equals_query(key, value, tracelevel = nil)
+    yql = "select * from sources * where my_map{'#{key}'} = #{value}"
     form = [['yql', yql]]
     form << ['tracelevel', tracelevel.to_s] if tracelevel
     URI.encode_www_form(form)
