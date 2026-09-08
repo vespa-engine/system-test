@@ -60,6 +60,24 @@ class FastMapSearch < IndexedOnlySearchTest
     run_queries(:shortform_equals_query, 42, 43, "result_int.json")
   end
 
+  # The values lie beyond the int range, so that they would be truncated if the
+  # long value were encoded like an int.
+  def test_fast_map_search_basic_long
+    fields = <<~FIELDS
+      field my_map type map<string, long> {
+        indexing: summary
+        map: fast-search
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_long.json")
+
+    run_queries(:same_element_query, 4294967338, 4294967339, "result_long.json")
+    run_queries(:shortform_query, 4294967338, 4294967339, "result_long.json")
+    run_queries(:shortform_equals_query, 4294967338, 4294967339, "result_long.json")
+  end
+
   def run_queries(make_query_fn, value_one, value_two, result_file)
     # A key-value pair matches only when both are present in the same map entry.
     # Document 1 contains both the key 'foo' and the value 'bar', but in different
@@ -126,29 +144,49 @@ class FastMapSearch < IndexedOnlySearchTest
     start
     feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_int.json")
 
-    run_range_queries(:same_element_range_query)
-    run_range_queries(:map_range_query)
+    run_range_queries(:same_element_range_query, [40, 50], [10, 20], "result_int.json")
+    run_range_queries(:map_range_query, [40, 50], [10, 20], "result_int.json")
   end
 
-  def run_range_queries(make_query_fn)
-    # Only the entry with the queried key is considered: document 0 has foo=42 while
-    # document 1 has foo=13, so a range around 42 on key 'foo' matches document 0 only.
-    assert_hitcount(public_send(make_query_fn, "foo", 40, 50), 1)
-    assert_hitcount(public_send(make_query_fn, "foo", 10, 20), 1)
-    assert_hitcount(public_send(make_query_fn, "baz", 40, 50), 1)
+  def test_fast_map_search_range_long
+    fields = <<~FIELDS
+      field my_map type map<string, long> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_long.json")
 
-    # Document 1 is the only one with the key 'baz', and its value 42 is outside the range.
-    assert_hitcount(public_send(make_query_fn, "baz", 10, 20), 0)
+    # The endpoints lie beyond the int range, as do the values in the feed.
+    run_range_queries(:same_element_range_query, [4294967330, 4294967350], [4294967300, 4294967320], "result_long.json")
+    run_range_queries(:map_range_query, [4294967330, 4294967350], [4294967300, 4294967320], "result_long.json")
+  end
+
+  # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
+  # range_two contains the 'foo' value of document 1, and neither range contains both.
+  def run_range_queries(make_query_fn, range_one, range_two, result_file)
+    # Only the entry with the queried key is considered: the two documents have different
+    # 'foo' values, so a range around one of them on key 'foo' matches one document only.
+    assert_hitcount(public_send(make_query_fn, "foo", *range_one), 1)
+    assert_hitcount(public_send(make_query_fn, "foo", *range_two), 1)
+    assert_hitcount(public_send(make_query_fn, "baz", *range_one), 1)
+
+    # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
+    assert_hitcount(public_send(make_query_fn, "baz", *range_two), 0)
 
     # 'map: fast-search' makes the container rewrite the range to a lexical range over the
     # synthetic key-value attribute. Verify through the query trace that it happened.
-    result = search(public_send(make_query_fn, "foo", 40, 50, 2))
+    result = search(public_send(make_query_fn, "foo", *range_one, 2))
     assert(result.json.to_s.include?("my_map$keyvalue"),
            "Expected map range to be rewritten to a fast map lookup")
 
     # The rewrite does not change the result: the map summary is returned,
     # and the synthetic attribute is not part of it.
-    assert_result(public_send(make_query_fn, "foo", 40, 50), selfdir + "result_int.json")
+    assert_result(public_send(make_query_fn, "foo", *range_one), selfdir + result_file)
   end
 
   def same_element_range_query(key, from, to, tracelevel = nil)
@@ -215,6 +253,21 @@ class FastMapSearch < IndexedOnlySearchTest
         }
         struct-field value { indexing: attribute }
       }
+      field long_map type map<string, long> {
+        indexing: summary
+        #{fs}
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+      field cased_long_map type map<string, long> {
+        indexing: summary
+        #{fs}
+        struct-field key {
+          indexing: attribute
+          match: cased
+        }
+        struct-field value { indexing: attribute }
+      }
     FIELDS
     deploy_app(SearchApp.new.sd(write_sd(fields)))
     start
@@ -224,6 +277,8 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("int_map", { "case_does_not_matter" => 42})
                                       .add_field("cased_string_map", { "case_matters" => "foo", "CASE_MATTERS" => "BAR" })
                                       .add_field("cased_int_map", { "case_matters" => 42, "CASE_MATTERS" => 43 })
+                                      .add_field("long_map", { "case_does_not_matter" => 4294967338})
+                                      .add_field("cased_long_map", { "case_matters" => 4294967338, "CASE_MATTERS" => 4294967339 })
     )
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
@@ -235,6 +290,9 @@ class FastMapSearch < IndexedOnlySearchTest
 
     assert_hitcount({"yql" => "select * from sources * where int_map{\"case_does_not_matter\"} contains 42"}, 1)
     assert_hitcount({"yql" => "select * from sources * where int_map{\"CASE_DOES_NOT_MATTER\"} contains 42"}, 1)
+
+    assert_hitcount({"yql" => "select * from sources * where long_map{\"case_does_not_matter\"} contains 4294967338"}, 1)
+    assert_hitcount({"yql" => "select * from sources * where long_map{\"CASE_DOES_NOT_MATTER\"} contains 4294967338"}, 1)
 
     puts "Cased matching"
     assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"case_matters\"} contains \"foo\""}, 1)
@@ -250,6 +308,11 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"case_matters\"} contains 43"}, 0)
     assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"CASE_MATTERS\"} contains 42"}, 0)
     assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"CASE_MATTERS\"} contains 43"}, 1)
+
+    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"case_matters\"} contains 4294967338"}, 1)
+    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"case_matters\"} contains 4294967339"}, 0)
+    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"CASE_MATTERS\"} contains 4294967338"}, 0)
+    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"CASE_MATTERS\"} contains 4294967339"}, 1)
   end
 
   def assert_deploy_app_fail(application)
