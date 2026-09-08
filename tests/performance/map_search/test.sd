@@ -5,7 +5,6 @@ schema test {
     # See create_docs.cpp for details on how the dataset is generated.
     field kv_5 type map<string, int> {
       indexing: summary
-      map: fast-search
       struct-field key {
         indexing: attribute
         attribute: fast-search
@@ -23,7 +22,6 @@ schema test {
     }
     field kv_25 type map<string, int> {
       indexing: summary
-      map: fast-search
       struct-field key {
         indexing: attribute
         attribute: fast-search
@@ -41,7 +39,6 @@ schema test {
     }
     field kv_125 type map<string, int> {
       indexing: summary
-      map: fast-search
       struct-field key {
         indexing: attribute
         attribute: fast-search
