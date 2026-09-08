@@ -4,7 +4,9 @@
 #include <cassert>
 #include <cmath>
 #include <cstdio>
+#include <format>
 #include <random>
+#include <sstream>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -51,18 +53,18 @@ void shuffle(IntVector& vector, int seed) {
     std::shuffle(vector.begin(), vector.end(), engine);
 }
 
-// Prints one map field. The number of entries is (1 + int(r)) where r is drawn from an
+// Constructs content of one map field. The number of entries is (1 + int(r)) where r is drawn from an
 // exponential distribution with mean 'exp_mean'. Keys are "k0".."k{n-1}" and each value
 // is drawn from a normal distribution (mean 1000, stddev 100).
-void print_map(const char* name, double exp_mean, std::mt19937& engine) {
+std::string make_map_content(double exp_mean, std::mt19937& engine) {
     std::exponential_distribution<double> size_dist(1.0 / exp_mean);
     std::normal_distribution<double> value_dist(1000.0, 100.0);
     int num_elems = 1 + (int)size_dist(engine);
-    printf("\"%s\":{", name);
+    std::stringstream ss;
     for (int j = 0; j < num_elems; ++j) {
-        printf("%s\"k%d\":%d", (j == 0 ? "" : ","), j, (int)std::lround(value_dist(engine)));
+        ss << std::format("{:s}\"k{:d}\":{:d}", (j == 0 ? "" : ","), j, (int)std::lround(value_dist(engine)));
     }
-    printf("}");
+    return ss.str();
 }
 
 void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
@@ -74,7 +76,10 @@ void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
         }
         printf("{\"put\":\"id:test:test::%d\",\"fields\":{", doc_id);
         for (const auto& map_field : map_fields) {
-            print_map(map_field.name, map_field.exp_mean, engine);
+            std::string content = make_map_content(map_field.exp_mean, engine);
+            printf("\"%s\":{%s}", map_field.name, content.c_str());
+            printf(",");
+            printf("\"%s_fast\":{%s}", map_field.name, content.c_str());
             printf(",");
         }
         printf("\"filter\":%d,", filter[doc_id]);
