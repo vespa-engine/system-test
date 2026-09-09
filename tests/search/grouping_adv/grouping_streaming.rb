@@ -46,6 +46,7 @@ class GroupingStreaming < StreamingSearchTest
     start
     feed_and_wait_for_docs('test', 7, :file => "#{selfdir}/default-values-docs.json")
     querytest_groups_for_default_value(true)
+    querytest_argmin_default_values(true)
   end
 
 end
