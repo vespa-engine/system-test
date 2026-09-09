@@ -237,6 +237,10 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   def verify_unbounded_hex_range(range, field_name)
     puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
 
+    # Unbounded on both sides
+    search_and_verify_hex(range.first..range.last, "", field_name, nil, nil)
+
+    # Unbounded on one side
     range.each do |mid|
       search_and_verify_hex(range.first..mid, "", field_name, nil, mid)
       search_and_verify_hex(mid..range.last, "", field_name, mid, nil)
