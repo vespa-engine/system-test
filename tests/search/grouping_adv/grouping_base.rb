@@ -21,6 +21,7 @@ module GroupingBase
     wait_for_hitcount('query=test&streaming.selection=true', 28, 10)
 
     querytest_filter
+    querytest_argmin
     querytest_istrue_error_handling
 
     # Test geo distance
@@ -328,6 +329,35 @@ module GroupingBase
     check_query('all(group(boool) filter(istrue(boool)) each(output(count())))', 'istrue-2')
     check_query('all(group(a) filter(istrue(boool) and regex("^a1$", a)) each(output(count())))', 'istrue-3')
     check_query('all(group(a) filter(not istrue(boool)) each(output(count())))', 'istrue-4')
+  end
+
+  def querytest_argmin
+    # argmin(key, value) gives the value of the hit with the smallest key, argmax the one with the largest.
+    # n is unique within each a-group, so the selected hit is unambiguous.
+    check_query('all(group(a) each(output(argmin(n, s), argmax(n, s))))', 'argmin-1')
+    check_query('all(group(a) each(output(argmin(n, d), argmax(n, d))))', 'argmin-2')
+    # argmin/argmax of the key itself must agree with min/max.
+    check_query('all(group(a) each(output(argmin(n, n), argmax(n, n), min(n), max(n))))', 'argmin-3')
+    # String keys are ordered lexically.
+    check_query('all(group(a) each(output(argmin(s, n))))', 'argmin-4')
+    # A multi-value result is forwarded as an array. Only the hit with s="a" has na, the other groups give an empty array.
+    check_query('all(group(a) each(output(argmin(s, na))))', 'argmin-5')
+  end
+
+  def querytest_argmin_default_values(streaming=false)
+    classifier = streaming ? 'streaming' : 'indexed'
+    # Only all-fields (i=2) has boool=true. In the false group d is defined for i=3 (1.2) and i=5 (7.8) only.
+    check_query_default_value('all(group(boool) each(output(argmax(d, i))))', "#{classifier}-argmin-undefined-key-max")
+    if !streaming
+      # An undefined double key is NaN and must never be selected. Streaming has no undefined values, the
+      # missing d is 0.0 there and the hits lacking it would tie, so this is only checked for indexed.
+      check_query_default_value('all(group(boool) each(output(argmin(d, i))))', "#{classifier}-argmin-undefined-key-min")
+    end
+    # A multi-value result is forwarded as an array, empty when the selected hit has no value.
+    check_query_default_value('all(group(boool) each(output(argmax(i, na), argmax(i, fa))))', "#{classifier}-argmin-multivalue-result")
+    check_query_default_value('all(group(boool) each(output(argmin(i, na))))', "#{classifier}-argmin-empty-multivalue-result")
+    # A multi-value key is represented by its smallest element (largest for argmax). Hits without the key are skipped.
+    check_query_default_value('all(group(boool) each(output(argmin(fa, i), argmax(fa, i), argmax(na, i))))', "#{classifier}-argmin-multivalue-key")
   end
 
   # Tests that are known to fail
