@@ -3,6 +3,8 @@ require 'indexed_streaming_search_test'
 
 class LexicalRangeSearch < IndexedStreamingSearchTest
 
+  DEBUG = false
+
   CLOSED = ""
   LEFT_OPEN = "{bounds:\"leftOpen\"}"
   RIGHT_OPEN = "{bounds:\"rightOpen\"}"
@@ -83,56 +85,63 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     UNCASED_FIELDS.each do |field_name|
       # 1 to 3
       # Closed: 0 and 4 will also match
-      search_and_verify([0, 1, 2, 3, 4], get_query(CLOSED, field_name, words[1], words[3]))
+      search_and_verify([0, 1, 2, 3, 4], CLOSED, field_name, words[1], words[3])
       # Left-open: 0 and 1 will not match anymore
-      search_and_verify([2, 3, 4], get_query(LEFT_OPEN, field_name, words[1], words[3]))
+      search_and_verify([2, 3, 4], LEFT_OPEN, field_name, words[1], words[3])
       # Right-open: 3 and 4 will not match anymore
-      search_and_verify([0, 1, 2], get_query(RIGHT_OPEN, field_name, words[1], words[3]))
+      search_and_verify([0, 1, 2], RIGHT_OPEN, field_name, words[1], words[3])
       # Open: Only 2 will match
-      search_and_verify([2], get_query(OPEN, field_name, words[1], words[3]))
+      search_and_verify([2], OPEN, field_name, words[1], words[3])
 
       # 6 to 7
       # Closed: 9 will also match (but not 8)
-      search_and_verify([6, 7, 9], get_query(CLOSED, field_name, words[6], words[7]))
+      search_and_verify([6, 7, 9], CLOSED, field_name, words[6], words[7])
       # Left-open: 6 will not match anymore
-      search_and_verify([7, 9], get_query(LEFT_OPEN, field_name, words[6], words[7]))
+      search_and_verify([7, 9], LEFT_OPEN, field_name, words[6], words[7])
       # Right-open: 7 and 9 will not match anymore
-      search_and_verify([6], get_query(RIGHT_OPEN, field_name, words[6], words[7]))
+      search_and_verify([6], RIGHT_OPEN, field_name, words[6], words[7])
       # Open: Nothing will match anymore
-      search_and_verify([], get_query(OPEN, field_name, words[6], words[7]))
+      search_and_verify([], OPEN, field_name, words[6], words[7])
 
       # 1 to 8
       # Closed: 0 will also match, but not 6, 7, 9
-      search_and_verify([0, 1, 2, 3, 4, 5, 8], get_query(CLOSED, field_name, words[1], words[8]))
+      search_and_verify([0, 1, 2, 3, 4, 5, 8], CLOSED, field_name, words[1], words[8])
       # Left-open: 0 and 1 will not match anymore
-      search_and_verify([2, 3, 4, 5, 8], get_query(LEFT_OPEN, field_name, words[1], words[8]))
+      search_and_verify([2, 3, 4, 5, 8], LEFT_OPEN, field_name, words[1], words[8])
       # Right-open: 5 and 8 will not match anymore
-      search_and_verify([0, 1, 2, 3, 4], get_query(RIGHT_OPEN, field_name, words[1], words[8]))
+      search_and_verify([0, 1, 2, 3, 4], RIGHT_OPEN, field_name, words[1], words[8])
       # Open: 0, 1, 5, 8 will not match anymore
-      search_and_verify([2, 3, 4], get_query(OPEN, field_name, words[1], words[8]))
+      search_and_verify([2, 3, 4], OPEN, field_name, words[1], words[8])
 
       # 0 to 9
       # Open: 0, 1, 7, and 9 will not match
-      search_and_verify([2, 3, 4, 5, 6, 8], get_query(OPEN, field_name, words[0], words[9]))
+      search_and_verify([2, 3, 4, 5, 6, 8], OPEN, field_name, words[0], words[9])
     end
   end
 
   def verify_words_cased(words, field_name)
     (0..words.length-1).each do |from|
       (0..words.length-1).each do |to|
-        search_and_verify(from..to, get_query(CLOSED, field_name, words[from], words[to]))
-        search_and_verify((from+1)..to, get_query(LEFT_OPEN, field_name, words[from], words[to]))
-        search_and_verify(from..(to-1), get_query(RIGHT_OPEN, field_name, words[from], words[to]))
-        search_and_verify((from+1)..(to-1), get_query(OPEN, field_name, words[from], words[to]))
+        search_and_verify(from..to, CLOSED, field_name, words[from], words[to])
+        search_and_verify((from+1)..to, LEFT_OPEN, field_name, words[from], words[to])
+        search_and_verify(from..(to-1), RIGHT_OPEN, field_name, words[from], words[to])
+        search_and_verify((from+1)..(to-1), OPEN, field_name, words[from], words[to])
       end
     end
   end
 
-  def search_and_verify(expected_ids, query)
-    result = search(query)
-    #puts "#{query["yql"]}"
-    #puts result
-    verify_ids(expected_ids, result)
+  def search_and_verify(expected_ids, annotation, field_name, from, to)
+    yql_query = get_yql_query(annotation, field_name, from, to)
+    puts "YQL query: #{yql_query}" if DEBUG
+    yql_result = search(yql_query)
+    puts "YQL result: #{yql_result}" if DEBUG
+    verify_ids(expected_ids, yql_result)
+
+    select_query = get_select_query(annotation, field_name, from, to)
+    puts "Select query: #{select_query}" if DEBUG
+    select_result = vespa.container.values.first.post_search("/search/", select_query, 0, {'Content-Type' => 'application/json'})
+    puts "Select result: #{select_result}" if DEBUG
+    verify_ids(expected_ids, select_result)
   end
 
   def verify_ids(expected_ids, result)
@@ -141,10 +150,23 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     assert_equal(expected_ids_array, got_ids_array)
   end
 
-  def get_query(annotation, field_name, from, to)
+  def get_yql_query(annotation, field_name, from, to)
     from_str = from.nil? ? "-Infinity" : "\"#{from}\""
     to_str = to.nil? ? "Infinity" : "\"#{to}\""
     {"yql" => "select * from sources * where (#{annotation}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
+  end
+
+  def get_select_query(annotation, field_name, from, to)
+    lower_bound = from.nil? ? {} : { ((annotation.eql? LEFT_OPEN) || (annotation.eql? OPEN) ? ">" : ">=") => from }
+    upper_bound = to.nil? ? {} : { ((annotation.eql? RIGHT_OPEN) || (annotation.eql? OPEN) ? "<" : "<=") => to }
+
+    json = { "select" => { "where" => { "range" => [ field_name, lower_bound.merge(upper_bound) ] } },
+             "sorting" => "id",
+             "hits" => 100,
+             "timeout" => 5 }
+    json["streaming.selection"] = "true" if is_streaming
+
+    json.to_json
   end
 
   ######################################################################################################################
@@ -203,10 +225,10 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       # Using Infinity on the left or right with "foo" or "bar" also selects all the values without a prefix or with the "junk" prefix => Matches everything
       puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
       range.each do |mid|
-        search_and_verify(range.first..range.last, get_hex_query("", field_name, nil, mid, "foo"))
-        search_and_verify(range.first..range.last, get_hex_query("", field_name, nil, mid, "bar", 2))
-        search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "foo", 1))
-        search_and_verify(range.first..range.last, get_hex_query("", field_name, mid, nil, "bar", 2))
+        search_and_verify_hex(range.first..range.last, "", field_name, nil, mid, "foo")
+        search_and_verify_hex(range.first..range.last, "", field_name, nil, mid, "bar", 2)
+        search_and_verify_hex(range.first..range.last, "", field_name, mid, nil, "foo", 1)
+        search_and_verify_hex(range.first..range.last, "", field_name, mid, nil, "bar", 2)
       end
 
     end
@@ -216,8 +238,8 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
 
     range.each do |mid|
-      search_and_verify(range.first..mid, get_hex_query("", field_name, nil, mid))
-      search_and_verify(mid..range.last, get_hex_query("", field_name, mid, nil))
+      search_and_verify_hex(range.first..mid, "", field_name, nil, mid)
+      search_and_verify_hex(mid..range.last, "", field_name, mid, nil)
     end
   end
 
@@ -226,18 +248,18 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
 
     range.each do |from|
       range.each do |to|
-        search_and_verify(from..to, get_hex_query(CLOSED, field_name, from, to, prefix, factor))
-        search_and_verify((from+1)..to, get_hex_query(LEFT_OPEN, field_name, from, to, prefix, factor))
-        search_and_verify(from..(to-1), get_hex_query(RIGHT_OPEN, field_name, from, to, prefix, factor))
-        search_and_verify((from+1)..(to-1), get_hex_query(OPEN, field_name, from, to, prefix, factor))
+        search_and_verify_hex(from..to, CLOSED, field_name, from, to, prefix, factor)
+        search_and_verify_hex((from+1)..to, LEFT_OPEN, field_name, from, to, prefix, factor)
+        search_and_verify_hex(from..(to-1), RIGHT_OPEN, field_name, from, to, prefix, factor)
+        search_and_verify_hex((from+1)..(to-1), OPEN, field_name, from, to, prefix, factor)
       end
     end
   end
 
-  def get_hex_query(annotation, field_name, from, to, prefix = "", factor = 1)
-    from_str = from.nil? ? "-Infinity" : "\"#{prefix}#{to_hex(factor * from)}\""
-    to_str = to.nil? ? "Infinity" : "\"#{prefix}#{to_hex(factor * to)}\""
-    {"yql" => "select * from sources * where (#{annotation}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
+  def search_and_verify_hex(expected_ids, annotation, field_name, from, to, prefix = "", factor = 1)
+    hex_from = from.nil? ? nil : "#{prefix}#{to_hex(factor * from)}"
+    hex_to = to.nil? ? nil : "#{prefix}#{to_hex(factor * to)}"
+    search_and_verify(expected_ids, annotation, field_name, hex_from, hex_to)
   end
 
   ######################################################################################################################
