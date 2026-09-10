@@ -436,4 +436,72 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
   end
 
+  ######################################################################################################################
+  # Partial update and document removal
+  ######################################################################################################################
+
+  # A partial update must reach the synthetic key-value attribute, not only the summary.
+  def test_fast_map_search_partial_update_assign
+    fields = <<~FIELDS
+      field my_map type map<string, string> {
+        indexing: summary
+        map: fast-search
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+
+    # Both documents start out with the value 'stale' under every key, so none of the
+    # queries below match before the updates are applied.
+    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_before_update.json")
+    assert_hitcount(same_element_query("foo", "bar"), 0)
+    assert_hitcount(same_element_query("baz", "bar"), 0)
+    assert_hitcount(same_element_query("foo", "stale"), 2)
+
+    # Assign the whole map field on both documents, leaving them in exactly the state that
+    # feed.json puts them in, so the shared assertions and the summary comparison can be
+    # reused as is.
+    feed(:file => selfdir+"update_assign.json")
+    wait_for_hitcount(same_element_query("foo", "bar"), 1)
+
+    # The old values are gone from the attribute: a stale posting would still match here.
+    assert_hitcount(same_element_query("foo", "stale"), 0)
+    assert_hitcount(same_element_query("baz", "stale"), 0)
+
+    run_queries(:same_element_query, "bar", "baz", "result.json")
+    run_queries(:shortform_query, "bar", "baz", "result.json")
+  end
+
+  # Removing a document must remove its entries from the synthetic key-value attribute,
+  # and must leave the entries of the remaining documents alone.
+  def test_fast_map_search_document_removal
+    fields = <<~FIELDS
+      field my_map type map<string, string> {
+        indexing: summary
+        map: fast-search
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed.json")
+
+    # The value 'bar' sits under key 'foo' in document 0 and under key 'baz' in document 1.
+    assert_hitcount(same_element_query("foo", "bar"), 1)
+    assert_hitcount(same_element_query("baz", "bar"), 1)
+
+    vespa.document_api_v1.remove("id:fast_map_search:fast_map_search::0")
+    wait_for_hitcount('query=sddocname:fast_map_search', 1)
+
+    assert_hitcount(same_element_query("foo", "bar"), 0)
+    assert_hitcount(same_element_query("baz", "bar"), 1)
+    assert_hitcount(shortform_query("foo", "bar"), 0)
+    assert_hitcount(shortform_query("baz", "bar"), 1)
+
+    vespa.document_api_v1.remove("id:fast_map_search:fast_map_search::1")
+    wait_for_hitcount('query=sddocname:fast_map_search', 0)
+
+    assert_hitcount(same_element_query("baz", "bar"), 0)
+    assert_hitcount(shortform_query("baz", "bar"), 0)
+  end
+
 end
