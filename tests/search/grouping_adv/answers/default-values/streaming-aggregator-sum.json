@@ -42,8 +42,9 @@
                       {
                         "id": "id:test:test::all-non-numeric-fields",
                         "relevance": 7.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-non-numeric-fields",
                           "a": "a2",
                           "b": "b4",
@@ -55,8 +56,9 @@
                       {
                         "id": "id:test:test::all-floating-point-fields",
                         "relevance": 5.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-floating-point-fields",
                           "boool": false
                         }
@@ -64,8 +66,9 @@
                       {
                         "id": "id:test:test::all-multivalue-fields",
                         "relevance": 4.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-multivalue-fields",
                           "boool": false
                         }
@@ -73,8 +76,9 @@
                       {
                         "id": "id:test:test::no-fields",
                         "relevance": 1.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::no-fields",
                           "boool": false
                         }
@@ -99,8 +103,9 @@
                       {
                         "id": "id:test:test::all-integer-fields",
                         "relevance": 6.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-integer-fields",
                           "n": 1,
                           "from": 1123406000,
@@ -128,8 +133,9 @@
                       {
                         "id": "id:test:test::all-numeric-fields",
                         "relevance": 3.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-numeric-fields",
                           "n": 7,
                           "from": 1123406050,
@@ -157,8 +163,9 @@
                       {
                         "id": "id:test:test::all-fields",
                         "relevance": 2.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-fields",
                           "n": 3,
                           "a": "a1",
