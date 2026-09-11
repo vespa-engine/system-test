@@ -27,9 +27,9 @@
             "label": "tolong(f)",
             "children": [
               {
-                "id": "group:long:0",
+                "id": "group:long:-9223372036854775808",
                 "relevance": 7.0,
-                "value": "0",
+                "value": "-9223372036854775808",
                 "fields": {
                   "count()": 4
                 }

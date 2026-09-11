@@ -348,11 +348,8 @@ module GroupingBase
     classifier = streaming ? 'streaming' : 'indexed'
     # Only all-fields (i=2) has boool=true. In the false group d is defined for i=3 (1.2) and i=5 (7.8) only.
     check_query_default_value('all(group(boool) each(output(argmax(d, i))))', "#{classifier}-argmin-undefined-key-max")
-    if !streaming
-      # An undefined double key is NaN and must never be selected. Streaming has no undefined values, the
-      # missing d is 0.0 there and the hits lacking it would tie, so this is only checked for indexed.
-      check_query_default_value('all(group(boool) each(output(argmin(d, i))))', "#{classifier}-argmin-undefined-key-min")
-    end
+    # An undefined double key is NaN and must never be selected.
+    check_query_default_value('all(group(boool) each(output(argmin(d, i))))', "#{classifier}-argmin-undefined-key-min")
     # A multi-value result is forwarded as an array, empty when the selected hit has no value.
     check_query_default_value('all(group(boool) each(output(argmax(i, na), argmax(i, fa))))', "#{classifier}-argmin-multivalue-result")
     check_query_default_value('all(group(boool) each(output(argmin(i, na))))', "#{classifier}-argmin-empty-multivalue-result")
