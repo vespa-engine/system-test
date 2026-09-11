@@ -10,16 +10,22 @@ schema test {
      field string_single type string {
          indexing: attribute | summary
      }
-     field string_single_fast type string {
+     field string_single_fast_btree type string {
          indexing: attribute | summary
          attribute: fast-search
+         dictionary {
+           btree
+         }
      }
      field string_multi type array<string> {
          indexing: attribute | summary
      }
-     field string_multi_fast type array<string> {
+     field string_multi_fast_btree type array<string> {
          indexing: attribute | summary
          attribute: fast-search
+         dictionary {
+           btree
+         }
      }
 
      # String fields with cased matching
@@ -27,31 +33,81 @@ schema test {
          indexing: attribute | summary
          match: cased
      }
-     field string_single_fast_cased type string {
+     field string_single_fast_cased_btree type string {
          indexing: attribute | summary
          attribute: fast-search
          match: cased
+         dictionary {
+           btree
+           cased
+         }
+     }
+     field string_single_fast_cased_hash type string {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+         dictionary {
+           hash
+           cased
+         }
+     }
+     field string_single_fast_cased_btree_hash type string {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+         dictionary {
+           btree
+           hash
+           cased
+         }
      }
      field string_multi_cased type array<string> {
          indexing: attribute | summary
          match: cased
      }
-     field string_multi_fast_cased type array<string> {
+     field string_multi_fast_cased_btree type array<string> {
          indexing: attribute | summary
          attribute: fast-search
          match: cased
+         dictionary {
+           btree
+           cased
+         }
+     }
+     field string_multi_fast_cased_hash type array<string> {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+         dictionary {
+           hash
+           cased
+         }
+     }
+     field string_multi_fast_cased_btree_hash type array<string> {
+         indexing: attribute | summary
+         attribute: fast-search
+         match: cased
+         dictionary {
+           btree
+           hash
+           cased
+         }
      }
   }
   rank-profile my-rank-profile {
     match-features {
       matches(string_single)
-      matches(string_single_fast)
+      matches(string_single_fast_btree)
       matches(string_multi)
-      matches(string_multi_fast)
+      matches(string_multi_fast_btree)
       matches(string_single_cased)
-      matches(string_single_fast_cased)
+      matches(string_single_fast_cased_btree)
+      matches(string_single_fast_cased_hash)
+      matches(string_single_fast_cased_btree_hash)
       matches(string_multi_cased)
-      matches(string_multi_fast_cased)
+      matches(string_multi_fast_cased_btree)
+      matches(string_multi_fast_cased_hash)
+      matches(string_multi_fast_cased_btree_hash)
     }
   }
 }
