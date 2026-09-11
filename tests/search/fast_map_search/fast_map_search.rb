@@ -504,4 +504,49 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_hitcount(shortform_query("baz", "bar"), 0)
   end
 
+  ######################################################################################################################
+  # Entry level partial update, 'my_map{key}'
+  ######################################################################################################################
+
+  # An entry level assign is a field path update rather than a whole-field one. It is
+  # allowed on a plain map, but rejected on a map with 'map: fast-search', since the
+  # synthetic key-value attribute is derived from the whole map and cannot be updated
+  # one entry at a time. These two tests use the same field as the rest of this file,
+  # so 'map: fast-search' is the only difference between them.
+  def test_entry_level_assign
+    deploy_and_feed_map("# No fast search!")
+
+    feed(:file => selfdir+"update_assign_entry.json")
+
+    # The update names the 'foo' entry only, so 'baz' must survive it unchanged.
+    assert_equal({ "foo" => "bar", "baz" => "keep" }, stored_map)
+  end
+
+  def test_entry_level_assign_rejected_with_fast_search
+    deploy_and_feed_map("map: fast-search")
+
+    output = feed(:file => selfdir+"update_assign_entry.json",
+                  :exceptiononfailure => false, :stderr => true)
+
+    assert_match(/Field 'my_map' has 'map: fast-search', which does not support field path updates/, output)
+    assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
+  end
+
+  def deploy_and_feed_map(fs)
+    fields = <<~FIELDS
+      field my_map type map<string, string> {
+        indexing: summary
+        #{fs}
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    feed_and_wait_for_docs("fast_map_search", 1, :file => selfdir+"feed_entry_update.json")
+    assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
+  end
+
+  def stored_map
+    vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map"]
+  end
+
 end
