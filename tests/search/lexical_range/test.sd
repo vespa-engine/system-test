@@ -51,7 +51,7 @@ schema test {
            cased
          }
      }
-     field string_single_fast_cased_both type string {
+     field string_single_fast_cased_btree_hash type string {
          indexing: attribute | summary
          attribute: fast-search
          match: cased
@@ -83,7 +83,7 @@ schema test {
            cased
          }
      }
-     field string_multi_fast_cased_both type array<string> {
+     field string_multi_fast_cased_btree_hash type array<string> {
          indexing: attribute | summary
          attribute: fast-search
          match: cased
@@ -103,11 +103,11 @@ schema test {
       matches(string_single_cased)
       matches(string_single_fast_cased_btree)
       matches(string_single_fast_cased_hash)
-      matches(string_single_fast_cased_both)
+      matches(string_single_fast_cased_btree_hash)
       matches(string_multi_cased)
       matches(string_multi_fast_cased_btree)
       matches(string_multi_fast_cased_hash)
-      matches(string_multi_fast_cased_both)
+      matches(string_multi_fast_cased_btree_hash)
     }
   }
 }

@@ -18,7 +18,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     string_single_cased
   ]
   SINGLE_VALUE_CASED_FAST_FIELDS = %w[
-    string_single_fast_cased_both
+    string_single_fast_cased_btree_hash
     string_single_fast_cased_btree
     string_single_fast_cased_hash
   ]
@@ -32,7 +32,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     string_multi_cased
   ]
   MULTI_VALUE_CASED_FAST_FIELDS = %w[
-    string_multi_fast_cased_both
+    string_multi_fast_cased_btree_hash
     string_multi_fast_cased_btree
     string_multi_fast_cased_hash
   ]
@@ -46,16 +46,12 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   SINGLE_VALUE_CASED_FIELDS = SINGLE_VALUE_CASED_SLOW_FIELDS + SINGLE_VALUE_CASED_FAST_FIELDS
   SINGLE_VALUE_UNCASED_FIELDS = SINGLE_VALUE_UNCASED_SLOW_FIELDS + SINGLE_VALUE_UNCASED_FAST_FIELDS
   SINGLE_VALUE_FIELDS = SINGLE_VALUE_CASED_FIELDS + SINGLE_VALUE_UNCASED_FIELDS
-  SINGLE_VALUE_FAST_FIELDS = SINGLE_VALUE_CASED_FAST_FIELDS + SINGLE_VALUE_UNCASED_FAST_FIELDS
 
   MULTI_VALUE_CASED_FIELDS = MULTI_VALUE_CASED_SLOW_FIELDS + MULTI_VALUE_CASED_FAST_FIELDS
   MULTI_VALUE_UNCASED_FIELDS = MULTI_VALUE_UNCASED_SLOW_FIELDS + MULTI_VALUE_UNCASED_FAST_FIELDS
   MULTI_VALUE_FIELDS = MULTI_VALUE_CASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
-  MULTI_VALUE_FAST_FIELDS = MULTI_VALUE_CASED_FAST_FIELDS + MULTI_VALUE_UNCASED_FAST_FIELDS
 
   FIELDS = SINGLE_VALUE_FIELDS + MULTI_VALUE_FIELDS
-  FAST_FIELDS = SINGLE_VALUE_FAST_FIELDS + MULTI_VALUE_FAST_FIELDS
-
   CASED_FIELDS = SINGLE_VALUE_CASED_FIELDS + MULTI_VALUE_CASED_FIELDS
   UNCASED_FIELDS = SINGLE_VALUE_UNCASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
 
@@ -329,16 +325,16 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     search_and_verify2(ids_prefix, ids_suffix, min_hits, max_hits, annotation, field_name, hex_from, hex_to)
   end
 
-  def search_and_verify_hex_prefix(ids_prefix, annotation, field_name, from, to, prefix = "", factor = 1)
+  def search_and_verify_hex_prefix(ids_prefix, allowed_additional_hits, annotation, field_name, from, to, prefix = "", factor = 1)
     # Allow two more hits than contained in the prefix
     ids_prefix_array = Array(ids_prefix)
-    search_and_verify_hex2(ids_prefix_array, [], ids_prefix_array.length, ids_prefix_array.length + 2, annotation, field_name, from, to, prefix, factor)
+    search_and_verify_hex2(ids_prefix_array, [], ids_prefix_array.length, ids_prefix_array.length + allowed_additional_hits, annotation, field_name, from, to, prefix, factor)
   end
 
-  def search_and_verify_hex_suffix(ids_suffix, annotation, field_name, from, to, prefix = "", factor = 1)
+  def search_and_verify_hex_suffix(ids_suffix, allowed_additional_hits, annotation, field_name, from, to, prefix = "", factor = 1)
     # Allow two more hits than contained in the suffix
     ids_suffix_array = Array(ids_suffix)
-    search_and_verify_hex2([], ids_suffix_array, ids_suffix_array.length, ids_suffix_array.length + 2, annotation, field_name, from, to, prefix, factor)
+    search_and_verify_hex2([], ids_suffix_array, ids_suffix_array.length, ids_suffix_array.length + allowed_additional_hits, annotation, field_name, from, to, prefix, factor)
   end
 
   def search_and_verify_hex(expected_ids, annotation, field_name, from, to, prefix = "", factor = 1)
@@ -356,25 +352,41 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     feed_hex_docs(range)
 
     puts "Bounded ranges"
-    # The hitLimit annotation requires an attribute with fast search enabled
-    FAST_FIELDS.each do |field_name|
+    FIELDS.each do |field_name|
       puts "Testing field '#{field_name}'"
+      # The hitLimit annotation requires an attribute with fast search enabled using a btree dictionary
+      btree = field_name.include?("btree")
       prefix = field_name.include?("multi") ? "foo" : :""
 
       from = 12
       to = 18
       [0, 1, 2, 3].each do |i|
-        # ascending
-        search_and_verify_hex(from..from+i, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(from..from+i, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(from+1..from+1+i, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(from+1..from+1+i, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+        if btree
+          # ascending
+          search_and_verify_hex_prefix(from..from+i, 0, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(from..from+i, 1, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(from+1..from+1+i, 1, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(from+1..from+1+i, 2, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
 
-        # descending
-        search_and_verify_hex(to-i..to, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(to-i..to, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(to-1-i..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(to-1-i..to-1, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          # descending
+          search_and_verify_hex_suffix(to-i..to, 0, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(to-i..to, 1, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(to-1-i..to-1, 1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(to-1-i..to-1, 2, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        else
+          # Without a btree, the hitLimit should be ignored
+          # ascending
+          search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to-1, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to-1, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        end
       end
 
       # Check that we still can get the whole range
@@ -386,33 +398,65 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       from = 0
       to = 100
       [0, 1, 2, 3].each do |i|
-        # ascending
-        search_and_verify_hex(range.begin..range.begin+i, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(range.begin..range.begin+i, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(range.begin..range.begin+i, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
-        search_and_verify_hex_prefix(range.begin..range.begin+i, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+        if btree
+          # ascending
+          search_and_verify_hex_prefix(range.begin..range.begin+i, 0, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(range.begin..range.begin+i, 1, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(range.begin..range.begin+i, 1, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex_prefix(range.begin..range.begin+i, 2, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
 
-        # descending
-        search_and_verify_hex(range.end-i..range.end, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(range.end-i..range.end, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(range.end-i..range.end, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
-        search_and_verify_hex_suffix(range.end-i..range.end, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          # descending
+          search_and_verify_hex_suffix(range.end-i..range.end, 0, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(range.end-i..range.end, 1, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(range.end-i..range.end, 1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex_suffix(range.end-i..range.end, 2, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        else
+          # ascending
+          search_and_verify_hex(range, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(range, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        end
       end
     end
 
     puts "Unbounded ranges"
-    SINGLE_VALUE_FAST_FIELDS.each do |field_name|
+    SINGLE_VALUE_FIELDS.each do |field_name|
       puts "Testing field '#{field_name}'"
+      btree = field_name.include?("btree")
       from = 12
       to = 18
-      [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
-        search_and_verify_hex_prefix([10], bounds.merge({"hitLimit" => 1}), field_name, nil, to)
-        search_and_verify_hex_prefix([10, 11], bounds.merge({"hitLimit" => 2}), field_name, nil, to)
-        search_and_verify_hex_prefix([10, 11, 12], bounds.merge({"hitLimit" => 3}), field_name, nil, to)
 
-        search_and_verify_hex_suffix([20], bounds.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
-        search_and_verify_hex_suffix([19, 20], bounds.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
-        search_and_verify_hex_suffix([18, 19, 20], bounds.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+      if btree
+        [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
+          search_and_verify_hex_prefix([10], 2, bounds.merge({"hitLimit" => 1}), field_name, nil, to)
+          search_and_verify_hex_prefix([10, 11], 2, bounds.merge({"hitLimit" => 2}), field_name, nil, to)
+          search_and_verify_hex_prefix([10, 11, 12], 2, bounds.merge({"hitLimit" => 3}), field_name, nil, to)
+
+          search_and_verify_hex_suffix([20], 2, bounds.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+          search_and_verify_hex_suffix([19, 20], 2, bounds.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+          search_and_verify_hex_suffix([18, 19, 20], 2, bounds.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+        end
+      else
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 3}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 3}), field_name, nil, to)
+
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
       end
 
       search_and_verify_hex(10..18, CLOSED.merge({"hitLimit" => 100}), field_name, nil, to)
@@ -421,26 +465,45 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       search_and_verify_hex(10..20, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil)
     end
 
-    MULTI_VALUE_FAST_FIELDS.each do |field_name|
+    MULTI_VALUE_FIELDS.each do |field_name|
       puts "Testing field '#{field_name}'"
+      btree = field_name.include?("btree")
       from = 12
       to = 18
-      [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
-        search_and_verify_hex_prefix([10], bounds.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
-        search_and_verify_hex_prefix([10, 11], bounds.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
-        search_and_verify_hex_prefix([10, 11, 12], bounds.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
 
-        # The junk fields make hitLimit behave poorly: We get all documents, even with a hitLimit
-        search_and_verify_hex2([], [20], 1, 11, bounds.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
-        search_and_verify_hex2([], [19, 20], 2, 11, bounds.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
-        search_and_verify_hex2([], [18, 19, 20], 3, 11, bounds.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
+      if btree
+        [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
+          search_and_verify_hex_prefix([10], 2, bounds.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
+          search_and_verify_hex_prefix([10, 11], 2, bounds.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
+          search_and_verify_hex_prefix([10, 11, 12], 2, bounds.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
+
+          # The junk fields make hitLimit behave poorly: We get all documents, even with a hitLimit
+          search_and_verify_hex(range, bounds.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
+          search_and_verify_hex(range, bounds.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
+          search_and_verify_hex(range, bounds.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
+        end
+      else
+        # We just get everything all the time
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
+
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
+        search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
+        search_and_verify_hex(range, OPEN.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
       end
 
       # We get all document every time
-      search_and_verify_hex(10..20, CLOSED.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
-      search_and_verify_hex(10..20, OPEN.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
-      search_and_verify_hex(10..20, CLOSED.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
-      search_and_verify_hex(10..20, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
     end
   end
 
