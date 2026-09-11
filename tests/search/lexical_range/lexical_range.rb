@@ -14,12 +14,50 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
   RIGHT_OPEN = {"bounds" => "rightOpen"}
   OPEN = {"bounds" => "open"}
 
-  CASED_FIELDS = %w[string_single_cased string_single_fast_cased string_multi_cased string_multi_fast_cased]
-  UNCASED_FIELDS = %w[string_single string_single_fast string_multi string_multi_fast]
-  FIELDS = CASED_FIELDS + UNCASED_FIELDS
+  SINGLE_VALUE_CASED_SLOW_FIELDS = %w[
+    string_single_cased
+  ]
+  SINGLE_VALUE_CASED_FAST_FIELDS = %w[
+    string_single_fast_cased_both
+    string_single_fast_cased_btree
+    string_single_fast_cased_hash
+  ]
+  SINGLE_VALUE_UNCASED_SLOW_FIELDS = %w[
+    string_single
+  ]
+  SINGLE_VALUE_UNCASED_FAST_FIELDS = %w[
+    string_single_fast_btree
+  ]
+  MULTI_VALUE_CASED_SLOW_FIELDS = %w[
+    string_multi_cased
+  ]
+  MULTI_VALUE_CASED_FAST_FIELDS = %w[
+    string_multi_fast_cased_both
+    string_multi_fast_cased_btree
+    string_multi_fast_cased_hash
+  ]
+  MULTI_VALUE_UNCASED_SLOW_FIELDS = %w[
+    string_multi
+  ]
+  MULTI_VALUE_UNCASED_FAST_FIELDS = %w[
+    string_multi_fast_btree
+  ]
 
-  SINGLE_VALUE_FIELDS = %w[string_single_cased string_single_fast_cased string_single string_single_fast]
-  MULTI_VALUE_FIELDS = %w[string_multi_cased string_multi_fast_cased string_multi string_multi_fast]
+  SINGLE_VALUE_CASED_FIELDS = SINGLE_VALUE_CASED_SLOW_FIELDS + SINGLE_VALUE_CASED_FAST_FIELDS
+  SINGLE_VALUE_UNCASED_FIELDS = SINGLE_VALUE_UNCASED_SLOW_FIELDS + SINGLE_VALUE_UNCASED_FAST_FIELDS
+  SINGLE_VALUE_FIELDS = SINGLE_VALUE_CASED_FIELDS + SINGLE_VALUE_UNCASED_FIELDS
+  SINGLE_VALUE_FAST_FIELDS = SINGLE_VALUE_CASED_FAST_FIELDS + SINGLE_VALUE_UNCASED_FAST_FIELDS
+
+  MULTI_VALUE_CASED_FIELDS = MULTI_VALUE_CASED_SLOW_FIELDS + MULTI_VALUE_CASED_FAST_FIELDS
+  MULTI_VALUE_UNCASED_FIELDS = MULTI_VALUE_UNCASED_SLOW_FIELDS + MULTI_VALUE_UNCASED_FAST_FIELDS
+  MULTI_VALUE_FIELDS = MULTI_VALUE_CASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
+  MULTI_VALUE_FAST_FIELDS = MULTI_VALUE_CASED_FAST_FIELDS + MULTI_VALUE_UNCASED_FAST_FIELDS
+
+  FIELDS = SINGLE_VALUE_FIELDS + MULTI_VALUE_FIELDS
+  FAST_FIELDS = SINGLE_VALUE_FAST_FIELDS + MULTI_VALUE_FAST_FIELDS
+
+  CASED_FIELDS = SINGLE_VALUE_CASED_FIELDS + MULTI_VALUE_CASED_FIELDS
+  UNCASED_FIELDS = SINGLE_VALUE_UNCASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
 
   def setup
     set_owner("boeker")
@@ -36,17 +74,14 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Sorted: #{words.sort}"
     id = 0
     words.each do |word|
-      vespa.document_api_v1.put(Document.new("id:test:test::#{id}")
-                                        .add_field("id", id)
-                                        .add_field("string_single", word)
-                                        .add_field("string_single_fast", word)
-                                        .add_field("string_multi", [word])
-                                        .add_field("string_multi_fast", [word])
-                                        .add_field("string_single_cased", word)
-                                        .add_field("string_single_fast_cased", word)
-                                        .add_field("string_multi_cased", [word])
-                                        .add_field("string_multi_fast_cased", [word])
-      )
+      doc = Document.new("id:test:test::#{id}").add_field("id", id)
+      SINGLE_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, word)
+      end
+      MULTI_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, [word])
+      end
+      vespa.document_api_v1.put(doc)
       id += 1
     end
     wait_for_hitcount('query=sddocname:test', words.size)
@@ -73,6 +108,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     # Verify cased matching: The order will be exactly as in the list above
     puts "Cased tests"
     CASED_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       verify_words_cased(words, field_name)
     end
 
@@ -87,6 +123,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Uncased tests"
 
     UNCASED_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       # 1 to 3
       # Closed: 0 and 4 will also match
       search_and_verify([0, 1, 2, 3, 4], CLOSED, field_name, words[1], words[3])
@@ -220,18 +257,14 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       end
       hex_strings << "bar" + to_hex(2 * n) # Searching with prefix "bar" for twice the number should also work
 
-
-      vespa.document_api_v1.put(Document.new("id:test:test::#{n}")
-                                        .add_field("id", n)
-                                        .add_field("string_single", hex_string)
-                                        .add_field("string_single_fast", hex_string)
-                                        .add_field("string_multi", hex_strings)
-                                        .add_field("string_multi_fast", hex_strings)
-                                        .add_field("string_single_cased", hex_string)
-                                        .add_field("string_single_fast_cased", hex_string)
-                                        .add_field("string_multi_cased", hex_strings)
-                                        .add_field("string_multi_fast_cased", hex_strings)
-      )
+      doc = Document.new("id:test:test::#{n}").add_field("id", n)
+      SINGLE_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, hex_string)
+      end
+      MULTI_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, hex_strings)
+      end
+      vespa.document_api_v1.put(doc)
     end
     wait_for_hitcount('query=sddocname:test', range.size)
   end
@@ -322,8 +355,10 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     range = (10..20)
     feed_hex_docs(range)
 
+    puts "Bounded ranges"
     # The hitLimit annotation requires an attribute with fast search enabled
-    ["string_single_fast_cased", "string_single_fast", "string_multi_fast_cased", "string_multi_fast"].each do |field_name|
+    FAST_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       prefix = field_name.include?("multi") ? "foo" : :""
 
       from = 12
@@ -365,8 +400,9 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       end
     end
 
-    # Unbounded ranges
-    ["string_single_fast_cased", "string_single_fast"].each do |field_name|
+    puts "Unbounded ranges"
+    SINGLE_VALUE_FAST_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       from = 12
       to = 18
       [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
@@ -385,7 +421,8 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       search_and_verify_hex(10..20, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil)
     end
 
-    ["string_multi_fast_cased", "string_multi_fast"].each do |field_name|
+    MULTI_VALUE_FAST_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       from = 12
       to = 18
       [CLOSED, LEFT_OPEN, RIGHT_OPEN, OPEN].each do |bounds|
