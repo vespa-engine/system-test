@@ -31,7 +31,7 @@
                 "relevance": 7.0,
                 "value": "-2147483648",
                 "fields": {
-                  "sum(f)": "NaN"
+                  "sum(f)": 2.0999999046325684
                 },
                 "children": [
                   {
@@ -92,7 +92,7 @@
                 "relevance": 6.0,
                 "value": "1",
                 "fields": {
-                  "sum(f)": "NaN"
+                  "sum(f)": 0.0
                 },
                 "children": [
                   {
