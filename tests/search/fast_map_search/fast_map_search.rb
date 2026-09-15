@@ -222,6 +222,31 @@ class FastMapSearch < IndexedOnlySearchTest
     URI.encode_www_form(form)
   end
 
+  def test_fast_map_search_range_hit_limit
+    fields = <<~FIELDS
+      field my_map type map<string, int> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_int.json")
+
+    # Check that range search is still rewritten when using the hitLimit annotation,
+    # even though the hitLimit will be ignored
+    result = search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map{\"foo\"}, 10, 50))", "tracelevel" => "2" })
+    assert(result.json.to_s.include?("my_map$keyvalue"), "Expected map range to be rewritten to a fast map lookup")
+    assert_equal(2, result.hitcount) # hitLimit of 1 is ignored
+
+    # Descending hit limit
+    result = search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map{\"foo\"}, 10, 50))", "tracelevel" => "2" })
+    assert(result.json.to_s.include?("my_map$keyvalue"), "Expected map range to be rewritten to a fast map lookup")
+    assert_equal(2, result.hitcount) # hitLimit of 1 is ignored
+  end
+
   def test_int_range_corner_cases
     fields = <<~FIELDS
       field id type int {
