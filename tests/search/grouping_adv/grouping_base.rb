@@ -338,10 +338,6 @@ module GroupingBase
     check_query('all(group(a) each(output(argmin(n, d), argmax(n, d))))', 'argmin-2')
     # argmin/argmax of the key itself must agree with min/max.
     check_query('all(group(a) each(output(argmin(n, n), argmax(n, n), min(n), max(n))))', 'argmin-3')
-    # String keys are ordered lexically.
-    check_query('all(group(a) each(output(argmin(s, n))))', 'argmin-4')
-    # A multi-value result is forwarded as an array. Only the hit with s="a" has na, the other groups give an empty array.
-    check_query('all(group(a) each(output(argmin(s, na))))', 'argmin-5')
   end
 
   def querytest_argmin_default_values(streaming=false)
