@@ -77,6 +77,121 @@ class FastMapSearch < IndexedOnlySearchTest
     run_queries(:shortform_equals_query, 42, 43, "result_int.json")
   end
 
+  def test_fast_map_search_when_redeploying_and_reindexing
+    fields = <<~FIELDS
+      field my_map type map<string, int> {
+        indexing: summary
+        #map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+
+    num_docs = 20
+    (1..num_docs).each do |id|
+      vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}")
+                                        .add_field("my_map", {"foo" => id})
+      )
+    end
+    wait_for_hitcount('query=sddocname:fast_map_search', num_docs)
+
+    # Make sure that we can find things
+    puts "Sending query after feeding"
+    assert_hitcount({"yql" => "select * from sources * where my_map{'foo'} = 7"}, 1)
+
+    puts "Re-deploying with fast search enabled"
+    fields = <<~FIELDS
+      field my_map type map<string, int> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    app = SearchApp.new.sd(write_sd(fields))
+    deploy_output = redeploy(app)
+
+    puts "Waiting for config to settle"
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_config_generation_proxy(get_generation(deploy_output))
+
+    # Make sure that we can still find things before re-indexing
+    puts "Sending query after re-deployment but before re-indexing"
+    assert_hitcount({"yql" => "select * from sources * where my_map{'foo'} = 7"}, 1)
+
+    puts "Triggering reindexing"
+    reindexing_timestamp = trigger_reindexing(app, "search", "fast_map_search")
+
+    puts "Waiting for reindexing"
+    wait_for_reindexing_to_start("search", "fast_map_search", reindexing_timestamp)
+    wait_for_reindexing_to_complete("search", "fast_map_search")
+
+    # Make sure that we can find things after re-indexing
+    puts "Sending query after reindexing"
+    assert_hitcount({"yql" => "select * from sources * where my_map{'foo'} = 7"}, 1)
+  end
+
+  private
+  def trigger_reindexing(app, cluster_id, document_type)
+    # Before triggering the reindexing, there is no reindexing status. So no point in checking it here.
+    # Trigger reindexing
+    response = http_request_post(URI(application_v2_url_prefix + 'reindex'), {})
+    assert(response.code.to_i == 200, "Triggering reindexing of documents should give 200 response")
+
+    # Now, we should get a reindexing status
+    response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
+    assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
+    reindexing_timestamp = get_json(response)['clusters'][cluster_id]['ready'][document_type]['readyMillis']
+    assert(!reindexing_timestamp.nil?, "No reindexing timestamp obtained")
+
+    # We have to redeploy the application to actually start the reindexing
+    deploy_app(app)
+
+    reindexing_timestamp
+  end
+
+  private
+  def wait_for_reindexing_to_complete(cluster_id, document_type)
+    puts "Waiting for reindexing to complete for '#{document_type}@#{cluster_id}'"
+    while true
+      status = get_reindexing_status_from_cluster_controller(cluster_id, document_type)
+      puts "Reindexing status for '#{document_type}@#{cluster_id}': #{status}"
+      break if status and ['successful', 'failed'].include? status['state']
+      sleep 1
+    end
+    assert('successful' == status['state'], "Reindexing should complete successfully")
+  end
+
+  private
+  def get_reindexing_status_from_cluster_controller(cluster_id, document_type)
+    status = vespa.clustercontrollers["0"].get_reindexing_json
+    return nil if status.nil?
+    cluster = status['clusters'][cluster_id]
+    return nil if cluster.nil?
+    return cluster['documentTypes'][document_type]
+  end
+
+  # Wait for reindexing after the given time to have started.
+  def wait_for_reindexing_to_start(cluster_id, document_type, ready_millis)
+    puts "Waiting for reindexing to start for '#{document_type}@#{cluster_id}', after #{Time.at(ready_millis / 1000)}"
+    while true
+      status = get_reindexing_status_from_cluster_controller(cluster_id, document_type)
+      puts "Reindexing status for '#{document_type}@#{cluster_id}': #{status}" if Time.now.sec % 10 == 0
+      break if status and status['startedMillis'] > ready_millis
+      sleep 1
+    end
+  end
+
+  private
+  def application_v2_url_prefix
+    tenant = use_shared_configservers ? @tenant_name : "default"
+    application = use_shared_configservers ? @application_name : "default"
+    cfg_hostname = vespa.nodeproxies.first[1].addr_configserver[0]
+    "http://#{cfg_hostname}:19071/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
+  end
+
   # The values lie beyond the int range, so that they would be truncated if the
   # long value were encoded like an int.
   def test_fast_map_search_basic_long
