@@ -335,7 +335,7 @@ module GroupingBase
     check_query('all(group(a) filter(in(a, "a1", "a2")) each(output(count())))', 'predicate-2')
     check_query('all(group(a) filter(not in(a, "a1")) each(output(count())))', 'predicate-1')
     check_query('all(group(sf) filter(in(sf, "2.9", "3.9", "4.9", "5.9", "6.9", "7.9")) each(output(count())))', 'range-1', 40)
-    check_query('all(group(a) filter(in(n, 1, 2)) each(output(count())))', 'in-1')
+    check_query('all(group(a) filter(in(n, "1", "2")) each(output(count())))', 'in-1')
   end
 
   def querytest_argmin
