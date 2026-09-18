@@ -125,17 +125,16 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def test_search_cased_uncased
-    fs = "map: fast-search"
     fields = <<~FIELDS
       field string_map type map<string, string> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_string_map type map<string, string> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key {
           indexing: attribute
           match: cased
@@ -147,13 +146,13 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field int_map type map<string, int> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_int_map type map<string, int> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key {
           indexing: attribute
           match: cased
@@ -162,13 +161,13 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field long_map type map<string, long> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_long_map type map<string, long> {
         indexing: summary
-        #{fs}
+        map: fast-search
         struct-field key {
           indexing: attribute
           match: cased
@@ -190,36 +189,34 @@ class FastMapSearch < IndexedOnlySearchTest
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
     puts "Uncased matching"
-    assert_hitcount({"yql" => "select * from sources * where string_map{\"case_does_not_matter\"} contains \"foo\""}, 1)
-    assert_hitcount({"yql" => "select * from sources * where string_map{\"case_does_not_matter\"} contains \"FOO\""}, 1)
-    assert_hitcount({"yql" => "select * from sources * where string_map{\"CASE_DOES_NOT_MATTER\"} contains \"foo\""}, 1)
-    assert_hitcount({"yql" => "select * from sources * where string_map{\"CASE_DOES_NOT_MATTER\"} contains \"FOO\""}, 1)
+    assert_hitcount(shortform_query("string_map", "case_does_not_matter", "foo"), 1)
+    assert_hitcount(shortform_query("string_map", "case_does_not_matter", "FOO"), 1)
+    assert_hitcount(shortform_query("string_map", "CASE_DOES_NOT_MATTER", "foo"), 1)
+    assert_hitcount(shortform_query("string_map", "CASE_DOES_NOT_MATTER", "FOO"), 1)
 
-    assert_hitcount({"yql" => "select * from sources * where int_map{\"case_does_not_matter\"} contains 42"}, 1)
-    assert_hitcount({"yql" => "select * from sources * where int_map{\"CASE_DOES_NOT_MATTER\"} contains 42"}, 1)
-
-    assert_hitcount({"yql" => "select * from sources * where long_map{\"case_does_not_matter\"} contains 4294967338"}, 1)
-    assert_hitcount({"yql" => "select * from sources * where long_map{\"CASE_DOES_NOT_MATTER\"} contains 4294967338"}, 1)
+    assert_hitcount(shortform_equals_query("int_map", "case_does_not_matter",  42), 1)
+    assert_hitcount(shortform_equals_query("int_map", "CASE_DOES_NOT_MATTER",  42), 1)
+    assert_hitcount(shortform_equals_query("long_map", "case_does_not_matter", 4294967338), 1)
+    assert_hitcount(shortform_equals_query("long_map", "CASE_DOES_NOT_MATTER", 4294967338), 1)
 
     puts "Cased matching"
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"case_matters\"} contains \"foo\""}, 1)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"case_matters\"} contains \"FOO\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"case_matters\"} contains \"bar\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"case_matters\"} contains \"BAR\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"CASE_MATTERS\"} contains \"foo\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"CASE_MATTERS\"} contains \"FOO\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"CASE_MATTERS\"} contains \"bar\""}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_string_map{\"CASE_MATTERS\"} contains \"BAR\""}, 1)
+    assert_hitcount(shortform_query("cased_string_map", "case_matters", "foo"), 1)
+    assert_hitcount(shortform_query("cased_string_map", "case_matters", "FOO"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "case_matters", "bar"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "case_matters", "BAR"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "foo"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "FOO"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "bar"), 0)
+    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "BAR"), 1)
 
-    assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"case_matters\"} contains 42"}, 1)
-    assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"case_matters\"} contains 43"}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"CASE_MATTERS\"} contains 42"}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_int_map{\"CASE_MATTERS\"} contains 43"}, 1)
-
-    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"case_matters\"} contains 4294967338"}, 1)
-    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"case_matters\"} contains 4294967339"}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"CASE_MATTERS\"} contains 4294967338"}, 0)
-    assert_hitcount({"yql" => "select * from sources * where cased_long_map{\"CASE_MATTERS\"} contains 4294967339"}, 1)
+    assert_hitcount(shortform_equals_query("cased_int_map", "case_matters", 42), 1)
+    assert_hitcount(shortform_equals_query("cased_int_map", "case_matters", 43), 0)
+    assert_hitcount(shortform_equals_query("cased_int_map", "CASE_MATTERS", 42), 0)
+    assert_hitcount(shortform_equals_query("cased_int_map", "CASE_MATTERS", 43), 1)
+    assert_hitcount(shortform_equals_query("cased_long_map", "case_matters", 4294967338), 1)
+    assert_hitcount(shortform_equals_query("cased_long_map", "case_matters", 4294967339), 0)
+    assert_hitcount(shortform_equals_query("cased_long_map", "CASE_MATTERS", 4294967338), 0)
+    assert_hitcount(shortform_equals_query("cased_long_map", "CASE_MATTERS", 4294967339), 1)
   end
 
   def test_cased_key_only_deployment_fails
