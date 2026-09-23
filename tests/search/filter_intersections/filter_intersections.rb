@@ -98,6 +98,7 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
       add(Searcher.new("ai.vespa.search.counting.FilterIntersectionsSearcher", nil, nil, nil, "container-search-and-docproc"))
     deploy_app(SearchApp.new.sd(selfdir + "item.sd").sd(selfdir + "supplier.sd").search_chain(chain))
     start
+    puts "Feeding #{ITEMS.size} item and #{SUPPLIERS.size} supplier documents (#{is_streaming ? 'streaming' : 'indexed'} mode)"
     feed_file = dirs.tmpdir + "docs.json"
     File.write(feed_file, JSON.generate(documents))
     feed_and_wait_for_docs("item", ITEMS.size, :file => feed_file)
@@ -106,34 +107,47 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
 
   # One test method, so the app is deployed and fed only once per mode.
   def test_filter_intersections
+    puts "Each check sends one query with filterIntersections.filters, then verifies every returned bucket " +
+         "against a plain query counting the same filters ANDed with the base condition."
+
+    step("Main filters (geo, numeric, sameElement on arrays of structs, array of strings) must all match something")
     main_filters = %w[geo category certified features warranty]
     buckets = assert_intersections(main_filters)
     main_filters.each { |f| assert(buckets[f] > 0, "Fixture must match filter #{f}") }
 
+    step("A filter matching nothing gives zero, alone and combined")
     buckets = assert_intersections(%w[category phantom])
     assert_equal(0, buckets["phantom"])
     assert_equal(0, buckets["category&phantom"])
 
+    step("Base condition 'true' counts filters over all documents")
     assert_intersections(%w[certified category], where: "true")
 
+    step("YQL operators as filters: in, range, comparison, boolean ops, regex, weakAnd, nonEmpty, userInput")
     assert_intersections(%w[in numrange cmp boolops regex weakAnd nonEmpty userInput],
                          params: {"featureWord" => "Solar"})
 
+    step("userInput in both the base condition and a filter")
     assert_intersections(%w[userInput category],
                          where: 'active = true and ({defaultIndex: "region"} userInput(@baseRegion))',
                          params: {"baseRegion" => "EU", "featureWord" => "Solar"})
 
     # the fork keeps the main query's sources, so a cell counts documents of every named type
+    step("Multiple sources: counts cover every document type the main query searches")
     assert_intersections(%w[category cmp in], sources: "item, supplier")
     assert_intersections(%w[category cmp in], sources: "*")
     assert_intersections(%w[category cmp], sources: "supplier")
     assert_intersections(%w[category regex], sources: "item, supplier", where: "true")
 
     # streaming runs hits=0 queries with the unranked profile, which lacks the query tensor
-    unless is_streaming
+    if is_streaming
+      step("Skipping nearestNeighbor filter: not supported with hits=0 in streaming mode")
+    else
+      step("nearestNeighbor with distanceThreshold as a filter")
       assert_intersections(%w[nn category], params: {"input.query(q)" => "[1.0, 0.0]"})
     end
 
+    step("An invalid filter must be rejected with an error naming the filter (the error below is expected)")
     broken = JSON.generate([{"name" => "broken", "where" => "this is not ( yql"}])
     assert_query_errors(search_url("item", BASE, {"filterIntersections.filters" => broken}),
                         [".*Filter 'broken': invalid YQL.*"])
@@ -144,8 +158,13 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
     filters = JSON.generate(names.map { |name| {"name" => name, "where" => WHERE[name]} })
     root = query(sources, where, params.merge("filterIntersections.filters" => filters))
     buckets = root["fields"]["filterIntersections"]["buckets"]
-    assert_equal(expected_buckets(names, where, sources, params), buckets,
-                 "Buckets for #{names} from #{sources} where #{where}")
+    expected = expected_buckets(names, where, sources, params)
+    puts "  sources: #{sources}, base: #{where}"
+    expected.each do |e|
+      actual = buckets.find { |b| b["key"] == e["key"] }
+      puts "  %-28s searcher=%-4s plain query=%s" % [e["key"], actual ? actual["totalCount"] : "missing", e["totalCount"]]
+    end
+    assert_equal(expected, buckets, "Buckets for #{names} from #{sources} where #{where}")
     buckets.map { |bucket| [bucket["key"], bucket["totalCount"]] }.to_h
   end
 
@@ -158,6 +177,11 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
       count = query(sources, conditions, params)["fields"]["totalCount"]
       {"key" => cell.join("&"), "names" => cell, "totalCount" => count}
     end
+  end
+
+  def step(description)
+    puts ""
+    puts "=== #{description}"
   end
 
   def query(sources, where, params)
