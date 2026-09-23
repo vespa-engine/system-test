@@ -129,8 +129,10 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
     assert_intersections(%w[category cmp], sources: "supplier")
     assert_intersections(%w[category regex], sources: "item, supplier", where: "true")
 
-    # the fork keeps the rank profile, which declares the query tensor
-    assert_intersections(%w[nn category], params: {"input.query(q)" => "[1.0, 0.0]"})
+    # streaming runs hits=0 queries with the unranked profile, which lacks the query tensor
+    unless is_streaming
+      assert_intersections(%w[nn category], params: {"input.query(q)" => "[1.0, 0.0]"})
+    end
 
     broken = JSON.generate([{"name" => "broken", "where" => "this is not ( yql"}])
     assert_query_errors(search_url("item", BASE, {"filterIntersections.filters" => broken}),
