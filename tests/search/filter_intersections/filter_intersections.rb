@@ -177,7 +177,7 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
 
   def test_user_input_in_both_base_query_and_filter
     yql = 'select * from sources item where active = true and ({defaultIndex: "region"} userInput(@baseRegion))'
-    assert_intersections(%w[userInput category], :yql => yql,
+    assert_intersections(%w[userInput category], :yql => yql, :scoped => true,  # yql keeps the active/EU scope
                          :extra => {"baseRegion" => "EU", "featureWord" => "Solar"})
   end
 
@@ -196,7 +196,9 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
   end
 
   def test_filter_cannot_escape_its_parenthesis_and_widen_the_base_query
-    # if filters were spliced into the YQL string this would parse as "(base and true) or true or (false)"
+    # Regression guard: a filter with unbalanced parentheses must be rejected outright. Were filters ever
+    # spliced into the base query's YQL text again, this would parse as "(base and true) or true or (false)"
+    # and count documents outside the base query.
     params = [["yql", base_yql("item")], ["hits", "0"],
               ["filterIntersections.filters", JSON.generate([{"name" => "escape", "where" => "true) or true or (false"}])]]
     assert_query_errors("/search/?" + URI.encode_www_form(params), [".*Filter 'escape': invalid YQL.*"])
@@ -208,22 +210,27 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
   end
 
   def test_cell_limit_is_enforced_and_overridable
-    all_filters = WHERE.keys  # 14 filters
+    all_filters = WHERE.keys
+    n = all_filters.size
     filters_param = ["filterIntersections.filters",
                      JSON.generate(all_filters.map { |f| {"name" => f, "where" => WHERE[f]} })]
-    common = [["yql", base_yql("item")], ["hits", "0"], ["timeout", "20s"], ["featureWord", "Solar"], filters_param]
+    common = [["yql", base_yql("item")], ["hits", "0"], ["timeout", "20s"],
+              ["featureWord", "Solar"], ["input.query(q)", "[1.0, 0.0]"], filters_param]
 
-    # 14 filters at 4 dimensions is 1470 cells, above the default limit of 1000
+    # all filters at 4 dimensions is far above the default limit of 1000 cells
+    four = cells(n, 4)
+    assert(four > 1000, "fixture must exceed the default cell limit, got #{four}")
     assert_query_errors("/search/?" + URI.encode_www_form(common + [["filterIntersections.dimensions", "4"]]),
-                        [".*14 filters at 4 dimensions give more than 1000 cells.*"])
+                        [".*#{n} filters at 4 dimensions give #{four} cells, more than the default limit of 1000.*"])
 
-    # 14 filters at 3 dimensions is exactly 469 cells: the limit is inclusive
-    three = common + [["filterIntersections.dimensions", "3"]]
-    assert_query_errors("/search/?" + URI.encode_www_form(three + [["filterIntersections.maxCells", "468"]]),
-                        [".*give more than 468 cells.*"])
-    result = search("/search/?" + URI.encode_www_form(three + [["filterIntersections.maxCells", "469"]]))
+    # the limit is inclusive: one below the exact cell count is rejected, the exact count is accepted
+    three = cells(n, 3)
+    three_dims = common + [["filterIntersections.dimensions", "3"]]
+    assert_query_errors("/search/?" + URI.encode_www_form(three_dims + [["filterIntersections.maxCells", (three - 1).to_s]]),
+                        [".*give #{three} cells, more than the limit of #{three - 1} set by filterIntersections.maxCells.*"])
+    result = search("/search/?" + URI.encode_www_form(three_dims + [["filterIntersections.maxCells", three.to_s]]))
     assert_nil(result.json["root"]["errors"], "Unexpected errors: #{result.json['root']['errors']}")
-    assert_equal(469, result.json["root"]["fields"]["filterIntersections"]["buckets"].size)
+    assert_equal(three, result.json["root"]["fields"]["filterIntersections"]["buckets"].size)
   end
 
   def test_no_filters_parameter_is_a_no_op
@@ -236,8 +243,12 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
 
   # Runs one intersections query, asserts every bucket against ground truth and
   # returns the buckets as key => totalCount in emission order.
-  def assert_intersections(filter_ids, scoped: true, separator: nil, dimensions: nil,
+  # :scoped selects the ground-truth pool: true means "active and EU" (base_yql), false means everything (all_yql).
+  # A custom :yql must state which of the two it is equivalent to by passing :scoped explicitly.
+  def assert_intersections(filter_ids, scoped: nil, separator: nil, dimensions: nil,
                            sources: "item", yql: nil, extra: {})
+    raise ArgumentError, "pass :scoped explicitly when overriding :yql" if yql && scoped.nil?
+    scoped = true if scoped.nil?
     params = [["yql", yql || (scoped ? base_yql(sources) : all_yql(sources))],
               ["hits", "0"],
               ["filterIntersections.filters",
@@ -277,6 +288,11 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
       end
     end
     buckets
+  end
+
+  # Number of cells for n filters at d dimensions: all non-empty subsets of at most d filters.
+  def cells(n, d)
+    (1..[d, n].min).sum { |k| (1..k).reduce(1) { |c, i| c * (n - k + i) / i } }
   end
 
   def miles(a, b)

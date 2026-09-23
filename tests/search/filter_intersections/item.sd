@@ -54,8 +54,4 @@ schema item {
         }
     }
 
-    fieldset default {
-        fields: region, features
-    }
-
 }
