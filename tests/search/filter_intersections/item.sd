@@ -20,11 +20,11 @@ schema item {
             indexing: attribute
         }
 
-        struct tag {
+        struct tag_entry {
             field kind type string {}
             field label type string {}
         }
-        field tags type array<tag> {
+        field tags type array<tag_entry> {
             struct-field kind  { indexing: attribute }
             struct-field label { indexing: attribute }
         }
