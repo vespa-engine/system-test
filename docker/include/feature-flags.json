@@ -54,8 +54,7 @@
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 1.0 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
-        { "id" : "fast-map-search", "rules" : [ { "value" : true } ] },
-        { "id" : "relax-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] }
+        { "id" : "fast-map-search", "rules" : [ { "value" : true } ] }
     ]
 
 }
