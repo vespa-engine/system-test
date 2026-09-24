@@ -94,9 +94,8 @@ class FilterIntersectionsTest < IndexedStreamingSearchTest
   def setup
     set_owner("sebasabe")
     set_description("Exact hit counts for every intersection of named YQL filters, via FilterIntersectionsSearcher.")
-    chain = SearchChain.new("default", "vespa").
-      add(Searcher.new("ai.vespa.search.counting.FilterIntersectionsSearcher", nil, nil, nil, "container-search-and-docproc"))
-    deploy_app(SearchApp.new.sd(selfdir + "item.sd").sd(selfdir + "supplier.sd").search_chain(chain))
+    deploy_app(SearchApp.new.sd(selfdir + "item.sd").sd(selfdir + "supplier.sd").
+               search_chain(SearchChain.new("default", "vespa").add(Searcher.new("ai.vespa.search.counting.FilterIntersectionsSearcher"))))
     start
     puts "Feeding #{ITEMS.size} item and #{SUPPLIERS.size} supplier documents (#{is_streaming ? 'streaming' : 'indexed'} mode)"
     feed_file = dirs.tmpdir + "docs.json"
