@@ -1,0 +1,11 @@
+[
+  { "put":"id:test:test::argmin-order-01", "fields": { "a":"a1", "n":1, "d":5.0,  "s":"e" } },
+  { "put":"id:test:test::argmin-order-02", "fields": { "a":"a1", "n":2, "d":1.0,  "s":"a" } },
+  { "put":"id:test:test::argmin-order-03", "fields": { "a":"a2", "n":3, "d":2.0,  "s":"b" } },
+  { "put":"id:test:test::argmin-order-04", "fields": { "a":"a2", "n":4, "d":6.0,  "s":"f" } },
+  { "put":"id:test:test::argmin-order-05", "fields": { "a":"a3", "n":5, "d":4.0,  "s":"d" } },
+  { "put":"id:test:test::argmin-order-06", "fields": { "a":"a3", "n":6, "d":3.0,  "s":"c" } },
+  { "put":"id:test:test::argmin-order-07", "fields": { "a":"a4",        "d":9.0,  "s":"z" } },
+  { "put":"id:test:test::argmin-order-08", "fields": { "a":"a5", "n":7, "d":-2.0, "s":"0" } },
+  { "put":"id:test:test::argmin-order-09", "fields": { "a":"a5",        "d":8.0,  "s":"y" } }
+]
