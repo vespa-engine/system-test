@@ -386,6 +386,131 @@ class FastMapSearch < IndexedOnlySearchTest
     verify_ids(expected_ids, result)
   end
 
+  ######################################################################################################################
+  # Floating point values
+  ######################################################################################################################
+
+  def test_float_corner_cases
+    verify_floating_point_corner_cases("float", "3.0e38")
+  end
+
+  # The largest value is beyond the float range, so that it would be lost if the
+  # double value were encoded like a float.
+  def test_double_corner_cases
+    verify_floating_point_corner_cases("double", "1.0e300")
+  end
+
+  # Every query is run against a map with fast search and a map without it, holding the same
+  # values, to verify that the rewrite to the synthetic key-value attribute does not change
+  # which documents match. The expected ids are also given explicitly.
+  def verify_floating_point_corner_cases(type, big)
+    fields = <<~FIELDS
+      field id type int {
+          indexing: attribute | summary
+          attribute: fast-search
+      }
+      field fast_map type map<string, #{type}> {
+        indexing: summary
+        map: fast-search
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+      field plain_map type map<string, #{type}> {
+        indexing: summary
+        struct-field key { indexing: attribute }
+        struct-field value { indexing: attribute }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+
+    # -0.0 and 0.0 are equal as numbers, but get different encodings in the synthetic attribute.
+    # 0.1 is not exactly representable, and is rounded differently as a float and as a double.
+    values = [ "-#{big}", "-1.5", "-0.0", "0.0", "0.1", "1.5", big ]
+
+    # Every document gets some junk "aaa" and "zzz" values to make sure that (-)Infinity with fast map search
+    # does not suddenly get you values from different keys
+    values.each_with_index do |value, id|
+      map = { "aaa" => -42.0, "number" => value.to_f, "zzz" => 42.0 }
+      vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}").
+                                  add_field("id", id).add_field("fast_map", map).add_field("plain_map", map))
+    end
+    wait_for_hitcount('query=sddocname:fast_map_search', values.size)
+
+    # The rewrite to the synthetic key-value attribute happens, for single values and ranges.
+    [ "fast_map{\"number\"} = 1.5", "range(fast_map{\"number\"}, -1.5, 1.5)" ].each do |where|
+      result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
+      assert(result.json.to_s.include?("fast_map$keyvalue"),
+             "Expected '#{where}' to be rewritten to a fast map lookup")
+    end
+
+    # Single values. A zero matches both -0.0 and 0.0.
+    verify_floating_point_equals([1], "-1.5")
+    verify_floating_point_equals([2, 3], "0")
+    verify_floating_point_equals([2, 3], "0.0")
+    verify_floating_point_equals([2, 3], "-0.0")
+    verify_floating_point_equals([4], "0.1")
+    verify_floating_point_equals([5], "1.5")
+    verify_floating_point_equals([6], big)
+    verify_floating_point_equals([], "0.2")
+
+    # When using (-)Infinity, whether the bound is closed or not should not matter
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], CLOSED, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], LEFT_OPEN, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], RIGHT_OPEN, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], OPEN, nil, nil)
+
+    # When using the extreme values, whether the bound is closed or not SHOULD matter
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], CLOSED, "-#{big}", big)
+    verify_floating_point_range([1, 2, 3, 4, 5, 6], LEFT_OPEN, "-#{big}", big)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5], RIGHT_OPEN, "-#{big}", big)
+    verify_floating_point_range([1, 2, 3, 4, 5], OPEN, "-#{big}", big)
+
+    # Behavior around 0
+    verify_floating_point_range([1, 2, 3, 4, 5], CLOSED, "-1.5", "1.5")
+    verify_floating_point_range([2, 3, 4, 5], LEFT_OPEN, "-1.5", "1.5")
+    verify_floating_point_range([1, 2, 3, 4], RIGHT_OPEN, "-1.5", "1.5")
+    verify_floating_point_range([2, 3, 4], OPEN, "-1.5", "1.5")
+
+    # Behavior from -Infinity to 0: a closed bound includes both zeros, an open bound neither.
+    verify_floating_point_range([0, 1, 2, 3], CLOSED, nil, "0")
+    verify_floating_point_range([0, 1, 2, 3], LEFT_OPEN, nil, "0")
+    verify_floating_point_range([0, 1], RIGHT_OPEN, nil, "0")
+    verify_floating_point_range([0, 1], OPEN, nil, "0")
+    verify_floating_point_range([0, 1, 2, 3], CLOSED, nil, "-0.0")
+    verify_floating_point_range([0, 1], RIGHT_OPEN, nil, "-0.0")
+
+    # Behavior from 0 to Infinity
+    verify_floating_point_range([2, 3, 4, 5, 6], CLOSED, "0", nil)
+    verify_floating_point_range([4, 5, 6], LEFT_OPEN, "0", nil)
+    verify_floating_point_range([2, 3, 4, 5, 6], RIGHT_OPEN, "0", nil)
+    verify_floating_point_range([4, 5, 6], OPEN, "0", nil)
+    verify_floating_point_range([2, 3, 4, 5, 6], CLOSED, "-0.0", nil)
+    verify_floating_point_range([4, 5, 6], LEFT_OPEN, "-0.0", nil)
+
+    # An endpoint which is not exactly representable is rounded like the stored value
+    verify_floating_point_range([4], CLOSED, "0.1", "0.1")
+    verify_floating_point_range([4, 5], CLOSED, "0.1", "1.5")
+    verify_floating_point_range([5], LEFT_OPEN, "0.1", "1.5")
+    verify_floating_point_range([4], RIGHT_OPEN, "0.1", "1.5")
+    verify_floating_point_range([], OPEN, "0.1", "1.5")
+  end
+
+  def verify_floating_point_equals(expected_ids, value)
+    ["fast_map", "plain_map"].each do |field|
+      search_and_verify(expected_ids,
+                        {"yql" => "select * from sources * where #{field}{\"number\"} = #{value} order by id asc"})
+    end
+  end
+
+  def verify_floating_point_range(expected_ids, annotation, from, to)
+    ["fast_map", "plain_map"].each do |field|
+      search_and_verify(expected_ids,
+                        {"yql" => "select * from sources * where (#{annotation}range(#{field}{\"number\"}, " +
+                                  "#{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc"})
+    end
+  end
+
   def verify_ids(expected_ids, result)
     expected_ids_array = Array(expected_ids)
     got_ids_array = result.hit.map{ |hit| hit.field["id"] }
