@@ -1,0 +1,21 @@
+# Copyright Vespa.ai. All rights reserved.
+schema supplier {
+
+    document supplier {
+
+        field active type bool {
+            indexing: attribute
+        }
+
+        field region type string {
+            indexing: attribute
+            match: word
+        }
+
+        field category type int {
+            indexing: attribute
+        }
+
+    }
+
+}

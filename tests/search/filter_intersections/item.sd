@@ -1,0 +1,57 @@
+# Copyright Vespa.ai. All rights reserved.
+schema item {
+
+    document item {
+
+        field active type bool {
+            indexing: attribute
+        }
+
+        field region type string {
+            indexing: attribute
+            match: word
+        }
+
+        field location type position {
+            indexing: attribute
+        }
+
+        field category type int {
+            indexing: attribute
+        }
+
+        struct tag_entry {
+            field kind type string {}
+            field label type string {}
+        }
+        field tags type array<tag_entry> {
+            struct-field kind  { indexing: attribute }
+            struct-field label { indexing: attribute }
+        }
+
+        field features type array<string> {
+            indexing: attribute
+        }
+
+        struct metric {
+            field label type string {}
+            field value type int {}
+        }
+        field metrics type array<metric> {
+            struct-field label { indexing: attribute }
+            struct-field value { indexing: attribute }
+        }
+
+        field embedding type tensor<float>(x[2]) {
+            indexing: attribute
+        }
+
+    }
+
+    rank-profile default {
+        inputs {
+            query(q) tensor<float>(x[2])
+        }
+    }
+
+}
