@@ -1,0 +1,77 @@
+# Copyright Vespa.ai. All rights reserved.
+
+# A multimap is an array of key-value structs, in which a key can occur more than once.
+# 'map: fast-search' is only available for the map type, so the synthetic key-value
+# attribute is built manually here: one string per array element, holding the key, a
+# DEL separator and the value, encoded such that the strings sort like the values.
+# FastMultimapSearcher rewrites sameElement queries on the multimaps to lookups in it.
+schema fast_multimap_search {
+    document fast_multimap_search {
+        field id type int {
+            indexing: attribute | summary
+        }
+
+        struct string_string_pair {
+            field string_string_pair_key type string {}
+            field string_string_pair_value type string {}
+        }
+
+        struct string_int_pair {
+            field string_int_pair_key type string {}
+            field string_int_pair_value type int {}
+        }
+
+        struct string_float_pair {
+            field string_float_pair_key type string {}
+            field string_float_pair_value type float {}
+        }
+
+        # The struct-field attributes are not needed by the rewritten queries, but
+        # make the regular sameElement work too, to compare the results with.
+        field string_multimap type array<string_string_pair> {
+            indexing: summary
+            struct-field string_string_pair_key { indexing: attribute }
+            struct-field string_string_pair_value { indexing: attribute }
+        }
+
+        field int_multimap type array<string_int_pair> {
+            indexing: summary
+            struct-field string_int_pair_key { indexing: attribute }
+            struct-field string_int_pair_value { indexing: attribute }
+        }
+
+        field float_multimap type array<string_float_pair> {
+            indexing: summary
+            struct-field string_float_pair_key { indexing: attribute }
+            struct-field string_float_pair_value { indexing: attribute }
+        }
+    }
+
+    # A string value is not encoded, so key and value must be matched with the same casing.
+    field string_multimap_keyvalue type array<string> {
+        indexing {
+            input string_multimap | for_each {
+                get_field string_string_pair_key . "\x7f" . get_field string_string_pair_value
+            } | attribute
+        }
+        attribute: fast-search
+    }
+
+    field int_multimap_keyvalue type array<string> {
+        indexing {
+            input int_multimap | for_each {
+                get_field string_int_pair_key . "\x7f" . (get_field string_int_pair_value | exhex8encode)
+            } | attribute
+        }
+        attribute: fast-search
+    }
+
+    field float_multimap_keyvalue type array<string> {
+        indexing {
+            input float_multimap | for_each {
+                get_field string_float_pair_key . "\x7f" . (get_field string_float_pair_value | exhex8floatencode)
+            } | attribute
+        }
+        attribute: fast-search
+    }
+}
