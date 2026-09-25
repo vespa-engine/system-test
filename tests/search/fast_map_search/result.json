@@ -29,6 +29,12 @@
           },
           "my_map_long": {
             "foo": 4294967338
+          },
+          "my_map_float": {
+            "foo": 1.5
+          },
+          "my_map_double": {
+            "foo": -2.5
           }
         }
       }

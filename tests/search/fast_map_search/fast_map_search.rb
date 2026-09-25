@@ -46,6 +46,14 @@ class FastMapSearch < IndexedOnlySearchTest
         indexing: summary
         map: fast-search
       }
+      field my_map_float type map<string, float> {
+        indexing: summary
+        map: fast-search
+      }
+      field my_map_double type map<string, double> {
+        indexing: summary
+        map: fast-search
+      }
     FIELDS
 
   def feed_and_wait
@@ -53,11 +61,15 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("my_map_string", { "foo" => "bar" })
                                       .add_field("my_map_int", { "foo" => 42 })
                                       .add_field("my_map_long", { "foo" => 4294967338 })
+                                      .add_field("my_map_float", { "foo" => 1.5 })
+                                      .add_field("my_map_double", { "foo" => -2.5 })
     )
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1")
                                       .add_field("my_map_string", { "foo" => "qux", "baz" => "bar" })
                                       .add_field("my_map_int", { "foo" => 13, "baz" => 42 })
                                       .add_field("my_map_long", { "foo" => 4294967309, "baz" => 4294967338 })
+                                      .add_field("my_map_float", { "foo" => 0.25, "baz" => 1.5 })
+                                      .add_field("my_map_double", { "foo" => 0.75, "baz" => -2.5 })
     )
     wait_for_hitcount('query=sddocname:fast_map_search', 2)
   end
@@ -77,6 +89,11 @@ class FastMapSearch < IndexedOnlySearchTest
     run_queries(:same_element_query, "my_map_long", 4294967338, 4294967339, "result.json")
     run_queries(:shortform_query, "my_map_long", 4294967338, 4294967339, "result.json")
     run_queries(:shortform_equals_query, "my_map_long", 4294967338, 4294967339, "result.json")
+
+    # Only the unquoted spelling: a quoted '1.5' is segmented into '1' and '5' by linguistics,
+    # since the value struct-field is not an attribute, and cannot be rewritten.
+    run_queries(:shortform_equals_query, "my_map_float", 1.5, 1.75, "result.json")
+    run_queries(:shortform_equals_query, "my_map_double", -2.5, -2.75, "result.json")
   end
 
   def run_queries(make_query_fn, field, value_one, value_two, result_file)
@@ -273,6 +290,14 @@ class FastMapSearch < IndexedOnlySearchTest
     # The endpoints lie beyond the int range, as do the fed values.
     run_range_queries(:same_element_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
     run_range_queries(:map_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
+
+    # range_two spans zero, where the encoding of the sign changes.
+    run_range_queries(:same_element_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
+    run_range_queries(:map_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
+
+    # range_one holds negative values only, whose encoding must be inverted to sort correctly.
+    run_range_queries(:same_element_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
+    run_range_queries(:map_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
   end
 
   # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
