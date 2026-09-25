@@ -29,7 +29,10 @@
               {
                 "id": "group:string:a4",
                 "relevance": 1.0,
-                "value": "a4"
+                "value": "a4",
+                "fields": {
+                  "argmin(n, s)": null
+                }
               },
               {
                 "id": "group:string:a5",

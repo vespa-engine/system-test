@@ -55,7 +55,7 @@
                 "relevance": 0.4,
                 "value": "a4",
                 "fields": {
-                  "argmax(n, d)": 0.0
+                  "argmax(n, d)": null
                 }
               },
               {

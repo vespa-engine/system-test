@@ -27,43 +27,53 @@
             "label": "a",
             "children": [
               {
-                "id": "group:string:a1",
-                "relevance": 1.0,
-                "value": "a1",
-                "fields": {
-                  "argmin(n, d)": 5.0
-                }
-              },
-              {
-                "id": "group:string:a3",
-                "relevance": 0.8,
-                "value": "a3",
-                "fields": {
-                  "argmin(n, d)": 4.0
-                }
-              },
-              {
-                "id": "group:string:a2",
-                "relevance": 0.6,
-                "value": "a2",
-                "fields": {
-                  "argmin(n, d)": 2.0
-                }
-              },
-              {
                 "id": "group:string:a4",
-                "relevance": 0.4,
+                "relevance": 9.0,
                 "value": "a4",
                 "fields": {
-                  "argmin(n, d)": null
+                  "argmin(n, d)": null,
+                  "argmin(n, s)": null,
+                  "argmax(n, d)": null
                 }
               },
               {
                 "id": "group:string:a5",
-                "relevance": 0.2,
+                "relevance": 8.0,
                 "value": "a5",
                 "fields": {
-                  "argmin(n, d)": -2.0
+                  "argmin(n, d)": -2.0,
+                  "argmin(n, s)": "0",
+                  "argmax(n, d)": -2.0
+                }
+              },
+              {
+                "id": "group:string:a2",
+                "relevance": 6.0,
+                "value": "a2",
+                "fields": {
+                  "argmin(n, d)": 2.0,
+                  "argmin(n, s)": "b",
+                  "argmax(n, d)": 6.0
+                }
+              },
+              {
+                "id": "group:string:a1",
+                "relevance": 5.0,
+                "value": "a1",
+                "fields": {
+                  "argmin(n, d)": 5.0,
+                  "argmin(n, s)": "e",
+                  "argmax(n, d)": 1.0
+                }
+              },
+              {
+                "id": "group:string:a3",
+                "relevance": 4.0,
+                "value": "a3",
+                "fields": {
+                  "argmin(n, d)": 4.0,
+                  "argmin(n, s)": "d",
+                  "argmax(n, d)": 3.0
                 }
               }
             ]
