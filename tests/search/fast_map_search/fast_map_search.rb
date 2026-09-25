@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'indexed_only_search_test'
+require 'json'
 
 class FastMapSearch < IndexedOnlySearchTest
   CLOSED = ""
@@ -239,7 +240,7 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_hitcount(shortform_equals_query("cased_long_map", "CASE_MATTERS", 4294967339), 1)
   end
 
-  def test_cased_key_only_deployment_fails
+  def check_cased_key_only_deployment_fails
     fields = <<~FIELDS
       field cased_key_only type map<string, string> {
         indexing: summary
@@ -254,7 +255,7 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
   end
 
-  def test_cased_value_only_deployment_fails
+  def check_cased_value_only_deployment_fails
     fields = <<~FIELDS
       field cased_value_only type map<string, string> {
         indexing: summary
@@ -554,6 +555,172 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   ######################################################################################################################
+  # Arrays of struct
+  ######################################################################################################################
+
+  # For each value type: the values under key 'foo' in the documents fed by feed_arrays_and_wait,
+  # a range containing only the first value, and a range containing only the second.
+  ARRAY_VALUES = {
+    "string" => { :one => "bar", :two => "qux" },
+    "int"    => { :one => 42, :two => 13, :range_one => [40, 50], :range_two => [10, 20] },
+    "long"   => { :one => 4294967338, :two => 4294967309,
+                  :range_one => [4294967330, 4294967350], :range_two => [4294967300, 4294967320] }
+  }
+
+  # An array of struct acts as a map when the struct fields holding the key and the value are named
+  # in the map block. Every fast array has a plain twin holding the same elements, which is searched
+  # without the rewrite, to verify that the rewrite does not change which documents match.
+  def array_of_struct_fields
+    fields = <<~FIELDS
+      field id type int {
+        indexing: attribute | summary
+      }
+    FIELDS
+    ARRAY_VALUES.keys.each do |type|
+      fields += <<~FIELDS
+        struct entry_#{type} {
+          field mykey type string { }
+          field myvalue type #{type} { }
+        }
+        field fast_#{type} type array<entry_#{type}> {
+          indexing: summary
+          map {
+            key: mykey
+            value: myvalue
+            fast-search
+          }
+        }
+        field plain_#{type} type array<entry_#{type}> {
+          indexing: summary
+          struct-field mykey {
+            indexing: attribute
+          }
+          struct-field myvalue {
+            indexing: attribute
+          }
+        }
+      FIELDS
+    end
+    fields
+  end
+
+  def feed_arrays_and_wait
+    # Document 1 holds the first value, but under the key 'baz', so it must only match on 'baz'.
+    # Document 2 holds the key 'foo' twice, which a map cannot, and matches both values under it.
+    docs = [
+      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:one] } ] },
+      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:two] }, { "mykey" => "baz", "myvalue" => v[:one] } ] },
+      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:one] }, { "mykey" => "foo", "myvalue" => v[:two] } ] }
+    ]
+    docs.each_with_index do |elements, id|
+      doc = Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id)
+      ARRAY_VALUES.each do |type, values|
+        doc.add_field("fast_#{type}", elements.call(values)).add_field("plain_#{type}", elements.call(values))
+      end
+      vespa.document_api_v1.put(doc)
+    end
+    wait_for_hitcount('query=sddocname:fast_map_search', docs.size)
+  end
+
+  def test_array_of_struct
+    deploy_app(SearchApp.new.sd(write_sd(array_of_struct_fields)))
+    start
+    feed_arrays_and_wait
+
+    ARRAY_VALUES.each do |type, values|
+      verify_array_query([0, 2], type, "myvalue contains '#{values[:one]}'", "foo")
+      verify_array_query([1, 2], type, "myvalue contains '#{values[:two]}'", "foo")
+      verify_array_query([1], type, "myvalue contains '#{values[:one]}'", "baz")
+      verify_array_query([], type, "myvalue contains '#{values[:two]}'", "baz")
+      next unless values[:range_one]
+
+      verify_array_query([0, 2], type, "range(myvalue, #{values[:range_one].join(', ')})", "foo")
+      verify_array_query([1, 2], type, "range(myvalue, #{values[:range_two].join(', ')})", "foo")
+      verify_array_query([1], type, "range(myvalue, #{values[:range_one].join(', ')})", "baz")
+      verify_array_query([], type, "range(myvalue, #{values[:range_two].join(', ')})", "baz")
+    end
+  end
+
+  # Runs the sameElement query on both the fast array and its plain twin, and verifies through
+  # the query trace that only the query on the fast array was rewritten to a fast map lookup.
+  def verify_array_query(expected_ids, type, value_condition, key)
+    ["fast_#{type}", "plain_#{type}"].each do |field|
+      yql = "select * from sources * where #{field} contains sameElement(" +
+            "mykey contains '#{key}', #{value_condition}) order by id asc"
+      result = search({ "yql" => yql, "tracelevel" => "2" })
+      verify_ids(expected_ids, result)
+      assert_equal(field.start_with?("fast_"), result.json.to_s.include?("#{field}$keyvalue"),
+                   "Expected the query on #{field} to #{field.start_with?("fast_") ? "" : "not "}" +
+                   "be rewritten to a fast map lookup: #{yql}")
+    end
+  end
+
+  def check_array_of_struct_without_key_and_value_deployment_fails
+    fields = <<~FIELDS
+      struct entry {
+        field mykey type string { }
+        field myvalue type string { }
+      }
+      field my_array type array<entry> {
+        indexing: summary
+        map: fast-search
+      }
+    FIELDS
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+  end
+
+  def check_array_of_struct_with_unknown_key_deployment_fails
+    fields = <<~FIELDS
+      struct entry {
+        field mykey type string { }
+        field myvalue type string { }
+      }
+      field my_array type array<entry> {
+        indexing: summary
+        map {
+          key: nokey
+          value: myvalue
+          fast-search
+        }
+      }
+    FIELDS
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+  end
+
+  # A field path update into one array element would leave the synthetic key-value attribute
+  # holding only the updated element, so it is rejected, as for maps.
+  def test_array_of_struct_element_assign_rejected
+    fields = <<~FIELDS
+      struct entry {
+        field mykey type string { }
+        field myvalue type string { }
+      }
+      field my_array type array<entry> {
+        indexing: summary
+        map {
+          key: mykey
+          value: myvalue
+          fast-search
+        }
+      }
+    FIELDS
+    deploy_app(SearchApp.new.sd(write_sd(fields)))
+    start
+    elements = [ { "mykey" => "foo", "myvalue" => "stale" } ]
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("my_array", elements))
+    wait_for_hitcount('query=sddocname:fast_map_search', 1)
+
+    update_file = "#{dirs.tmpdir}update_array_element.json"
+    File.write(update_file, JSON.generate([ { "update" => "id:fast_map_search:fast_map_search::0",
+                                              "fields" => { "my_array[0]" => { "assign" => { "mykey" => "foo",
+                                                                                             "myvalue" => "bar" } } } } ]))
+    output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
+
+    assert_match(/Field 'my_array' has 'map: fast-search', which does not support field path updates/, output)
+    assert_equal(elements, vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_array"])
+  end
+
+  ######################################################################################################################
   # Deletion and partial updates
   ######################################################################################################################
 
@@ -641,6 +808,13 @@ class FastMapSearch < IndexedOnlySearchTest
 
   def stored_map
     vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map"]
+  end
+
+  def test_rejected_setups
+    check_cased_key_only_deployment_fails
+    check_cased_value_only_deployment_fails
+    check_array_of_struct_without_key_and_value_deployment_fails
+    check_array_of_struct_with_unknown_key_deployment_fails
   end
 
 end
