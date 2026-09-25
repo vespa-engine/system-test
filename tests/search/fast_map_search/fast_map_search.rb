@@ -108,12 +108,15 @@ class FastMapSearch < IndexedOnlySearchTest
     # single lookup in the synthetic key-value attribute. Verify through the query
     # trace that the rewrite actually happened.
     result = search(public_send(make_query_fn, field, "foo", value_one, 2))
-    assert(result.json.to_s.include?("#{field}$keyvalue"),
-           "Expected sameElement to be rewritten to a fast map lookup")
+    assert_rewritten(result, field)
 
     # The rewrite does not change the result: the map summary is returned,
     # and the synthetic attribute is not part of it.
     assert_result(public_send(make_query_fn, field, "foo", value_one), selfdir + result_file)
+  end
+
+  def assert_rewritten(result, field)
+    assert(result.json.to_s.include?("#{field}$keyvalue"), "Expected query for field '#{field}' to be rewritten to a fast map lookup")
   end
 
   def same_element_query(field, key, value, tracelevel = nil)
@@ -298,6 +301,16 @@ class FastMapSearch < IndexedOnlySearchTest
     # range_one holds negative values only, whose encoding must be inverted to sort correctly.
     run_range_queries(:same_element_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
     run_range_queries(:map_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
+
+    # Check that range search is still rewritten when using the hitLimit annotation (even though the hitLimit might be ignored)
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_int{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_int{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
+
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_long{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_long{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
+
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_float{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_float{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
   end
 
   # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
@@ -315,8 +328,7 @@ class FastMapSearch < IndexedOnlySearchTest
     # 'map: fast-search' makes the container rewrite the range to a lexical range over the
     # synthetic key-value attribute. Verify through the query trace that it happened.
     result = search(public_send(make_query_fn, field, "foo", *range_one, 2))
-    assert(result.json.to_s.include?("#{field}$keyvalue"),
-           "Expected map range to be rewritten to a fast map lookup")
+    assert_rewritten(result, field)
 
     # The rewrite does not change the result: the map summary is returned,
     # and the synthetic attribute is not part of it.
@@ -465,8 +477,7 @@ class FastMapSearch < IndexedOnlySearchTest
     # The rewrite to the synthetic key-value attribute happens, for single values and ranges.
     [ "fast_map{\"number\"} = 1.5", "range(fast_map{\"number\"}, -1.5, 1.5)" ].each do |where|
       result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
-      assert(result.json.to_s.include?("fast_map$keyvalue"),
-             "Expected '#{where}' to be rewritten to a fast map lookup")
+      assert_rewritten(result, "fast_map")
     end
 
     # Single values. A zero matches both -0.0 and 0.0.
