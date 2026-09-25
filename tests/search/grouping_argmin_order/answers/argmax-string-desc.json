@@ -61,7 +61,10 @@
               {
                 "id": "group:string:a4",
                 "relevance": 0.2,
-                "value": "a4"
+                "value": "a4",
+                "fields": {
+                  "argmax(n, s)": null
+                }
               }
             ]
           }

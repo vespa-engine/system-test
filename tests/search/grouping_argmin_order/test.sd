@@ -14,4 +14,10 @@ schema test {
       indexing: attribute | summary
     }
   }
+  # Distinct group relevance (max d per group) so that results without order() have a deterministic group order.
+  rank-profile default {
+    first-phase {
+      expression: attribute(d)
+    }
+  }
 }
