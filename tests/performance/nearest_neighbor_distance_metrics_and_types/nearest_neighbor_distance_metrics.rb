@@ -11,6 +11,11 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     set_owner("boeker")
   end
 
+  def timeout
+    # usually takes ~1500 seconds
+    1800
+  end
+
   def test_metrics_and_types
     set_description('Benchmark distance metrics and cell types using 100K documents. Exact nearest neighbor search.')
     deploy_app(SearchApp.new.sd(selfdir + 'vector.sd'))
