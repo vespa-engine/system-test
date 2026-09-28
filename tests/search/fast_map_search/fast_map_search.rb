@@ -9,6 +9,11 @@ class FastMapSearch < IndexedOnlySearchTest
   RIGHT_OPEN = "{bounds:\"rightOpen\"}"
   OPEN = "{bounds:\"open\"}"
 
+  # The name given to the lookup field in 'fast-search map field', which queries must use,
+  # as in my_map.lookup{"key"} = 42, to be rewritten to a fast map lookup
+  LOOKUP = "lookup"
+  FAST_SEARCH_MAP = "fast-search map field: #{LOOKUP}"
+
   def setup
     set_description("Tests fast map search feature")
     set_owner("johsol")
@@ -30,6 +35,11 @@ class FastMapSearch < IndexedOnlySearchTest
     sd_file
   end
 
+  # Returns the name to use in queries for the lookup field of the given field
+  def lookup(field)
+    "#{field}.#{LOOKUP}"
+  end
+
   ######################################################################################################################
   # Search tests
   ######################################################################################################################
@@ -37,23 +47,23 @@ class FastMapSearch < IndexedOnlySearchTest
   MY_FIELDS = <<~FIELDS
       field my_map_string type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
       field my_map_int type map<string, int> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
       field my_map_long type map<string, long> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
       field my_map_float type map<string, float> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
       field my_map_double type map<string, double> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
     FIELDS
 
@@ -80,14 +90,14 @@ class FastMapSearch < IndexedOnlySearchTest
     start
     feed_and_wait
 
-    run_queries(:same_element_query, "my_map_string", "bar", "baz", "result.json")
+    run_queries(:map_match_query, "my_map_string", "bar", "baz", "result.json")
     run_queries(:shortform_query, "my_map_string", "bar", "baz", "result.json")
 
-    run_queries(:same_element_query, "my_map_int", 42, 43, "result.json")
+    run_queries(:map_match_query, "my_map_int", 42, 43, "result.json")
     run_queries(:shortform_query, "my_map_int", 42, 43, "result.json")
     run_queries(:shortform_equals_query, "my_map_int", 42, 43, "result.json")
 
-    run_queries(:same_element_query, "my_map_long", 4294967338, 4294967339, "result.json")
+    run_queries(:map_match_query, "my_map_long", 4294967338, 4294967339, "result.json")
     run_queries(:shortform_query, "my_map_long", 4294967338, 4294967339, "result.json")
     run_queries(:shortform_equals_query, "my_map_long", 4294967338, 4294967339, "result.json")
 
@@ -95,33 +105,54 @@ class FastMapSearch < IndexedOnlySearchTest
     # since the value struct-field is not an attribute, and cannot be rewritten.
     run_queries(:shortform_equals_query, "my_map_float", 1.5, 1.75, "result.json")
     run_queries(:shortform_equals_query, "my_map_double", -2.5, -2.75, "result.json")
+
+    # Only queries naming the lookup field are rewritten
+    ["my_map_string", "my_map_int"].each do |field|
+      assert_not_rewritten(search(same_element_query(field, "foo", "42", 2)), field)
+      assert_not_rewritten(search(shortform_query(field, "foo", "42", 2)), field)
+      assert_not_rewritten(search(shortform_equals_query(field, "foo", 42, 2)), field)
+    end
   end
 
+  # Runs the queries made by the given function on the lookup field of the given field.
   def run_queries(make_query_fn, field, value_one, value_two, result_file)
     # A key-value pair matches only when both are present in the same map entry.
     # Document 1 contains both the key 'foo' and the value 'bar', but in different
     # entries, so it must not match.
-    assert_hitcount(public_send(make_query_fn, field, "foo", value_one), 1)
-    assert_hitcount(public_send(make_query_fn, field, "baz", value_one), 1)
-    assert_hitcount(public_send(make_query_fn, field, "foo", value_two), 0)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_one), 1)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", value_one), 1)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_two), 0)
 
-    # 'map: fast-search' makes the container rewrite the sameElement operator to a
-    # single lookup in the synthetic key-value attribute. Verify through the query
-    # trace that the rewrite actually happened.
-    result = search(public_send(make_query_fn, field, "foo", value_one, 2))
+    # A map lookup on the lookup field of a field with 'fast-search map field' is rewritten
+    # by the container to a single lookup in the synthetic key-value attribute. Verify
+    # through the query trace that the rewrite actually happened.
+    result = search(public_send(make_query_fn, lookup(field), "foo", value_one, 2))
     assert_rewritten(result, field)
 
     # The rewrite does not change the result: the map summary is returned,
     # and the synthetic attribute is not part of it.
-    assert_result(public_send(make_query_fn, field, "foo", value_one), selfdir + result_file)
+    assert_result(public_send(make_query_fn, lookup(field), "foo", value_one), selfdir + result_file)
   end
 
   def assert_rewritten(result, field)
-    assert(result.json.to_s.include?("#{field}$keyvalue"), "Expected query for field '#{field}' to be rewritten to a fast map lookup")
+    assert(result.json.to_s.include?("#{field}$#{LOOKUP}"), "Expected query for field '#{field}' to be rewritten to a fast map lookup")
+  end
+
+  def assert_not_rewritten(result, field)
+    assert(!result.json.to_s.include?("#{field}$#{LOOKUP}"), "Expected query for field '#{field}' not to be rewritten to a fast map lookup")
   end
 
   def same_element_query(field, key, value, tracelevel = nil)
     yql = "select * from sources * where #{field} contains sameElement(" +
+          "key contains '#{key}', value contains '#{value}')"
+    form = [['yql', yql]]
+    form << ['tracelevel', tracelevel.to_s] if tracelevel
+    URI.encode_www_form(form)
+  end
+
+  # The explicit form of a map lookup, which the fancy syntax below is short for.
+  def map_match_query(field, key, value, tracelevel = nil)
+    yql = "select * from sources * where #{field} contains mapMatch(" +
           "key contains '#{key}', value contains '#{value}')"
     form = [['yql', yql]]
     form << ['tracelevel', tracelevel.to_s] if tracelevel
@@ -149,13 +180,13 @@ class FastMapSearch < IndexedOnlySearchTest
     fields = <<~FIELDS
       field string_map type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_string_map type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key {
           indexing: attribute
           match: cased
@@ -167,13 +198,13 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field int_map type map<string, int> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_int_map type map<string, int> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key {
           indexing: attribute
           match: cased
@@ -182,13 +213,13 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field long_map type map<string, long> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
       field cased_long_map type map<string, long> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key {
           indexing: attribute
           match: cased
@@ -209,42 +240,49 @@ class FastMapSearch < IndexedOnlySearchTest
     )
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
-    puts "Uncased matching"
-    assert_hitcount(shortform_query("string_map", "case_does_not_matter", "foo"), 1)
-    assert_hitcount(shortform_query("string_map", "case_does_not_matter", "FOO"), 1)
-    assert_hitcount(shortform_query("string_map", "CASE_DOES_NOT_MATTER", "foo"), 1)
-    assert_hitcount(shortform_query("string_map", "CASE_DOES_NOT_MATTER", "FOO"), 1)
+    # The maps have struct-field attributes, so they are searchable without the rewrite too.
+    # Querying the lookup field is rewritten, querying the map itself is not, and both must match the same.
+    [ lambda { |field| lookup(field) }, lambda { |field| field } ].each do |ref|
+      puts "Uncased matching"
+      assert_hitcount(shortform_query(ref.call("string_map"), "case_does_not_matter", "foo"), 1)
+      assert_hitcount(shortform_query(ref.call("string_map"), "case_does_not_matter", "FOO"), 1)
+      assert_hitcount(shortform_query(ref.call("string_map"), "CASE_DOES_NOT_MATTER", "foo"), 1)
+      assert_hitcount(shortform_query(ref.call("string_map"), "CASE_DOES_NOT_MATTER", "FOO"), 1)
 
-    assert_hitcount(shortform_equals_query("int_map", "case_does_not_matter",  42), 1)
-    assert_hitcount(shortform_equals_query("int_map", "CASE_DOES_NOT_MATTER",  42), 1)
-    assert_hitcount(shortform_equals_query("long_map", "case_does_not_matter", 4294967338), 1)
-    assert_hitcount(shortform_equals_query("long_map", "CASE_DOES_NOT_MATTER", 4294967338), 1)
+      assert_hitcount(shortform_equals_query(ref.call("int_map"), "case_does_not_matter",  42), 1)
+      assert_hitcount(shortform_equals_query(ref.call("int_map"), "CASE_DOES_NOT_MATTER",  42), 1)
+      assert_hitcount(shortform_equals_query(ref.call("long_map"), "case_does_not_matter", 4294967338), 1)
+      assert_hitcount(shortform_equals_query(ref.call("long_map"), "CASE_DOES_NOT_MATTER", 4294967338), 1)
 
-    puts "Cased matching"
-    assert_hitcount(shortform_query("cased_string_map", "case_matters", "foo"), 1)
-    assert_hitcount(shortform_query("cased_string_map", "case_matters", "FOO"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "case_matters", "bar"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "case_matters", "BAR"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "foo"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "FOO"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "bar"), 0)
-    assert_hitcount(shortform_query("cased_string_map", "CASE_MATTERS", "BAR"), 1)
+      puts "Cased matching"
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "case_matters", "foo"), 1)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "case_matters", "FOO"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "case_matters", "bar"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "case_matters", "BAR"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "CASE_MATTERS", "foo"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "CASE_MATTERS", "FOO"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "CASE_MATTERS", "bar"), 0)
+      assert_hitcount(shortform_query(ref.call("cased_string_map"), "CASE_MATTERS", "BAR"), 1)
 
-    assert_hitcount(shortform_equals_query("cased_int_map", "case_matters", 42), 1)
-    assert_hitcount(shortform_equals_query("cased_int_map", "case_matters", 43), 0)
-    assert_hitcount(shortform_equals_query("cased_int_map", "CASE_MATTERS", 42), 0)
-    assert_hitcount(shortform_equals_query("cased_int_map", "CASE_MATTERS", 43), 1)
-    assert_hitcount(shortform_equals_query("cased_long_map", "case_matters", 4294967338), 1)
-    assert_hitcount(shortform_equals_query("cased_long_map", "case_matters", 4294967339), 0)
-    assert_hitcount(shortform_equals_query("cased_long_map", "CASE_MATTERS", 4294967338), 0)
-    assert_hitcount(shortform_equals_query("cased_long_map", "CASE_MATTERS", 4294967339), 1)
+      assert_hitcount(shortform_equals_query(ref.call("cased_int_map"), "case_matters", 42), 1)
+      assert_hitcount(shortform_equals_query(ref.call("cased_int_map"), "case_matters", 43), 0)
+      assert_hitcount(shortform_equals_query(ref.call("cased_int_map"), "CASE_MATTERS", 42), 0)
+      assert_hitcount(shortform_equals_query(ref.call("cased_int_map"), "CASE_MATTERS", 43), 1)
+      assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "case_matters", 4294967338), 1)
+      assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "case_matters", 4294967339), 0)
+      assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967338), 0)
+      assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967339), 1)
+    end
+
+    assert_rewritten(search(shortform_query(lookup("cased_string_map"), "case_matters", "foo", 2)), "cased_string_map")
+    assert_not_rewritten(search(shortform_query("cased_string_map", "case_matters", "foo", 2)), "cased_string_map")
   end
 
   def check_cased_key_only_deployment_fails
     fields = <<~FIELDS
       field cased_key_only type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key {
           indexing: attribute
           match: cased
@@ -259,7 +297,7 @@ class FastMapSearch < IndexedOnlySearchTest
     fields = <<~FIELDS
       field cased_value_only type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value {
           indexing: attribute
@@ -288,56 +326,57 @@ class FastMapSearch < IndexedOnlySearchTest
     start
     feed_and_wait
 
-    run_range_queries(:same_element_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
+    run_range_queries(:map_match_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
     run_range_queries(:map_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
 
     # The endpoints lie beyond the int range, as do the fed values.
-    run_range_queries(:same_element_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
+    run_range_queries(:map_match_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
     run_range_queries(:map_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
 
     # range_two spans zero, where the encoding of the sign changes.
-    run_range_queries(:same_element_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
+    run_range_queries(:map_match_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
     run_range_queries(:map_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
 
     # range_one holds negative values only, whose encoding must be inverted to sort correctly.
-    run_range_queries(:same_element_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
+    run_range_queries(:map_match_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
     run_range_queries(:map_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
 
     # Check that range search is still rewritten when using the hitLimit annotation (even though the hitLimit might be ignored)
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_int{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_int{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_int.#{LOOKUP}{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_int.#{LOOKUP}{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
 
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_long{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_long{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_long.#{LOOKUP}{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_long.#{LOOKUP}{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
 
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_float{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_float{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_float.#{LOOKUP}{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
+    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_float.#{LOOKUP}{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
   end
 
+  # Runs the queries made by the given function on the lookup field of the given field.
   # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
   # range_two contains the 'foo' value of document 1, and neither range contains both.
   def run_range_queries(make_query_fn, field, range_one, range_two, result_file)
     # Only the entry with the queried key is considered: the two documents have different
     # 'foo' values, so a range around one of them on key 'foo' matches one document only.
-    assert_hitcount(public_send(make_query_fn, field, "foo", *range_one), 1)
-    assert_hitcount(public_send(make_query_fn, field, "foo", *range_two), 1)
-    assert_hitcount(public_send(make_query_fn, field, "baz", *range_one), 1)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_one), 1)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_two), 1)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_one), 1)
 
     # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
-    assert_hitcount(public_send(make_query_fn, field, "baz", *range_two), 0)
+    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_two), 0)
 
-    # 'map: fast-search' makes the container rewrite the range to a lexical range over the
+    # A range on the lookup field is rewritten by the container to a lexical range over the
     # synthetic key-value attribute. Verify through the query trace that it happened.
-    result = search(public_send(make_query_fn, field, "foo", *range_one, 2))
+    result = search(public_send(make_query_fn, lookup(field), "foo", *range_one, 2))
     assert_rewritten(result, field)
 
     # The rewrite does not change the result: the map summary is returned,
     # and the synthetic attribute is not part of it.
-    assert_result(public_send(make_query_fn, field, "foo", *range_one), selfdir + result_file)
+    assert_result(public_send(make_query_fn, lookup(field), "foo", *range_one), selfdir + result_file)
   end
 
-  def same_element_range_query(field, key, from, to, tracelevel = nil)
-    yql = "select * from sources * where #{field} contains sameElement(" +
+  def map_match_range_query(field, key, from, to, tracelevel = nil)
+    yql = "select * from sources * where #{field} contains mapMatch(" +
           "key contains '#{key}', range(value, #{from}, #{to}))"
     form = [['yql', yql]]
     form << ['tracelevel', tracelevel.to_s] if tracelevel
@@ -360,7 +399,7 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field my_map type map<string, int> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
@@ -383,7 +422,7 @@ class FastMapSearch < IndexedOnlySearchTest
     wait_for_hitcount('query=sddocname:fast_map_search', 7)
 
     def make_query(annotation, from, to)
-      {"yql" => "select * from sources * where (#{annotation}range(my_map{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc" }
+      {"yql" => "select * from sources * where (#{annotation}range(#{lookup("my_map")}{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc" }
     end
 
     # When using (-)Infinity, whether the bound is closed or not should not matter
@@ -449,7 +488,7 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field fast_map type map<string, #{type}> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
         struct-field key { indexing: attribute }
         struct-field value { indexing: attribute }
       }
@@ -476,9 +515,13 @@ class FastMapSearch < IndexedOnlySearchTest
     wait_for_hitcount('query=sddocname:fast_map_search', values.size)
 
     # The rewrite to the synthetic key-value attribute happens, for single values and ranges.
-    [ "fast_map{\"number\"} = 1.5", "range(fast_map{\"number\"}, -1.5, 1.5)" ].each do |where|
+    [ "fast_map.#{LOOKUP}{\"number\"} = 1.5", "range(fast_map.#{LOOKUP}{\"number\"}, -1.5, 1.5)" ].each do |where|
       result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
       assert_rewritten(result, "fast_map")
+    end
+    [ "fast_map{\"number\"} = 1.5", "range(fast_map{\"number\"}, -1.5, 1.5)" ].each do |where|
+      result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
+      assert_not_rewritten(result, "fast_map")
     end
 
     # Single values. A zero matches both -0.0 and 0.0.
@@ -534,14 +577,14 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def verify_floating_point_equals(expected_ids, value)
-    ["fast_map", "plain_map"].each do |field|
+    [lookup("fast_map"), "plain_map"].each do |field|
       search_and_verify(expected_ids,
                         {"yql" => "select * from sources * where #{field}{\"number\"} = #{value} order by id asc"})
     end
   end
 
   def verify_floating_point_range(expected_ids, annotation, from, to)
-    ["fast_map", "plain_map"].each do |field|
+    [lookup("fast_map"), "plain_map"].each do |field|
       search_and_verify(expected_ids,
                         {"yql" => "select * from sources * where (#{annotation}range(#{field}{\"number\"}, " +
                                   "#{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc"})
@@ -568,8 +611,8 @@ class FastMapSearch < IndexedOnlySearchTest
   }
 
   # An array of struct acts as a map when the struct fields holding the key and the value are named
-  # in the map block. Every fast array has a plain twin holding the same elements, which is searched
-  # without the rewrite, to verify that the rewrite does not change which documents match.
+  # in the 'fast-search map field' block. Every fast array has a plain twin holding the same elements,
+  # which is searched without the rewrite, to verify that the rewrite does not change which documents match.
   def array_of_struct_fields
     fields = <<~FIELDS
       field id type int {
@@ -584,10 +627,9 @@ class FastMapSearch < IndexedOnlySearchTest
         }
         field fast_#{type} type array<entry_#{type}> {
           indexing: summary
-          map {
+          #{FAST_SEARCH_MAP} {
             key: mykey
             value: myvalue
-            fast-search
           }
         }
         field plain_#{type} type array<entry_#{type}> {
@@ -628,29 +670,35 @@ class FastMapSearch < IndexedOnlySearchTest
     feed_arrays_and_wait
 
     ARRAY_VALUES.each do |type, values|
-      verify_array_query([0, 2], type, "myvalue contains '#{values[:one]}'", "foo")
-      verify_array_query([1, 2], type, "myvalue contains '#{values[:two]}'", "foo")
-      verify_array_query([1], type, "myvalue contains '#{values[:one]}'", "baz")
-      verify_array_query([], type, "myvalue contains '#{values[:two]}'", "baz")
+      verify_array_query([0, 2], type, lambda { |v| "#{v} contains '#{values[:one]}'" }, "foo")
+      verify_array_query([1, 2], type, lambda { |v| "#{v} contains '#{values[:two]}'" }, "foo")
+      verify_array_query([1], type, lambda { |v| "#{v} contains '#{values[:one]}'" }, "baz")
+      verify_array_query([], type, lambda { |v| "#{v} contains '#{values[:two]}'" }, "baz")
       next unless values[:range_one]
 
-      verify_array_query([0, 2], type, "range(myvalue, #{values[:range_one].join(', ')})", "foo")
-      verify_array_query([1, 2], type, "range(myvalue, #{values[:range_two].join(', ')})", "foo")
-      verify_array_query([1], type, "range(myvalue, #{values[:range_one].join(', ')})", "baz")
-      verify_array_query([], type, "range(myvalue, #{values[:range_two].join(', ')})", "baz")
+      verify_array_query([0, 2], type, lambda { |v| "range(#{v}, #{values[:range_one].join(', ')})" }, "foo")
+      verify_array_query([1, 2], type, lambda { |v| "range(#{v}, #{values[:range_two].join(', ')})" }, "foo")
+      verify_array_query([1], type, lambda { |v| "range(#{v}, #{values[:range_one].join(', ')})" }, "baz")
+      verify_array_query([], type, lambda { |v| "range(#{v}, #{values[:range_two].join(', ')})" }, "baz")
     end
+
+    # The fancy syntax works on the lookup field of an array too
+    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("fast_string")}{'foo'} contains 'bar' order by id asc" })
   end
 
-  # Runs the sameElement query on both the fast array and its plain twin, and verifies through
-  # the query trace that only the query on the fast array was rewritten to a fast map lookup.
+  # Runs a map lookup on the lookup field of the fast array, and the equivalent sameElement query
+  # on its plain twin, and verifies through the query trace that only the query on the fast array
+  # was rewritten to a fast map lookup. The value condition is made for the given value field name.
   def verify_array_query(expected_ids, type, value_condition, key)
-    ["fast_#{type}", "plain_#{type}"].each do |field|
-      yql = "select * from sources * where #{field} contains sameElement(" +
-            "mykey contains '#{key}', #{value_condition}) order by id asc"
+    fast = "fast_#{type}"
+    plain = "plain_#{type}"
+    [ [fast, "#{lookup(fast)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})"],
+      [plain, "#{plain} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})"] ].each do |field, where|
+      yql = "select * from sources * where #{where} order by id asc"
       result = search({ "yql" => yql, "tracelevel" => "2" })
       verify_ids(expected_ids, result)
-      assert_equal(field.start_with?("fast_"), result.json.to_s.include?("#{field}$keyvalue"),
-                   "Expected the query on #{field} to #{field.start_with?("fast_") ? "" : "not "}" +
+      assert_equal(field == fast, result.json.to_s.include?("#{field}$#{LOOKUP}"),
+                   "Expected the query on #{field} to #{field == fast ? "" : "not "}" +
                    "be rewritten to a fast map lookup: #{yql}")
     end
   end
@@ -663,7 +711,7 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field my_array type array<entry> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
     FIELDS
     assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
@@ -677,10 +725,9 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field my_array type array<entry> {
         indexing: summary
-        map {
+        #{FAST_SEARCH_MAP} {
           key: nokey
           value: myvalue
-          fast-search
         }
       }
     FIELDS
@@ -697,10 +744,9 @@ class FastMapSearch < IndexedOnlySearchTest
       }
       field my_array type array<entry> {
         indexing: summary
-        map {
+        #{FAST_SEARCH_MAP} {
           key: mykey
           value: myvalue
-          fast-search
         }
       }
     FIELDS
@@ -716,7 +762,7 @@ class FastMapSearch < IndexedOnlySearchTest
                                                                                              "myvalue" => "bar" } } } } ]))
     output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_array' has 'map: fast-search', which does not support field path updates/, output)
+    assert_match(/Field 'my_array' has 'fast-search map field', which does not support field path updates/, output)
     assert_equal(elements, vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_array"])
   end
 
@@ -732,22 +778,22 @@ class FastMapSearch < IndexedOnlySearchTest
     feed_and_wait
 
     # The value 'bar' sits under key 'foo' in document 0 and under key 'baz' in document 1.
-    assert_hitcount(same_element_query("my_map_string", "foo", "bar"), 1)
-    assert_hitcount(same_element_query("my_map_string", "baz", "bar"), 1)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 1)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "bar"), 1)
 
     vespa.document_api_v1.remove("id:fast_map_search:fast_map_search::0")
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
-    assert_hitcount(same_element_query("my_map_string", "foo", "bar"), 0)
-    assert_hitcount(same_element_query("my_map_string", "baz", "bar"), 1)
-    assert_hitcount(shortform_query("my_map_string", "foo", "bar"), 0)
-    assert_hitcount(shortform_query("my_map_string", "baz", "bar"), 1)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "bar"), 1)
+    assert_hitcount(shortform_query(lookup("my_map_string"), "foo", "bar"), 0)
+    assert_hitcount(shortform_query(lookup("my_map_string"), "baz", "bar"), 1)
 
     vespa.document_api_v1.remove("id:fast_map_search:fast_map_search::1")
     wait_for_hitcount('query=sddocname:fast_map_search', 0)
 
-    assert_hitcount(same_element_query("my_map_string", "baz", "bar"), 0)
-    assert_hitcount(shortform_query("my_map_string", "baz", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "bar"), 0)
+    assert_hitcount(shortform_query(lookup("my_map_string"), "baz", "bar"), 0)
   end
 
   # A partial update must reach the synthetic key-value attribute, not only the summary.
@@ -755,7 +801,7 @@ class FastMapSearch < IndexedOnlySearchTest
     fields = <<~FIELDS
       field my_map type map<string, string> {
         indexing: summary
-        map: fast-search
+        #{FAST_SEARCH_MAP}
       }
     FIELDS
     deploy_app(SearchApp.new.sd(write_sd(fields)))
@@ -764,32 +810,32 @@ class FastMapSearch < IndexedOnlySearchTest
     # Both documents start out with the value 'stale' under every key, so none of the
     # queries below match before the updates are applied.
     feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_before_update.json")
-    assert_hitcount(same_element_query("my_map", "foo", "bar"), 0)
-    assert_hitcount(same_element_query("my_map", "baz", "bar"), 0)
-    assert_hitcount(same_element_query("my_map", "foo", "stale"), 2)
+    assert_hitcount(map_match_query(lookup("my_map"), "foo", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map"), "baz", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map"), "foo", "stale"), 2)
 
     # Assign the whole map field on both documents, leaving them in exactly the state that
     # feed.json puts them in, so the shared assertions and the summary comparison can be
     # reused as is.
     feed(:file => selfdir+"update_assign.json")
-    wait_for_hitcount(same_element_query("my_map", "foo", "bar"), 1)
+    wait_for_hitcount(map_match_query(lookup("my_map"), "foo", "bar"), 1)
 
     # The old values are gone from the attribute: a stale posting would still match here.
-    assert_hitcount(same_element_query("my_map", "foo", "stale"), 0)
-    assert_hitcount(same_element_query("my_map", "baz", "stale"), 0)
+    assert_hitcount(map_match_query(lookup("my_map"), "foo", "stale"), 0)
+    assert_hitcount(map_match_query(lookup("my_map"), "baz", "stale"), 0)
 
-    assert_hitcount(public_send(:shortform_query, "my_map", "foo", "bar"), 1)
-    assert_hitcount(public_send(:shortform_query, "my_map", "baz", "bar"), 1)
-    assert_hitcount(public_send(:shortform_query, "my_map", "foo", "baz"), 0)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "foo", "bar"), 1)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "baz", "bar"), 1)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "foo", "baz"), 0)
   end
 
   def test_entry_level_assign_rejected
-    deploy_and_feed_map("map: fast-search")
+    deploy_and_feed_map(FAST_SEARCH_MAP)
 
     output = feed(:file => selfdir+"update_assign_entry.json",
                   :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_map' has 'map: fast-search', which does not support field path updates/, output)
+    assert_match(/Field 'my_map' has 'fast-search map field', which does not support field path updates/, output)
     assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
   end
 
@@ -810,7 +856,19 @@ class FastMapSearch < IndexedOnlySearchTest
     vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map"]
   end
 
+  # The old syntax, before the lookup field was named, is gone
+  def check_old_syntax_deployment_fails
+    fields = <<~FIELDS
+      field my_map type map<string, string> {
+        indexing: summary
+        map: fast-search
+      }
+    FIELDS
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+  end
+
   def test_rejected_setups
+    check_old_syntax_deployment_fails
     check_cased_key_only_deployment_fails
     check_cased_value_only_deployment_fails
     check_array_of_struct_without_key_and_value_deployment_fails
