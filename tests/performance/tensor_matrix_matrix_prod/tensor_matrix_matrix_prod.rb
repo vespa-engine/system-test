@@ -14,6 +14,11 @@ class TensorMatrixMatrixProduct < PerformanceTest
     set_owner("hmusum")
   end
 
+  def timeout_seconds
+    # usually takes ~250 seconds
+    400
+  end
+
   def test_tensor_matrix_matrix_products
     set_description("Test of various matrix-matrix products")
 
