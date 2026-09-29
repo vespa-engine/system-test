@@ -1,7 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'indexed_only_search_test'
-require 'json'
 
 class FastMapSearch < IndexedOnlySearchTest
   CLOSED = ""
@@ -580,10 +579,16 @@ class FastMapSearch < IndexedOnlySearchTest
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("my_array_string", elements))
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
-    update_file = "#{dirs.tmpdir}update_array_element.json"
-    File.write(update_file, JSON.generate([ { "update" => "id:fast_map_search:fast_map_search::0",
-                                              "fields" => { "my_array_string[0]" => { "assign" => { "mykey" => "foo",
-                                                                                                    "myvalue" => "bar" } } } } ]))
+    update_file = write_json("update_array_element.json", <<~JSON)
+      [
+        {
+          "update": "id:fast_map_search:fast_map_search::0",
+          "fields": {
+            "my_array_string[0]": { "assign": { "mykey": "foo", "myvalue": "bar" } }
+          }
+        }
+      ]
+    JSON
     output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
     assert_match(/Field 'my_array_string' has 'fast-search map field', which does not support field path updates/, output)
@@ -625,15 +630,45 @@ class FastMapSearch < IndexedOnlySearchTest
 
     # Both documents start out with the value 'stale' under every key, so none of the
     # queries below match before the updates are applied.
-    feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_before_update.json")
+    feed_file = write_json("feed_before_update.json", <<~JSON)
+      [
+        {
+          "id": "id:fast_map_search:fast_map_search::0",
+          "fields": {
+            "my_map_string": { "foo": "stale" }
+          }
+        },
+        {
+          "id": "id:fast_map_search:fast_map_search::1",
+          "fields": {
+            "my_map_string": { "foo": "stale", "baz": "stale" }
+          }
+        }
+      ]
+    JSON
+    feed_and_wait_for_docs("fast_map_search", 2, :file => feed_file)
     assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 0)
     assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "bar"), 0)
     assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "stale"), 2)
 
-    # Assign the whole map field on both documents, leaving them in exactly the state that
-    # feed.json puts them in, so the shared assertions and the summary comparison can be
-    # reused as is.
-    feed(:file => selfdir+"update_assign.json")
+    # Assign the whole map field on both documents.
+    update_file = write_json("update_assign.json", <<~JSON)
+      [
+        {
+          "update": "id:fast_map_search:fast_map_search::0",
+          "fields": {
+            "my_map_string": { "assign": { "foo": "bar" } }
+          }
+        },
+        {
+          "update": "id:fast_map_search:fast_map_search::1",
+          "fields": {
+            "my_map_string": { "assign": { "foo": "qux", "baz": "bar" } }
+          }
+        }
+      ]
+    JSON
+    feed(:file => update_file)
     wait_for_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 1)
 
     # The old values are gone from the attribute: a stale posting would still match here.
@@ -647,14 +682,41 @@ class FastMapSearch < IndexedOnlySearchTest
 
   def test_entry_level_assign_rejected
     deploy_and_start
-    feed_and_wait_for_docs("fast_map_search", 1, :file => selfdir+"feed_entry_update.json")
+    feed_file = write_json("feed_entry_update.json", <<~JSON)
+      [
+        {
+          "id": "id:fast_map_search:fast_map_search::0",
+          "fields": {
+            "my_map_string": { "foo": "stale", "baz": "keep" }
+          }
+        }
+      ]
+    JSON
+    feed_and_wait_for_docs("fast_map_search", 1, :file => feed_file)
     assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
 
-    output = feed(:file => selfdir+"update_assign_entry.json",
-                  :exceptiononfailure => false, :stderr => true)
+    # Assign a single map entry, which is a field path update.
+    update_file = write_json("update_assign_entry.json", <<~JSON)
+      [
+        {
+          "update": "id:fast_map_search:fast_map_search::0",
+          "fields": {
+            "my_map_string{foo}": { "assign": "bar" }
+          }
+        }
+      ]
+    JSON
+    output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
     assert_match(/Field 'my_map_string' has 'fast-search map field', which does not support field path updates/, output)
     assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
+  end
+
+  # Writes the given JSON to a file in the temporary directory, and returns its path
+  def write_json(name, json)
+    json_file = "#{dirs.tmpdir}#{name}"
+    File.write(json_file, json)
+    json_file
   end
 
   def stored_map
