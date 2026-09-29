@@ -23,16 +23,9 @@ class FastMapSearch < IndexedOnlySearchTest
     stop
   end
 
-  def write_sd(fields)
-    sd_file = "#{dirs.tmpdir}fast_map_search.sd"
-    File.write(sd_file, <<~SD)
-      schema fast_map_search {
-        document fast_map_search {
-          #{fields}
-        }
-      }
-    SD
-    sd_file
+  def deploy_and_start(sd_file = "fast_map_search.sd")
+    deploy_app(SearchApp.new.sd(selfdir + sd_file))
+    start
   end
 
   # Returns the name to use in queries for the lookup field of the given field
@@ -43,29 +36,6 @@ class FastMapSearch < IndexedOnlySearchTest
   ######################################################################################################################
   # Search tests
   ######################################################################################################################
-
-  MY_FIELDS = <<~FIELDS
-      field my_map_string type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-      field my_map_int type map<string, int> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-      field my_map_long type map<string, long> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-      field my_map_float type map<string, float> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-      field my_map_double type map<string, double> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-    FIELDS
 
   def feed_and_wait
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
@@ -86,8 +56,7 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def test_search_basic
-    deploy_app(SearchApp.new.sd(write_sd(MY_FIELDS)))
-    start
+    deploy_and_start
     feed_and_wait
 
     run_queries(:map_match_query, "my_map_string", "bar", "baz", "result.json")
@@ -101,8 +70,7 @@ class FastMapSearch < IndexedOnlySearchTest
     run_queries(:shortform_query, "my_map_long", 4294967338, 4294967339, "result.json")
     run_queries(:shortform_equals_query, "my_map_long", 4294967338, 4294967339, "result.json")
 
-    # Only the unquoted spelling: a quoted '1.5' is segmented into '1' and '5' by linguistics,
-    # since the value struct-field is not an attribute, and cannot be rewritten.
+    # Only the unquoted spelling, which keeps the value a numeric term.
     run_queries(:shortform_equals_query, "my_map_float", 1.5, 1.75, "result.json")
     run_queries(:shortform_equals_query, "my_map_double", -2.5, -2.75, "result.json")
 
@@ -177,60 +145,9 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def test_search_cased_uncased
-    fields = <<~FIELDS
-      field string_map type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-      field cased_string_map type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key {
-          indexing: attribute
-          match: cased
-        }
-        struct-field value {
-          indexing: attribute
-          match: cased
-        }
-      }
-      field int_map type map<string, int> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-      field cased_int_map type map<string, int> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key {
-          indexing: attribute
-          match: cased
-        }
-        struct-field value { indexing: attribute }
-      }
-      field long_map type map<string, long> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-      field cased_long_map type map<string, long> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key {
-          indexing: attribute
-          match: cased
-        }
-        struct-field value { indexing: attribute }
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
+    deploy_and_start("cased_uncased.sd")
 
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
+    vespa.document_api_v1.put(Document.new("id:cased_uncased:cased_uncased::0")
                                       .add_field("string_map", { "case_does_not_matter" => "foo"})
                                       .add_field("int_map", { "case_does_not_matter" => 42})
                                       .add_field("cased_string_map", { "case_matters" => "foo", "CASE_MATTERS" => "BAR" })
@@ -238,7 +155,7 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("long_map", { "case_does_not_matter" => 4294967338})
                                       .add_field("cased_long_map", { "case_matters" => 4294967338, "CASE_MATTERS" => 4294967339 })
     )
-    wait_for_hitcount('query=sddocname:fast_map_search', 1)
+    wait_for_hitcount('query=sddocname:cased_uncased', 1)
 
     # The maps have struct-field attributes, so they are searchable without the rewrite too.
     # Querying the lookup field is rewritten, querying the map itself is not, and both must match the same.
@@ -283,8 +200,7 @@ class FastMapSearch < IndexedOnlySearchTest
   ######################################################################################################################
 
   def test_range_basic
-    deploy_app(SearchApp.new.sd(write_sd(MY_FIELDS)))
-    start
+    deploy_and_start
     feed_and_wait
 
     run_range_queries(:map_match_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
@@ -353,37 +269,21 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def test_range_int_corner_cases
-    fields = <<~FIELDS
-      field id type int {
-          indexing: attribute | summary
-          attribute: fast-search
-      }
-      field my_map type map<string, int> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
+    deploy_and_start
 
     int_min = -2147483648
     int_max = 2147483647
 
     # Every document gets some junk "aaa" and "zzz" values to make sure that (-)Infinity with fast map search
     # does not suddenly get you values from different keys
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("id", 0).add_field("my_map", { "aaa" => -42, "number" =>  int_min, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1").add_field("id", 1).add_field("my_map", { "aaa" => -42, "number" => -10, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2").add_field("id", 2).add_field("my_map", { "aaa" => -42, "number" => -1, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::3").add_field("id", 3).add_field("my_map", { "aaa" => -42, "number" => 0, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::4").add_field("id", 4).add_field("my_map", { "aaa" => -42, "number" => 1, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::5").add_field("id", 5).add_field("my_map", { "aaa" => -42, "number" => 10, "zzz" => 42 }))
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::6").add_field("id", 6).add_field("my_map", { "aaa" => -42, "number" => int_max, "zzz" => 42 }))
+    [ int_min, -10, -1, 0, 1, 10, int_max ].each_with_index do |number, id|
+      vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id).
+                                  add_field("my_map_int", { "aaa" => -42, "number" => number, "zzz" => 42 }))
+    end
     wait_for_hitcount('query=sddocname:fast_map_search', 7)
 
     def make_query(annotation, from, to)
-      {"yql" => "select * from sources * where (#{annotation}range(#{lookup("my_map")}{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc" }
+      {"yql" => "select * from sources * where (#{annotation}range(#{lookup("my_map_int")}{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc" }
     end
 
     # When using (-)Infinity, whether the bound is closed or not should not matter
@@ -429,38 +329,21 @@ class FastMapSearch < IndexedOnlySearchTest
   ######################################################################################################################
 
   def test_float_corner_cases
-    verify_floating_point_corner_cases("float", "3.0e38")
+    verify_floating_point_corner_cases("my_map_float", "3.0e38")
   end
 
   # The largest value is beyond the float range, so that it would be lost if the
   # double value were encoded like a float.
   def test_double_corner_cases
-    verify_floating_point_corner_cases("double", "1.0e300")
+    verify_floating_point_corner_cases("my_map_double", "1.0e300")
   end
 
-  # Every query is run against a map with fast search and a map without it, holding the same
-  # values, to verify that the rewrite to the synthetic key-value attribute does not change
-  # which documents match. The expected ids are also given explicitly.
-  def verify_floating_point_corner_cases(type, big)
-    fields = <<~FIELDS
-      field id type int {
-          indexing: attribute | summary
-          attribute: fast-search
-      }
-      field fast_map type map<string, #{type}> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-      field plain_map type map<string, #{type}> {
-        indexing: summary
-        struct-field key { indexing: attribute }
-        struct-field value { indexing: attribute }
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
+  # Every query is run both on the lookup field, which is rewritten to the synthetic key-value
+  # attribute, and on the map itself, which is searched through its struct-field attributes,
+  # to verify that the rewrite does not change which documents match. The expected ids are
+  # also given explicitly.
+  def verify_floating_point_corner_cases(field, big)
+    deploy_and_start
 
     # -0.0 and 0.0 are equal as numbers, but get different encodings in the synthetic attribute.
     # 0.1 is not exactly representable, and is rounded differently as a float and as a double.
@@ -471,83 +354,83 @@ class FastMapSearch < IndexedOnlySearchTest
     values.each_with_index do |value, id|
       map = { "aaa" => -42.0, "number" => value.to_f, "zzz" => 42.0 }
       vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}").
-                                  add_field("id", id).add_field("fast_map", map).add_field("plain_map", map))
+                                  add_field("id", id).add_field(field, map))
     end
     wait_for_hitcount('query=sddocname:fast_map_search', values.size)
 
     # The rewrite to the synthetic key-value attribute happens, for single values and ranges.
-    [ "fast_map.#{LOOKUP}{\"number\"} = 1.5", "range(fast_map.#{LOOKUP}{\"number\"}, -1.5, 1.5)" ].each do |where|
+    [ "#{lookup(field)}{\"number\"} = 1.5", "range(#{lookup(field)}{\"number\"}, -1.5, 1.5)" ].each do |where|
       result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
-      assert_rewritten(result, "fast_map")
+      assert_rewritten(result, field)
     end
-    [ "fast_map{\"number\"} = 1.5", "range(fast_map{\"number\"}, -1.5, 1.5)" ].each do |where|
+    [ "#{field}{\"number\"} = 1.5", "range(#{field}{\"number\"}, -1.5, 1.5)" ].each do |where|
       result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
-      assert_not_rewritten(result, "fast_map")
+      assert_not_rewritten(result, field)
     end
 
     # Single values. A zero matches both -0.0 and 0.0.
-    verify_floating_point_equals([1], "-1.5")
-    verify_floating_point_equals([2, 3], "0")
-    verify_floating_point_equals([2, 3], "0.0")
-    verify_floating_point_equals([2, 3], "-0.0")
-    verify_floating_point_equals([4], "0.1")
-    verify_floating_point_equals([5], "1.5")
-    verify_floating_point_equals([6], big)
-    verify_floating_point_equals([], "0.2")
+    verify_floating_point_equals([1], field, "-1.5")
+    verify_floating_point_equals([2, 3], field, "0")
+    verify_floating_point_equals([2, 3], field, "0.0")
+    verify_floating_point_equals([2, 3], field, "-0.0")
+    verify_floating_point_equals([4], field, "0.1")
+    verify_floating_point_equals([5], field, "1.5")
+    verify_floating_point_equals([6], field, big)
+    verify_floating_point_equals([], field, "0.2")
 
     # When using (-)Infinity, whether the bound is closed or not should not matter
-    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], CLOSED, nil, nil)
-    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], LEFT_OPEN, nil, nil)
-    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], RIGHT_OPEN, nil, nil)
-    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], OPEN, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], field, CLOSED, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], field, LEFT_OPEN, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], field, RIGHT_OPEN, nil, nil)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], field, OPEN, nil, nil)
 
     # When using the extreme values, whether the bound is closed or not SHOULD matter
-    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], CLOSED, "-#{big}", big)
-    verify_floating_point_range([1, 2, 3, 4, 5, 6], LEFT_OPEN, "-#{big}", big)
-    verify_floating_point_range([0, 1, 2, 3, 4, 5], RIGHT_OPEN, "-#{big}", big)
-    verify_floating_point_range([1, 2, 3, 4, 5], OPEN, "-#{big}", big)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5, 6], field, CLOSED, "-#{big}", big)
+    verify_floating_point_range([1, 2, 3, 4, 5, 6], field, LEFT_OPEN, "-#{big}", big)
+    verify_floating_point_range([0, 1, 2, 3, 4, 5], field, RIGHT_OPEN, "-#{big}", big)
+    verify_floating_point_range([1, 2, 3, 4, 5], field, OPEN, "-#{big}", big)
 
     # Behavior around 0
-    verify_floating_point_range([1, 2, 3, 4, 5], CLOSED, "-1.5", "1.5")
-    verify_floating_point_range([2, 3, 4, 5], LEFT_OPEN, "-1.5", "1.5")
-    verify_floating_point_range([1, 2, 3, 4], RIGHT_OPEN, "-1.5", "1.5")
-    verify_floating_point_range([2, 3, 4], OPEN, "-1.5", "1.5")
+    verify_floating_point_range([1, 2, 3, 4, 5], field, CLOSED, "-1.5", "1.5")
+    verify_floating_point_range([2, 3, 4, 5], field, LEFT_OPEN, "-1.5", "1.5")
+    verify_floating_point_range([1, 2, 3, 4], field, RIGHT_OPEN, "-1.5", "1.5")
+    verify_floating_point_range([2, 3, 4], field, OPEN, "-1.5", "1.5")
 
     # Behavior from -Infinity to 0: a closed bound includes both zeros, an open bound neither.
-    verify_floating_point_range([0, 1, 2, 3], CLOSED, nil, "0")
-    verify_floating_point_range([0, 1, 2, 3], LEFT_OPEN, nil, "0")
-    verify_floating_point_range([0, 1], RIGHT_OPEN, nil, "0")
-    verify_floating_point_range([0, 1], OPEN, nil, "0")
-    verify_floating_point_range([0, 1, 2, 3], CLOSED, nil, "-0.0")
-    verify_floating_point_range([0, 1], RIGHT_OPEN, nil, "-0.0")
+    verify_floating_point_range([0, 1, 2, 3], field, CLOSED, nil, "0")
+    verify_floating_point_range([0, 1, 2, 3], field, LEFT_OPEN, nil, "0")
+    verify_floating_point_range([0, 1], field, RIGHT_OPEN, nil, "0")
+    verify_floating_point_range([0, 1], field, OPEN, nil, "0")
+    verify_floating_point_range([0, 1, 2, 3], field, CLOSED, nil, "-0.0")
+    verify_floating_point_range([0, 1], field, RIGHT_OPEN, nil, "-0.0")
 
     # Behavior from 0 to Infinity
-    verify_floating_point_range([2, 3, 4, 5, 6], CLOSED, "0", nil)
-    verify_floating_point_range([4, 5, 6], LEFT_OPEN, "0", nil)
-    verify_floating_point_range([2, 3, 4, 5, 6], RIGHT_OPEN, "0", nil)
-    verify_floating_point_range([4, 5, 6], OPEN, "0", nil)
-    verify_floating_point_range([2, 3, 4, 5, 6], CLOSED, "-0.0", nil)
-    verify_floating_point_range([4, 5, 6], LEFT_OPEN, "-0.0", nil)
+    verify_floating_point_range([2, 3, 4, 5, 6], field, CLOSED, "0", nil)
+    verify_floating_point_range([4, 5, 6], field, LEFT_OPEN, "0", nil)
+    verify_floating_point_range([2, 3, 4, 5, 6], field, RIGHT_OPEN, "0", nil)
+    verify_floating_point_range([4, 5, 6], field, OPEN, "0", nil)
+    verify_floating_point_range([2, 3, 4, 5, 6], field, CLOSED, "-0.0", nil)
+    verify_floating_point_range([4, 5, 6], field, LEFT_OPEN, "-0.0", nil)
 
     # An endpoint which is not exactly representable is rounded like the stored value
-    verify_floating_point_range([4], CLOSED, "0.1", "0.1")
-    verify_floating_point_range([4, 5], CLOSED, "0.1", "1.5")
-    verify_floating_point_range([5], LEFT_OPEN, "0.1", "1.5")
-    verify_floating_point_range([4], RIGHT_OPEN, "0.1", "1.5")
-    verify_floating_point_range([], OPEN, "0.1", "1.5")
+    verify_floating_point_range([4], field, CLOSED, "0.1", "0.1")
+    verify_floating_point_range([4, 5], field, CLOSED, "0.1", "1.5")
+    verify_floating_point_range([5], field, LEFT_OPEN, "0.1", "1.5")
+    verify_floating_point_range([4], field, RIGHT_OPEN, "0.1", "1.5")
+    verify_floating_point_range([], field, OPEN, "0.1", "1.5")
   end
 
-  def verify_floating_point_equals(expected_ids, value)
-    [lookup("fast_map"), "plain_map"].each do |field|
+  def verify_floating_point_equals(expected_ids, field, value)
+    [lookup(field), field].each do |f|
       search_and_verify(expected_ids,
-                        {"yql" => "select * from sources * where #{field}{\"number\"} = #{value} order by id asc"})
+                        {"yql" => "select * from sources * where #{f}{\"number\"} = #{value} order by id asc"})
     end
   end
 
-  def verify_floating_point_range(expected_ids, annotation, from, to)
-    [lookup("fast_map"), "plain_map"].each do |field|
+  def verify_floating_point_range(expected_ids, field, annotation, from, to)
+    [lookup(field), field].each do |f|
       search_and_verify(expected_ids,
-                        {"yql" => "select * from sources * where (#{annotation}range(#{field}{\"number\"}, " +
+                        {"yql" => "select * from sources * where (#{annotation}range(#{f}{\"number\"}, " +
                                   "#{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})) order by id asc"})
     end
   end
@@ -562,50 +445,15 @@ class FastMapSearch < IndexedOnlySearchTest
   # Arrays of struct
   ######################################################################################################################
 
-  # For each value type: the values under key 'foo' in the documents fed by feed_arrays_and_wait,
-  # a range containing only the first value, and a range containing only the second.
+  # For each value type of the my_array_<type> fields in fast_map_search.sd: the values under key 'foo'
+  # in the documents fed by feed_arrays_and_wait, a range containing only the first value, and a range
+  # containing only the second.
   ARRAY_VALUES = {
     "string" => { :one => "bar", :two => "qux" },
     "int"    => { :one => 42, :two => 13, :range_one => [40, 50], :range_two => [10, 20] },
     "long"   => { :one => 4294967338, :two => 4294967309,
                   :range_one => [4294967330, 4294967350], :range_two => [4294967300, 4294967320] }
   }
-
-  # An array of struct acts as a map when the struct fields holding the key and the value are named
-  # in the 'fast-search map field' block. Every fast array has a plain twin holding the same elements,
-  # which is searched without the rewrite, to verify that the rewrite does not change which documents match.
-  def array_of_struct_fields
-    fields = <<~FIELDS
-      field id type int {
-        indexing: attribute | summary
-      }
-    FIELDS
-    ARRAY_VALUES.keys.each do |type|
-      fields += <<~FIELDS
-        struct entry_#{type} {
-          field mykey type string { }
-          field myvalue type #{type} { }
-        }
-        field fast_#{type} type array<entry_#{type}> {
-          indexing: summary
-          #{FAST_SEARCH_MAP} {
-            key: mykey
-            value: myvalue
-          }
-        }
-        field plain_#{type} type array<entry_#{type}> {
-          indexing: summary
-          struct-field mykey {
-            indexing: attribute
-          }
-          struct-field myvalue {
-            indexing: attribute
-          }
-        }
-      FIELDS
-    end
-    fields
-  end
 
   def feed_arrays_and_wait
     # Document 1 holds the first value, but under the key 'baz', so it must only match on 'baz'.
@@ -618,7 +466,7 @@ class FastMapSearch < IndexedOnlySearchTest
     docs.each_with_index do |elements, id|
       doc = Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id)
       ARRAY_VALUES.each do |type, values|
-        doc.add_field("fast_#{type}", elements.call(values)).add_field("plain_#{type}", elements.call(values))
+        doc.add_field("my_array_#{type}", elements.call(values))
       end
       vespa.document_api_v1.put(doc)
     end
@@ -626,8 +474,7 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   def test_array_of_struct
-    deploy_app(SearchApp.new.sd(write_sd(array_of_struct_fields)))
-    start
+    deploy_and_start
     feed_arrays_and_wait
 
     ARRAY_VALUES.each do |type, values|
@@ -644,56 +491,40 @@ class FastMapSearch < IndexedOnlySearchTest
     end
 
     # The fancy syntax works on the lookup field of an array too
-    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("fast_string")}{'foo'} contains 'bar' order by id asc" })
+    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("my_array_string")}{'foo'} contains 'bar' order by id asc" })
   end
 
-  # Runs a map lookup on the lookup field of the fast array, and the equivalent sameElement query
-  # on its plain twin, and verifies through the query trace that only the query on the fast array
-  # was rewritten to a fast map lookup. The value condition is made for the given value field name.
+  # Runs a map lookup on the lookup field of the array, and the equivalent sameElement query on the
+  # array itself, and verifies through the query trace that only the query on the lookup field was
+  # rewritten to a fast map lookup. The value condition is made for the given value field name.
   def verify_array_query(expected_ids, type, value_condition, key)
-    fast = "fast_#{type}"
-    plain = "plain_#{type}"
-    [ [fast, "#{lookup(fast)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})"],
-      [plain, "#{plain} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})"] ].each do |field, where|
+    field = "my_array_#{type}"
+    [ [true, "#{lookup(field)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})"],
+      [false, "#{field} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})"] ].each do |rewritten, where|
       yql = "select * from sources * where #{where} order by id asc"
       result = search({ "yql" => yql, "tracelevel" => "2" })
       verify_ids(expected_ids, result)
-      assert_equal(field == fast, result.json.to_s.include?("#{field}$#{LOOKUP}"),
-                   "Expected the query on #{field} to #{field == fast ? "" : "not "}" +
-                   "be rewritten to a fast map lookup: #{yql}")
+      assert_equal(rewritten, result.json.to_s.include?("#{field}$#{LOOKUP}"),
+                   "Expected the query to #{rewritten ? "" : "not "}be rewritten to a fast map lookup: #{yql}")
     end
   end
 
   # A field path update into one array element would leave the synthetic key-value attribute
   # holding only the updated element, so it is rejected, as for maps.
   def test_array_of_struct_element_assign_rejected
-    fields = <<~FIELDS
-      struct entry {
-        field mykey type string { }
-        field myvalue type string { }
-      }
-      field my_array type array<entry> {
-        indexing: summary
-        #{FAST_SEARCH_MAP} {
-          key: mykey
-          value: myvalue
-        }
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
+    deploy_and_start
     elements = [ { "mykey" => "foo", "myvalue" => "stale" } ]
-    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("my_array", elements))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0").add_field("my_array_string", elements))
     wait_for_hitcount('query=sddocname:fast_map_search', 1)
 
     update_file = "#{dirs.tmpdir}update_array_element.json"
     File.write(update_file, JSON.generate([ { "update" => "id:fast_map_search:fast_map_search::0",
-                                              "fields" => { "my_array[0]" => { "assign" => { "mykey" => "foo",
-                                                                                             "myvalue" => "bar" } } } } ]))
+                                              "fields" => { "my_array_string[0]" => { "assign" => { "mykey" => "foo",
+                                                                                                    "myvalue" => "bar" } } } } ]))
     output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_array' has 'fast-search map field', which does not support field path updates/, output)
-    assert_equal(elements, vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_array"])
+    assert_match(/Field 'my_array_string' has 'fast-search map field', which does not support field path updates/, output)
+    assert_equal(elements, vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_array_string"])
   end
 
   ######################################################################################################################
@@ -703,8 +534,7 @@ class FastMapSearch < IndexedOnlySearchTest
   # Removing a document must remove its entries from the synthetic key-value attribute,
   # and must leave the entries of the remaining documents alone.
   def test_document_removal
-    deploy_app(SearchApp.new.sd(write_sd(MY_FIELDS)))
-    start
+    deploy_and_start
     feed_and_wait
 
     # The value 'bar' sits under key 'foo' in document 0 and under key 'baz' in document 1.
@@ -728,67 +558,61 @@ class FastMapSearch < IndexedOnlySearchTest
 
   # A partial update must reach the synthetic key-value attribute, not only the summary.
   def test_partial_update_assign
-    fields = <<~FIELDS
-      field my_map type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
+    deploy_and_start
 
     # Both documents start out with the value 'stale' under every key, so none of the
     # queries below match before the updates are applied.
     feed_and_wait_for_docs("fast_map_search", 2, :file => selfdir+"feed_before_update.json")
-    assert_hitcount(map_match_query(lookup("my_map"), "foo", "bar"), 0)
-    assert_hitcount(map_match_query(lookup("my_map"), "baz", "bar"), 0)
-    assert_hitcount(map_match_query(lookup("my_map"), "foo", "stale"), 2)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "bar"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "stale"), 2)
 
     # Assign the whole map field on both documents, leaving them in exactly the state that
     # feed.json puts them in, so the shared assertions and the summary comparison can be
     # reused as is.
     feed(:file => selfdir+"update_assign.json")
-    wait_for_hitcount(map_match_query(lookup("my_map"), "foo", "bar"), 1)
+    wait_for_hitcount(map_match_query(lookup("my_map_string"), "foo", "bar"), 1)
 
     # The old values are gone from the attribute: a stale posting would still match here.
-    assert_hitcount(map_match_query(lookup("my_map"), "foo", "stale"), 0)
-    assert_hitcount(map_match_query(lookup("my_map"), "baz", "stale"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "foo", "stale"), 0)
+    assert_hitcount(map_match_query(lookup("my_map_string"), "baz", "stale"), 0)
 
-    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "foo", "bar"), 1)
-    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "baz", "bar"), 1)
-    assert_hitcount(public_send(:shortform_query, lookup("my_map"), "foo", "baz"), 0)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map_string"), "foo", "bar"), 1)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map_string"), "baz", "bar"), 1)
+    assert_hitcount(public_send(:shortform_query, lookup("my_map_string"), "foo", "baz"), 0)
   end
 
   def test_entry_level_assign_rejected
-    deploy_and_feed_map(FAST_SEARCH_MAP)
+    deploy_and_start
+    feed_and_wait_for_docs("fast_map_search", 1, :file => selfdir+"feed_entry_update.json")
+    assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
 
     output = feed(:file => selfdir+"update_assign_entry.json",
                   :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_map' has 'fast-search map field', which does not support field path updates/, output)
-    assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
-  end
-
-  def deploy_and_feed_map(fs)
-    fields = <<~FIELDS
-      field my_map type map<string, string> {
-        indexing: summary
-        #{fs}
-      }
-    FIELDS
-    deploy_app(SearchApp.new.sd(write_sd(fields)))
-    start
-    feed_and_wait_for_docs("fast_map_search", 1, :file => selfdir+"feed_entry_update.json")
+    assert_match(/Field 'my_map_string' has 'fast-search map field', which does not support field path updates/, output)
     assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
   end
 
   def stored_map
-    vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map"]
+    vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map_string"]
   end
 
   ######################################################################################################################
   # Test that invalid setups are rejected (deployment fails)
   ######################################################################################################################
+
+  def write_sd(fields)
+    sd_file = "#{dirs.tmpdir}fast_map_search.sd"
+    File.write(sd_file, <<~SD)
+      schema fast_map_search {
+        document fast_map_search {
+          #{fields}
+        }
+      }
+    SD
+    sd_file
+  end
 
   def test_rejected_setups
     check_old_syntax_deployment_fails

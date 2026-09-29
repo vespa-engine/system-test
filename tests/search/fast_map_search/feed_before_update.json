@@ -2,7 +2,7 @@
   {
     "id": "id:fast_map_search:fast_map_search::0",
     "fields": {
-      "my_map": {
+      "my_map_string": {
         "foo": "stale"
       }
     }
@@ -10,7 +10,7 @@
   {
     "id": "id:fast_map_search:fast_map_search::1",
     "fields": {
-      "my_map": {
+      "my_map_string": {
         "foo": "stale",
         "baz": "stale"
       }
