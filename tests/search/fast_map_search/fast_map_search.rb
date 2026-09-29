@@ -515,6 +515,11 @@ class FastMapSearch < IndexedOnlySearchTest
     verify_array_contains([1],    "my_array_int", "baz", INT_ONE)
     verify_array_contains([],     "my_array_int", "baz", INT_TWO)
 
+    verify_array_equals([0, 2], "my_array_int", "foo", INT_ONE)
+    verify_array_equals([1, 2], "my_array_int", "foo", INT_TWO)
+    verify_array_equals([1],    "my_array_int", "baz", INT_ONE)
+    verify_array_equals([],     "my_array_int", "baz", INT_TWO)
+
     verify_array_range([0, 2], "my_array_int", "foo", INT_RANGE_ONE)
     verify_array_range([1, 2], "my_array_int", "foo", INT_RANGE_TWO)
     verify_array_range([1],    "my_array_int", "baz", INT_RANGE_ONE)
@@ -526,28 +531,40 @@ class FastMapSearch < IndexedOnlySearchTest
     verify_array_contains([1],    "my_array_long", "baz", LONG_ONE)
     verify_array_contains([],     "my_array_long", "baz", LONG_TWO)
 
+    verify_array_equals([0, 2], "my_array_long", "foo", LONG_ONE)
+    verify_array_equals([1, 2], "my_array_long", "foo", LONG_TWO)
+    verify_array_equals([1],    "my_array_long", "baz", LONG_ONE)
+    verify_array_equals([],     "my_array_long", "baz", LONG_TWO)
+
     verify_array_range([0, 2], "my_array_long", "foo", LONG_RANGE_ONE)
     verify_array_range([1, 2], "my_array_long", "foo", LONG_RANGE_TWO)
     verify_array_range([1],    "my_array_long", "baz", LONG_RANGE_ONE)
     verify_array_range([],     "my_array_long", "baz", LONG_RANGE_TWO)
-
-    # The fancy syntax works on the lookup field of an array too
-    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("my_array_string")}{'foo'} contains '#{STRING_ONE}' order by id asc" })
   end
 
-  # Searches for elements with the given key and value, both with a map lookup on the lookup field
-  # of the array, and with the equivalent sameElement query on the array itself. Both must match
-  # the documents with the given ids.
+  # Searches for elements with the given key and value with a map lookup on the lookup field of the
+  # array, both in the explicit mapMatch form and in the fancy syntax, and with the equivalent
+  # sameElement query on the array itself. All must match the documents with the given ids.
   def verify_array_contains(expected_ids, field, key, value)
     verify_array_query(expected_ids, "#{lookup(field)} contains mapMatch(key contains '#{key}', value contains '#{value}')")
+    verify_array_query(expected_ids, "#{lookup(field)}{'#{key}'} contains '#{value}'")
     verify_array_query(expected_ids, "#{field} contains sameElement(mykey contains '#{key}', myvalue contains '#{value}')")
   end
 
-  # Searches for elements with the given key and a value in the given range, in the same two ways
+  # Searches for elements with the given key and numeric value with '=' instead of 'contains',
+  # in the same three ways as verify_array_contains. The value is not quoted, so it stays a number.
+  def verify_array_equals(expected_ids, field, key, value)
+    verify_array_query(expected_ids, "#{lookup(field)} contains mapMatch(key contains '#{key}', value = #{value})")
+    verify_array_query(expected_ids, "#{lookup(field)}{'#{key}'} = #{value}")
+    verify_array_query(expected_ids, "#{field} contains sameElement(mykey contains '#{key}', myvalue = #{value})")
+  end
+
+  # Searches for elements with the given key and a value in the given range, in the same three ways
   # as verify_array_contains.
   def verify_array_range(expected_ids, field, key, range)
     from, to = range
     verify_array_query(expected_ids, "#{lookup(field)} contains mapMatch(key contains '#{key}', range(value, #{from}, #{to}))")
+    verify_array_query(expected_ids, "range(#{lookup(field)}{'#{key}'}, #{from}, #{to})")
     verify_array_query(expected_ids, "#{field} contains sameElement(mykey contains '#{key}', range(myvalue, #{from}, #{to}))")
   end
 
