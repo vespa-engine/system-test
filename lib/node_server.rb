@@ -647,26 +647,29 @@ class NodeServer
 
     rpc_port_up = false
     http_port_up = false
+    last_failure_output = 0
+    state_dumped = false
     begin
       configserver(@hostname, @port_configserver_rpc).ping() unless rpc_port_up
       rpc_port_up = true
       configserver_http_ping(@hostname, port_configserver_http) unless http_port_up
       http_port_up = true
     rescue StandardError => se
-      if (Time.now.to_i - start > 20)
+      # Retries are 0.1 seconds apart, so output at most every 10 seconds, and dump state once
+      if Time.now.to_i - start > 20 && Time.now.to_i - last_failure_output >= 10
         testcase_output("Config server on #{spec} failed: #{se}")
+        last_failure_output = Time.now.to_i
       end
       sleep 0.1
-      if Time.now.to_i - start > 200
-        execute("vespa-logfmt -l all | tail -n 300", :exceptiononfailure => false)
-        execute("vespa-logfmt -l all #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.0.log | tail -n 1000", :exceptiononfailure => false)
-        execute("ps xgauww | grep 'config[s]erver'", :exceptiononfailure => false)
-        execute("netstat -an | grep #{@port_configserver_rpc}", :exceptiononfailure => false)
+      if Time.now.to_i - start > 200 && !state_dumped
+        dump_configserver_state
+        state_dumped = true
       end
       if Time.now.to_i - start < timeout
         retry
       else
         testcase_output("Failed connecting to config server on #{spec}. Gave up after #{timeout} seconds.")
+        dump_configserver_state
         execute("ls -latr #{Environment.instance.vespa_home}/var/zookeeper", :exceptiononfailure => false)
         execute("ls -latr #{Environment.instance.vespa_home}/var/zookeeper/version-2", :exceptiononfailure => false)
         print_configserver_stack
@@ -674,6 +677,13 @@ class NodeServer
       end
     end
     testcase_output("Config server on #{hostname} is alive")
+  end
+
+  def dump_configserver_state
+    execute("vespa-logfmt -l all | tail -n 300", :exceptiononfailure => false)
+    execute("vespa-logfmt -l all #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.0.log | tail -n 1000", :exceptiononfailure => false)
+    execute("ps xgauww | grep 'config[s]erver'", :exceptiononfailure => false)
+    execute("netstat -an | grep #{@port_configserver_rpc}", :exceptiononfailure => false)
   end
 
   def start_configserver
