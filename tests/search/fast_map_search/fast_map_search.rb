@@ -58,39 +58,45 @@ class FastMapSearch < IndexedOnlySearchTest
     deploy_and_start
     feed_and_wait
 
-    run_queries(:map_match_query, "my_map_string", "bar", "baz", "result.json")
-    run_queries(:shortform_query, "my_map_string", "bar", "baz", "result.json")
+    run_queries([:map_match_query, :shortform_query], "my_map_string", "bar", "baz", "result.json")
 
-    run_queries(:map_match_query, "my_map_int", 42, 43, "result.json")
-    run_queries(:shortform_query, "my_map_int", 42, 43, "result.json")
-    run_queries(:shortform_equals_query, "my_map_int", 42, 43, "result.json")
+    numeric = [:map_match_query, :map_match_equals_query, :shortform_query, :shortform_equals_query]
+    run_queries(numeric, "my_map_int", 42, 43, "result.json")
+    run_queries(numeric, "my_map_long", 4294967338, 4294967339, "result.json")
 
-    run_queries(:map_match_query, "my_map_long", 4294967338, 4294967339, "result.json")
-    run_queries(:shortform_query, "my_map_long", 4294967338, 4294967339, "result.json")
-    run_queries(:shortform_equals_query, "my_map_long", 4294967338, 4294967339, "result.json")
-
-    # Only the unquoted spelling, which keeps the value a numeric term.
-    run_queries(:shortform_equals_query, "my_map_float", 1.5, 1.75, "result.json")
-    run_queries(:shortform_equals_query, "my_map_double", -2.5, -2.75, "result.json")
+    # Only the '=' spellings, which keep the value a numeric term: a quoted '1.5' is a word term,
+    # which linguistics may split into '1' and '5'.
+    floating_point = [:map_match_equals_query, :shortform_equals_query]
+    run_queries(floating_point, "my_map_float", 1.5, 1.75, "result.json")
+    run_queries(floating_point, "my_map_double", -2.5, -2.75, "result.json")
   end
 
-  # Runs the queries made by the given function on the lookup field of the given field.
-  def run_queries(make_query_fn, field, value_one, value_two, result_file)
-    # A key-value pair matches only when both are present in the same map entry.
-    # Document 1 contains both the key 'foo' and the value 'bar', but in different
-    # entries, so it must not match.
-    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_one), 1)
-    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", value_one), 1)
-    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_two), 0)
+  # Runs the queries made by each of the given functions on the lookup field of the given field.
+  def run_queries(make_query_fns, field, value_one, value_two, result_file)
+    make_query_fns.each do |make_query_fn|
+      # A key-value pair matches only when both are present in the same map entry.
+      # Document 1 contains both the key 'foo' and the value 'bar', but in different
+      # entries, so it must not match.
+      assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_one), 1)
+      assert_hitcount(public_send(make_query_fn, lookup(field), "baz", value_one), 1)
+      assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_two), 0)
 
-    # The map summary is returned, and the synthetic attribute is not part of it.
-    assert_result(public_send(make_query_fn, lookup(field), "foo", value_one), selfdir + result_file)
+      # The map summary is returned, and the synthetic attribute is not part of it.
+      assert_result(public_send(make_query_fn, lookup(field), "foo", value_one), selfdir + result_file)
+    end
   end
 
   # The explicit form of a map lookup, which the fancy syntax below is short for.
   def map_match_query(field, key, value)
     yql = "select * from sources * where #{field} contains mapMatch(" +
           "key contains '#{key}', value contains '#{value}')"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  # The explicit form of field{key} = value, see shortform_equals_query.
+  def map_match_equals_query(field, key, value)
+    yql = "select * from sources * where #{field} contains mapMatch(" +
+          "key contains '#{key}', value = #{value})"
     URI.encode_www_form([['yql', yql]])
   end
 
@@ -214,37 +220,36 @@ class FastMapSearch < IndexedOnlySearchTest
     deploy_and_start
     feed_and_wait
 
-    run_range_queries(:map_match_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
-    run_range_queries(:map_range_query, "my_map_int", [40, 50], [10, 20], "result.json")
+    range_queries = [:map_match_range_query, :map_range_query]
+    run_range_queries(range_queries, "my_map_int", [40, 50], [10, 20], "result.json")
 
     # The endpoints lie beyond the int range, as do the fed values.
-    run_range_queries(:map_match_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
-    run_range_queries(:map_range_query, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
+    run_range_queries(range_queries, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320], "result.json")
 
     # range_two spans zero, where the encoding of the sign changes.
-    run_range_queries(:map_match_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
-    run_range_queries(:map_range_query, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
+    run_range_queries(range_queries, "my_map_float", [1.0, 2.0], [-0.5, 0.5], "result.json")
 
     # range_one holds negative values only, whose encoding must be inverted to sort correctly.
-    run_range_queries(:map_match_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
-    run_range_queries(:map_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
+    run_range_queries(range_queries, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
   end
 
-  # Runs the queries made by the given function on the lookup field of the given field.
+  # Runs the queries made by each of the given functions on the lookup field of the given field.
   # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
   # range_two contains the 'foo' value of document 1, and neither range contains both.
-  def run_range_queries(make_query_fn, field, range_one, range_two, result_file)
-    # Only the entry with the queried key is considered: the two documents have different
-    # 'foo' values, so a range around one of them on key 'foo' matches one document only.
-    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_one), 1)
-    assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_two), 1)
-    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_one), 1)
+  def run_range_queries(make_query_fns, field, range_one, range_two, result_file)
+    make_query_fns.each do |make_query_fn|
+      # Only the entry with the queried key is considered: the two documents have different
+      # 'foo' values, so a range around one of them on key 'foo' matches one document only.
+      assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_one), 1)
+      assert_hitcount(public_send(make_query_fn, lookup(field), "foo", *range_two), 1)
+      assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_one), 1)
 
-    # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
-    assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_two), 0)
+      # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
+      assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_two), 0)
 
-    # The map summary is returned, and the synthetic attribute is not part of it.
-    assert_result(public_send(make_query_fn, lookup(field), "foo", *range_one), selfdir + result_file)
+      # The map summary is returned, and the synthetic attribute is not part of it.
+      assert_result(public_send(make_query_fn, lookup(field), "foo", *range_one), selfdir + result_file)
+    end
   end
 
   def map_match_range_query(field, key, from, to)
