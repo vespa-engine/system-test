@@ -244,21 +244,32 @@ class FastMapSearch < IndexedOnlySearchTest
   # Range search
   ######################################################################################################################
 
+  # Ranges over the values fed by feed_and_wait: each _RANGE_ONE contains the _ONE value,
+  # each _RANGE_TWO contains the _TWO value, and neither contains both.
+  INT_RANGE_ONE = [40, 50]
+  INT_RANGE_TWO = [10, 20]
+  LONG_RANGE_ONE = [4294967330, 4294967350]
+  LONG_RANGE_TWO = [4294967300, 4294967320]
+  FLOAT_RANGE_ONE = [1.0, 2.0]
+  FLOAT_RANGE_TWO = [-0.5, 0.5]
+  DOUBLE_RANGE_ONE = [-3.0, -2.0]
+  DOUBLE_RANGE_TWO = [0.5, 1.0]
+
   def test_range_basic
     deploy_and_start
     feed_and_wait
 
     range_queries = [:map_match_range_query, :map_range_query]
-    run_range_queries(range_queries, "my_map_int", [40, 50], [10, 20])
+    run_range_queries(range_queries, "my_map_int", INT_RANGE_ONE, INT_RANGE_TWO)
 
     # The endpoints lie beyond the int range, as do the fed values.
-    run_range_queries(range_queries, "my_map_long", [4294967330, 4294967350], [4294967300, 4294967320])
+    run_range_queries(range_queries, "my_map_long", LONG_RANGE_ONE, LONG_RANGE_TWO)
 
-    # range_two spans zero, where the encoding of the sign changes.
-    run_range_queries(range_queries, "my_map_float", [1.0, 2.0], [-0.5, 0.5])
+    # FLOAT_RANGE_TWO spans zero, where the encoding of the sign changes.
+    run_range_queries(range_queries, "my_map_float", FLOAT_RANGE_ONE, FLOAT_RANGE_TWO)
 
-    # range_one holds negative values only, whose encoding must be inverted to sort correctly.
-    run_range_queries(range_queries, "my_map_double", [-3.0, -2.0], [0.5, 1.0])
+    # DOUBLE_RANGE_ONE holds negative values only, whose encoding must be inverted to sort correctly.
+    run_range_queries(range_queries, "my_map_double", DOUBLE_RANGE_ONE, DOUBLE_RANGE_TWO)
   end
 
   # Runs the queries made by each of the given functions on the lookup field of the given field.
