@@ -73,13 +73,6 @@ class FastMapSearch < IndexedOnlySearchTest
     # Only the unquoted spelling, which keeps the value a numeric term.
     run_queries(:shortform_equals_query, "my_map_float", 1.5, 1.75, "result.json")
     run_queries(:shortform_equals_query, "my_map_double", -2.5, -2.75, "result.json")
-
-    # Only queries naming the lookup field are rewritten
-    ["my_map_string", "my_map_int"].each do |field|
-      assert_not_rewritten(search(same_element_query(field, "foo", "42", 2)), field)
-      assert_not_rewritten(search(shortform_query(field, "foo", "42", 2)), field)
-      assert_not_rewritten(search(shortform_equals_query(field, "foo", 42, 2)), field)
-    end
   end
 
   # Runs the queries made by the given function on the lookup field of the given field.
@@ -91,57 +84,28 @@ class FastMapSearch < IndexedOnlySearchTest
     assert_hitcount(public_send(make_query_fn, lookup(field), "baz", value_one), 1)
     assert_hitcount(public_send(make_query_fn, lookup(field), "foo", value_two), 0)
 
-    # A map lookup on the lookup field of a field with 'fast-search map field' is rewritten
-    # by the container to a single lookup in the synthetic key-value attribute. Verify
-    # through the query trace that the rewrite actually happened.
-    result = search(public_send(make_query_fn, lookup(field), "foo", value_one, 2))
-    assert_rewritten(result, field)
-
-    # The rewrite does not change the result: the map summary is returned,
-    # and the synthetic attribute is not part of it.
+    # The map summary is returned, and the synthetic attribute is not part of it.
     assert_result(public_send(make_query_fn, lookup(field), "foo", value_one), selfdir + result_file)
   end
 
-  def assert_rewritten(result, field)
-    assert(result.json.to_s.include?("#{field}$#{LOOKUP}"), "Expected query for field '#{field}' to be rewritten to a fast map lookup")
-  end
-
-  def assert_not_rewritten(result, field)
-    assert(!result.json.to_s.include?("#{field}$#{LOOKUP}"), "Expected query for field '#{field}' not to be rewritten to a fast map lookup")
-  end
-
-  def same_element_query(field, key, value, tracelevel = nil)
-    yql = "select * from sources * where #{field} contains sameElement(" +
-          "key contains '#{key}', value contains '#{value}')"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
-  end
-
   # The explicit form of a map lookup, which the fancy syntax below is short for.
-  def map_match_query(field, key, value, tracelevel = nil)
+  def map_match_query(field, key, value)
     yql = "select * from sources * where #{field} contains mapMatch(" +
           "key contains '#{key}', value contains '#{value}')"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
+    URI.encode_www_form([['yql', yql]])
   end
 
   # fancy syntax: field{key} contains value.
-  def shortform_query(field, key, value, tracelevel = nil)
+  def shortform_query(field, key, value)
     yql = "select * from sources * where #{field}{'#{key}'} contains '#{value}'"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
+    URI.encode_www_form([['yql', yql]])
   end
 
   # fancy syntax: field{key} = value. Unquoted, so the value stays a numeric term
   # rather than the word term the quoted 'contains' spelling produces.
-  def shortform_equals_query(field, key, value, tracelevel = nil)
+  def shortform_equals_query(field, key, value)
     yql = "select * from sources * where #{field}{'#{key}'} = #{value}"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
+    URI.encode_www_form([['yql', yql]])
   end
 
   def test_search_cased_uncased
@@ -158,7 +122,7 @@ class FastMapSearch < IndexedOnlySearchTest
     wait_for_hitcount('query=sddocname:cased_uncased', 1)
 
     # The maps have struct-field attributes, so they are searchable without the rewrite too.
-    # Querying the lookup field is rewritten, querying the map itself is not, and both must match the same.
+    # Querying the lookup field and querying the map itself must match the same.
     [ lambda { |field| lookup(field) }, lambda { |field| field } ].each do |ref|
       puts "Uncased matching"
       assert_hitcount(shortform_query(ref.call("string_map"), "case_does_not_matter", "foo"), 1)
@@ -190,9 +154,57 @@ class FastMapSearch < IndexedOnlySearchTest
       assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967338), 0)
       assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967339), 1)
     end
+  end
 
-    assert_rewritten(search(shortform_query(lookup("cased_string_map"), "case_matters", "foo", 2)), "cased_string_map")
-    assert_not_rewritten(search(shortform_query("cased_string_map", "case_matters", "foo", 2)), "cased_string_map")
+  ######################################################################################################################
+  # Query rewriting
+  ######################################################################################################################
+
+  # A query on the lookup field of a field with 'fast-search map field' is rewritten by the container
+  # to the synthetic key-value attribute, which the query trace names as <field>$<lookup>. A query on
+  # the field itself is left alone and searches the struct-field attributes.
+  def test_rewrite
+    deploy_and_start
+    feed_and_wait
+
+    ["my_map_string", "my_map_int"].each do |field|
+      assert_rewritten(field, "#{lookup(field)} contains mapMatch(key contains 'foo', value contains '42')")
+      assert_rewritten(field, "#{lookup(field)}{'foo'} contains '42'")
+      assert_rewritten(field, "#{lookup(field)}{'foo'} = 42") if field == "my_map_int"
+
+      assert_not_rewritten(field, "#{field} contains sameElement(key contains 'foo', value contains '42')")
+      assert_not_rewritten(field, "#{field}{'foo'} contains '42'")
+      assert_not_rewritten(field, "#{field}{'foo'} = 42") if field == "my_map_int"
+    end
+
+    # Ranges are rewritten too, also with the hitLimit annotation (even though the hitLimit might be ignored)
+    ["my_map_int", "my_map_long", "my_map_float", "my_map_double"].each do |field|
+      assert_rewritten(field, "range(#{lookup(field)}{'foo'}, -10, 50)")
+      assert_rewritten(field, "#{lookup(field)} contains mapMatch(key contains 'foo', range(value, -10, 50))")
+      assert_rewritten(field, "({hitLimit: 1}range(#{lookup(field)}{'foo'}, -10, 50))")
+      assert_rewritten(field, "({hitLimit: 1, descending: true}range(#{lookup(field)}{'foo'}, -10, 50))")
+
+      assert_not_rewritten(field, "range(#{field}{'foo'}, -10, 50)")
+      assert_not_rewritten(field, "#{field} contains sameElement(key contains 'foo', range(value, -10, 50))")
+    end
+
+    # For an array of struct, the key and value are named by the struct fields given in the schema.
+    assert_rewritten("my_array_string", "#{lookup("my_array_string")} contains mapMatch(key contains 'foo', value contains 'bar')")
+    assert_rewritten("my_array_string", "#{lookup("my_array_string")}{'foo'} contains 'bar'")
+    assert_not_rewritten("my_array_string", "my_array_string contains sameElement(mykey contains 'foo', myvalue contains 'bar')")
+  end
+
+  def assert_rewritten(field, where)
+    assert(rewritten?(field, where), "Expected query to be rewritten to a fast map lookup: #{where}")
+  end
+
+  def assert_not_rewritten(field, where)
+    assert(!rewritten?(field, where), "Expected query not to be rewritten to a fast map lookup: #{where}")
+  end
+
+  def rewritten?(field, where)
+    result = search({ "yql" => "select * from sources * where #{where}", "tracelevel" => "2" })
+    result.json.to_s.include?("#{field}$#{LOOKUP}")
   end
 
   ######################################################################################################################
@@ -217,16 +229,6 @@ class FastMapSearch < IndexedOnlySearchTest
     # range_one holds negative values only, whose encoding must be inverted to sort correctly.
     run_range_queries(:map_match_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
     run_range_queries(:map_range_query, "my_map_double", [-3.0, -2.0], [0.5, 1.0], "result.json")
-
-    # Check that range search is still rewritten when using the hitLimit annotation (even though the hitLimit might be ignored)
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_int.#{LOOKUP}{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_int.#{LOOKUP}{\"foo\"}, 10, 50))", "tracelevel" => "2" }), "my_map_int")
-
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_long.#{LOOKUP}{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_long.#{LOOKUP}{\"foo\"}, 10, 4294967338))", "tracelevel" => "2" }), "my_map_long")
-
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1}range(my_map_float.#{LOOKUP}{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
-    assert_rewritten(search({"yql" => "select * from sources * where ({hitLimit: 1, descending: true}range(my_map_float.#{LOOKUP}{\"foo\"}, -10.0, 10.0))", "tracelevel" => "2" }), "my_map_float")
   end
 
   # Runs the queries made by the given function on the lookup field of the given field.
@@ -242,30 +244,20 @@ class FastMapSearch < IndexedOnlySearchTest
     # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
     assert_hitcount(public_send(make_query_fn, lookup(field), "baz", *range_two), 0)
 
-    # A range on the lookup field is rewritten by the container to a lexical range over the
-    # synthetic key-value attribute. Verify through the query trace that it happened.
-    result = search(public_send(make_query_fn, lookup(field), "foo", *range_one, 2))
-    assert_rewritten(result, field)
-
-    # The rewrite does not change the result: the map summary is returned,
-    # and the synthetic attribute is not part of it.
+    # The map summary is returned, and the synthetic attribute is not part of it.
     assert_result(public_send(make_query_fn, lookup(field), "foo", *range_one), selfdir + result_file)
   end
 
-  def map_match_range_query(field, key, from, to, tracelevel = nil)
+  def map_match_range_query(field, key, from, to)
     yql = "select * from sources * where #{field} contains mapMatch(" +
           "key contains '#{key}', range(value, #{from}, #{to}))"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
+    URI.encode_www_form([['yql', yql]])
   end
 
   # fancy syntax: range(field{key}, from, to).
-  def map_range_query(field, key, from, to, tracelevel = nil)
+  def map_range_query(field, key, from, to)
     yql = "select * from sources * where range(#{field}{'#{key}'}, #{from}, #{to})"
-    form = [['yql', yql]]
-    form << ['tracelevel', tracelevel.to_s] if tracelevel
-    URI.encode_www_form(form)
+    URI.encode_www_form([['yql', yql]])
   end
 
   def test_range_int_corner_cases
@@ -357,16 +349,6 @@ class FastMapSearch < IndexedOnlySearchTest
                                   add_field("id", id).add_field(field, map))
     end
     wait_for_hitcount('query=sddocname:fast_map_search', values.size)
-
-    # The rewrite to the synthetic key-value attribute happens, for single values and ranges.
-    [ "#{lookup(field)}{\"number\"} = 1.5", "range(#{lookup(field)}{\"number\"}, -1.5, 1.5)" ].each do |where|
-      result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
-      assert_rewritten(result, field)
-    end
-    [ "#{field}{\"number\"} = 1.5", "range(#{field}{\"number\"}, -1.5, 1.5)" ].each do |where|
-      result = search({"yql" => "select * from sources * where #{where}", "tracelevel" => "2"})
-      assert_not_rewritten(result, field)
-    end
 
     # Single values. A zero matches both -0.0 and 0.0.
     verify_floating_point_equals([1], field, "-1.5")
@@ -495,17 +477,13 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   # Runs a map lookup on the lookup field of the array, and the equivalent sameElement query on the
-  # array itself, and verifies through the query trace that only the query on the lookup field was
-  # rewritten to a fast map lookup. The value condition is made for the given value field name.
+  # array itself, which must match the same documents. The value condition is made for the given
+  # value field name.
   def verify_array_query(expected_ids, type, value_condition, key)
     field = "my_array_#{type}"
-    [ [true, "#{lookup(field)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})"],
-      [false, "#{field} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})"] ].each do |rewritten, where|
-      yql = "select * from sources * where #{where} order by id asc"
-      result = search({ "yql" => yql, "tracelevel" => "2" })
-      verify_ids(expected_ids, result)
-      assert_equal(rewritten, result.json.to_s.include?("#{field}$#{LOOKUP}"),
-                   "Expected the query to #{rewritten ? "" : "not "}be rewritten to a fast map lookup: #{yql}")
+    [ "#{lookup(field)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})",
+      "#{field} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})" ].each do |where|
+      search_and_verify(expected_ids, { "yql" => "select * from sources * where #{where} order by id asc" })
     end
   end
 
