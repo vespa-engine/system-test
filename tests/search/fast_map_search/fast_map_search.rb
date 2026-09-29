@@ -12,7 +12,6 @@ class FastMapSearch < IndexedOnlySearchTest
   # The name given to the lookup field in 'fast-search map field', which queries must use,
   # as in my_map.lookup{"key"} = 42, to be rewritten to a fast map lookup
   LOOKUP = "lookup"
-  FAST_SEARCH_MAP = "fast-search map field: #{LOOKUP}"
 
   def setup
     set_description("Tests fast map search feature")
@@ -580,15 +579,9 @@ class FastMapSearch < IndexedOnlySearchTest
   # Test that invalid setups are rejected (deployment fails)
   ######################################################################################################################
 
-  def write_sd(fields)
+  def write_sd(schema)
     sd_file = "#{dirs.tmpdir}fast_map_search.sd"
-    File.write(sd_file, <<~SD)
-      schema fast_map_search {
-        document fast_map_search {
-          #{fields}
-        }
-      }
-    SD
+    File.write(sd_file, schema)
     sd_file
   end
 
@@ -611,74 +604,94 @@ class FastMapSearch < IndexedOnlySearchTest
 
   # The old syntax, before the lookup field was named, is gone
   def check_old_syntax_deployment_fails
-    fields = <<~FIELDS
-      field my_map type map<string, string> {
-        indexing: summary
-        map: fast-search
+    schema = <<~SD
+      schema fast_map_search {
+        document fast_map_search {
+          field my_map type map<string, string> {
+            indexing: summary
+            map: fast-search
+          }
+        }
       }
-    FIELDS
-    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+    SD
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(schema)))
   end
 
   def check_cased_key_only_deployment_fails
-    fields = <<~FIELDS
-      field cased_key_only type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key {
-          indexing: attribute
-          match: cased
+    schema = <<~SD
+      schema fast_map_search {
+        document fast_map_search {
+          field cased_key_only type map<string, string> {
+            indexing: summary
+            fast-search map field: lookup
+            struct-field key {
+              indexing: attribute
+              match: cased
+            }
+            struct-field value { indexing: attribute }
+          }
         }
-        struct-field value { indexing: attribute }
       }
-    FIELDS
-    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+    SD
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(schema)))
   end
 
   def check_cased_value_only_deployment_fails
-    fields = <<~FIELDS
-      field cased_value_only type map<string, string> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-        struct-field key { indexing: attribute }
-        struct-field value {
-          indexing: attribute
-          match: cased
+    schema = <<~SD
+      schema fast_map_search {
+        document fast_map_search {
+          field cased_value_only type map<string, string> {
+            indexing: summary
+            fast-search map field: lookup
+            struct-field key { indexing: attribute }
+            struct-field value {
+              indexing: attribute
+              match: cased
+            }
+          }
         }
       }
-    FIELDS
-    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+    SD
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(schema)))
   end
 
   def check_array_of_struct_without_key_and_value_deployment_fails
-    fields = <<~FIELDS
-      struct entry {
-        field mykey type string { }
-        field myvalue type string { }
+    schema = <<~SD
+      schema fast_map_search {
+        document fast_map_search {
+          struct entry {
+            field mykey type string { }
+            field myvalue type string { }
+          }
+          field my_array type array<entry> {
+            indexing: summary
+            fast-search map field: lookup
+          }
+        }
       }
-      field my_array type array<entry> {
-        indexing: summary
-        #{FAST_SEARCH_MAP}
-      }
-    FIELDS
-    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+    SD
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(schema)))
   end
 
   def check_array_of_struct_with_unknown_key_deployment_fails
-    fields = <<~FIELDS
-      struct entry {
-        field mykey type string { }
-        field myvalue type string { }
-      }
-      field my_array type array<entry> {
-        indexing: summary
-        #{FAST_SEARCH_MAP} {
-          key: nokey
-          value: myvalue
+    schema = <<~SD
+      schema fast_map_search {
+        document fast_map_search {
+          struct entry {
+            field mykey type string { }
+            field myvalue type string { }
+          }
+          field my_array type array<entry> {
+            indexing: summary
+            fast-search map field: lookup {
+              key: nokey
+              value: myvalue
+            }
+          }
         }
       }
-    FIELDS
-    assert_deploy_app_fail(SearchApp.new.sd(write_sd(fields)))
+    SD
+    assert_deploy_app_fail(SearchApp.new.sd(write_sd(schema)))
   end
 
 end
