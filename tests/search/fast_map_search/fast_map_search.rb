@@ -36,22 +36,39 @@ class FastMapSearch < IndexedOnlySearchTest
   # Search tests
   ######################################################################################################################
 
+  # Values of the maps fed by feed_and_wait. The _THREE values are in no document.
+  STRING_ONE = "bar"
+  STRING_TWO = "qux"
+  STRING_THREE = "baz"
+  INT_ONE = 42
+  INT_TWO = 13
+  INT_THREE = 43
+  LONG_ONE = 4294967338
+  LONG_TWO = 4294967309
+  LONG_THREE = 4294967339
+  FLOAT_ONE = 1.5
+  FLOAT_TWO = 0.25
+  FLOAT_THREE = 1.75
+  DOUBLE_ONE = -2.5
+  DOUBLE_TWO = 0.75
+  DOUBLE_THREE = -2.75
+
   def feed_and_wait
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
                                       .add_field("id", 0)
-                                      .add_field("my_map_string", { "foo" => "bar" })
-                                      .add_field("my_map_int", { "foo" => 42 })
-                                      .add_field("my_map_long", { "foo" => 4294967338 })
-                                      .add_field("my_map_float", { "foo" => 1.5 })
-                                      .add_field("my_map_double", { "foo" => -2.5 })
+                                      .add_field("my_map_string", { "foo" => STRING_ONE })
+                                      .add_field("my_map_int", { "foo" => INT_ONE })
+                                      .add_field("my_map_long", { "foo" => LONG_ONE })
+                                      .add_field("my_map_float", { "foo" => FLOAT_ONE })
+                                      .add_field("my_map_double", { "foo" => DOUBLE_ONE })
     )
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1")
                                       .add_field("id", 1)
-                                      .add_field("my_map_string", { "foo" => "qux", "baz" => "bar" })
-                                      .add_field("my_map_int", { "foo" => 13, "baz" => 42 })
-                                      .add_field("my_map_long", { "foo" => 4294967309, "baz" => 4294967338 })
-                                      .add_field("my_map_float", { "foo" => 0.25, "baz" => 1.5 })
-                                      .add_field("my_map_double", { "foo" => 0.75, "baz" => -2.5 })
+                                      .add_field("my_map_string", { "foo" => STRING_TWO, "baz" => STRING_ONE })
+                                      .add_field("my_map_int", { "foo" => INT_TWO, "baz" => INT_ONE })
+                                      .add_field("my_map_long", { "foo" => LONG_TWO, "baz" => LONG_ONE })
+                                      .add_field("my_map_float", { "foo" => FLOAT_TWO, "baz" => FLOAT_ONE })
+                                      .add_field("my_map_double", { "foo" => DOUBLE_TWO, "baz" => DOUBLE_ONE })
     )
     wait_for_hitcount('query=sddocname:fast_map_search', 2)
   end
@@ -60,17 +77,17 @@ class FastMapSearch < IndexedOnlySearchTest
     deploy_and_start
     feed_and_wait
 
-    run_queries([:map_match_query, :shortform_query], "my_map_string", "bar", "baz")
+    run_queries([:map_match_query, :shortform_query], "my_map_string", STRING_ONE, STRING_THREE)
 
     numeric = [:map_match_query, :map_match_equals_query, :shortform_query, :shortform_equals_query]
-    run_queries(numeric, "my_map_int", 42, 43)
-    run_queries(numeric, "my_map_long", 4294967338, 4294967339)
+    run_queries(numeric, "my_map_int", INT_ONE, INT_THREE)
+    run_queries(numeric, "my_map_long", LONG_ONE, LONG_THREE)
 
     # Only the '=' spellings, which keep the value a numeric term: a quoted '1.5' is a word term,
     # which linguistics may split into '1' and '5'.
     floating_point = [:map_match_equals_query, :shortform_equals_query]
-    run_queries(floating_point, "my_map_float", 1.5, 1.75)
-    run_queries(floating_point, "my_map_double", -2.5, -2.75)
+    run_queries(floating_point, "my_map_float", FLOAT_ONE, FLOAT_THREE)
+    run_queries(floating_point, "my_map_double", DOUBLE_ONE, DOUBLE_THREE)
   end
 
   # Runs the queries made by each of the given functions on the lookup field of the given field.
