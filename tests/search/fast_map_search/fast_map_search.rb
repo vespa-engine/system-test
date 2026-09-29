@@ -51,6 +51,9 @@ class FastMapSearch < IndexedOnlySearchTest
   DOUBLE_ONE = -2.5
   DOUBLE_TWO = 0.75
   DOUBLE_THREE = -2.75
+  # Keys of the my_map_int_key and my_map_long_key fields, used as "foo" and "baz" in the other maps
+  INT_KEYS = [7, -3]
+  LONG_KEYS = [5000000000, -5000000000]
 
   def feed_and_wait
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
@@ -60,6 +63,8 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("my_map_long", { "foo" => LONG_ONE })
                                       .add_field("my_map_float", { "foo" => FLOAT_ONE })
                                       .add_field("my_map_double", { "foo" => DOUBLE_ONE })
+                                      .add_field("my_map_int_key", { INT_KEYS[0] => STRING_ONE })
+                                      .add_field("my_map_long_key", { LONG_KEYS[0] => STRING_ONE })
     )
     vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1")
                                       .add_field("id", 1)
@@ -68,6 +73,8 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("my_map_long", { "foo" => LONG_TWO, "baz" => LONG_ONE })
                                       .add_field("my_map_float", { "foo" => FLOAT_TWO, "baz" => FLOAT_ONE })
                                       .add_field("my_map_double", { "foo" => DOUBLE_TWO, "baz" => DOUBLE_ONE })
+                                      .add_field("my_map_int_key", { INT_KEYS[0] => STRING_TWO, INT_KEYS[1] => STRING_ONE })
+                                      .add_field("my_map_long_key", { LONG_KEYS[0] => STRING_TWO, LONG_KEYS[1] => STRING_ONE })
     )
     wait_for_hitcount('query=sddocname:fast_map_search', 2)
   end
@@ -87,19 +94,28 @@ class FastMapSearch < IndexedOnlySearchTest
     floating_point = [:map_match_equals_query, :shortform_equals_query]
     run_queries(floating_point, "my_map_float", FLOAT_ONE, FLOAT_THREE)
     run_queries(floating_point, "my_map_double", DOUBLE_ONE, DOUBLE_THREE)
+
+    # Integer keys are given quoted, as the string keys above
+    run_queries([:map_match_query, :shortform_query], "my_map_int_key", STRING_ONE, STRING_THREE, INT_KEYS)
+    run_queries([:map_match_query, :shortform_query], "my_map_long_key", STRING_ONE, STRING_THREE, LONG_KEYS)
+    # and unquoted
+    search_and_verify([1], unquoted_key_query(lookup("my_map_int_key"), INT_KEYS[1], STRING_ONE))
+    search_and_verify([1], unquoted_key_query(lookup("my_map_long_key"), LONG_KEYS[1], STRING_ONE))
   end
 
-  # Runs the queries made by each of the given functions on the lookup field of the given field.
-  def run_queries(make_query_fns, field, value_one, value_two)
+  # Runs the queries made by each of the given functions on the lookup field of the given field,
+  # where keys are the keys fed as "foo" and "baz" in feed_and_wait.
+  def run_queries(make_query_fns, field, value_one, value_two, keys = ["foo", "baz"])
+    foo, baz = keys
     make_query_fns.each do |make_query_fn|
       # A key-value pair matches only when both are present in the same map entry.
       # Document 1 contains both the key 'foo' and the value 'bar', but in different
       # entries, so it must not match.
-      search_and_verify([0], public_send(make_query_fn, lookup(field), "foo", value_one))
-      search_and_verify([1], public_send(make_query_fn, lookup(field), "baz", value_one))
-      search_and_verify([], public_send(make_query_fn, lookup(field), "foo", value_two))
+      search_and_verify([0], public_send(make_query_fn, lookup(field), foo, value_one))
+      search_and_verify([1], public_send(make_query_fn, lookup(field), baz, value_one))
+      search_and_verify([], public_send(make_query_fn, lookup(field), foo, value_two))
 
-      assert_summary(public_send(make_query_fn, lookup(field), "foo", value_one), field)
+      assert_summary(public_send(make_query_fn, lookup(field), foo, value_one), field)
     end
   end
 
@@ -130,6 +146,12 @@ class FastMapSearch < IndexedOnlySearchTest
   # fancy syntax: field{key} contains value.
   def shortform_query(field, key, value)
     yql = "select * from sources * where #{field}{'#{key}'} contains '#{value}'"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  # fancy syntax: field{key} contains value, with an unquoted integer key.
+  def unquoted_key_query(field, key, value)
+    yql = "select * from sources * where #{field}{#{key}} contains '#{value}'"
     URI.encode_www_form([['yql', yql]])
   end
 
@@ -212,6 +234,7 @@ class FastMapSearch < IndexedOnlySearchTest
                                       .add_field("cased_int_map", { "case_matters" => 42, "CASE_MATTERS" => 43 })
                                       .add_field("long_map", { "case_does_not_matter" => 4294967338})
                                       .add_field("cased_long_map", { "case_matters" => 4294967338, "CASE_MATTERS" => 4294967339 })
+                                      .add_field("int_key_cased_value_map", { 7 => "foo", 8 => "BAR" })
     )
     wait_for_hitcount('query=sddocname:cased_uncased', 1)
 
@@ -247,6 +270,12 @@ class FastMapSearch < IndexedOnlySearchTest
       assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "case_matters", 4294967339), 0)
       assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967338), 0)
       assert_hitcount(shortform_equals_query(ref.call("cased_long_map"), "CASE_MATTERS", 4294967339), 1)
+
+      assert_hitcount(shortform_query(ref.call("int_key_cased_value_map"), 7, "foo"), 1)
+      assert_hitcount(shortform_query(ref.call("int_key_cased_value_map"), 7, "FOO"), 0)
+      assert_hitcount(shortform_query(ref.call("int_key_cased_value_map"), 7, "BAR"), 0)
+      assert_hitcount(shortform_query(ref.call("int_key_cased_value_map"), 8, "bar"), 0)
+      assert_hitcount(shortform_query(ref.call("int_key_cased_value_map"), 8, "BAR"), 1)
     end
   end
 
