@@ -36,7 +36,7 @@ class FastMapSearch < IndexedOnlySearchTest
   # Search tests
   ######################################################################################################################
 
-  # Values of the maps fed by feed_and_wait. The _THREE values are in no document.
+  # Values fed by feed_and_wait and feed_arrays_and_wait. The _THREE values are in no document.
   STRING_ONE = "bar"
   STRING_TWO = "qux"
   STRING_THREE = "baz"
@@ -244,7 +244,7 @@ class FastMapSearch < IndexedOnlySearchTest
   # Range search
   ######################################################################################################################
 
-  # Ranges over the values fed by feed_and_wait: each _RANGE_ONE contains the _ONE value,
+  # Ranges over the values above: each _RANGE_ONE contains the _ONE value,
   # each _RANGE_TWO contains the _TWO value, and neither contains both.
   INT_RANGE_ONE = [40, 50]
   INT_RANGE_TWO = [10, 20]
@@ -469,64 +469,90 @@ class FastMapSearch < IndexedOnlySearchTest
   # Arrays of struct
   ######################################################################################################################
 
-  # For each value type of the my_array_<type> fields in fast_map_search.sd: the values under key 'foo'
-  # in the documents fed by feed_arrays_and_wait, a range containing only the first value, and a range
-  # containing only the second.
-  ARRAY_VALUES = {
-    "string" => { :one => "bar", :two => "qux" },
-    "int"    => { :one => 42, :two => 13, :range_one => [40, 50], :range_two => [10, 20] },
-    "long"   => { :one => 4294967338, :two => 4294967309,
-                  :range_one => [4294967330, 4294967350], :range_two => [4294967300, 4294967320] }
-  }
+  # Returns an element of the my_array_<type> fields, which are arrays of struct { mykey, myvalue }.
+  def element(key, value)
+    { "mykey" => key, "myvalue" => value }
+  end
 
+  # Document 0 holds the _ONE value under the key 'foo'.
+  # Document 1 holds the _TWO value under the key 'foo', and the _ONE value under the key 'baz'.
+  # Document 2 holds the key 'foo' twice, which a map cannot, with the _ONE and the _TWO value.
   def feed_arrays_and_wait
-    # Document 1 holds the first value, but under the key 'baz', so it must only match on 'baz'.
-    # Document 2 holds the key 'foo' twice, which a map cannot, and matches both values under it.
-    docs = [
-      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:one] } ] },
-      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:two] }, { "mykey" => "baz", "myvalue" => v[:one] } ] },
-      lambda { |v| [ { "mykey" => "foo", "myvalue" => v[:one] }, { "mykey" => "foo", "myvalue" => v[:two] } ] }
-    ]
-    docs.each_with_index do |elements, id|
-      doc = Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id)
-      ARRAY_VALUES.each do |type, values|
-        doc.add_field("my_array_#{type}", elements.call(values))
-      end
-      vespa.document_api_v1.put(doc)
-    end
-    wait_for_hitcount('query=sddocname:fast_map_search', docs.size)
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
+                                .add_field("id", 0)
+                                .add_field("my_array_string", [ element("foo", STRING_ONE) ])
+                                .add_field("my_array_int",    [ element("foo", INT_ONE) ])
+                                .add_field("my_array_long",   [ element("foo", LONG_ONE) ])
+    )
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1")
+                                .add_field("id", 1)
+                                .add_field("my_array_string", [ element("foo", STRING_TWO), element("baz", STRING_ONE) ])
+                                .add_field("my_array_int",    [ element("foo", INT_TWO),    element("baz", INT_ONE) ])
+                                .add_field("my_array_long",   [ element("foo", LONG_TWO),   element("baz", LONG_ONE) ])
+    )
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2")
+                                .add_field("id", 2)
+                                .add_field("my_array_string", [ element("foo", STRING_ONE), element("foo", STRING_TWO) ])
+                                .add_field("my_array_int",    [ element("foo", INT_ONE),    element("foo", INT_TWO) ])
+                                .add_field("my_array_long",   [ element("foo", LONG_ONE),   element("foo", LONG_TWO) ])
+    )
+    wait_for_hitcount('query=sddocname:fast_map_search', 3)
   end
 
   def test_array_of_struct
     deploy_and_start
     feed_arrays_and_wait
 
-    ARRAY_VALUES.each do |type, values|
-      verify_array_query([0, 2], type, lambda { |v| "#{v} contains '#{values[:one]}'" }, "foo")
-      verify_array_query([1, 2], type, lambda { |v| "#{v} contains '#{values[:two]}'" }, "foo")
-      verify_array_query([1], type, lambda { |v| "#{v} contains '#{values[:one]}'" }, "baz")
-      verify_array_query([], type, lambda { |v| "#{v} contains '#{values[:two]}'" }, "baz")
-      next unless values[:range_one]
+    # Strings
+    verify_array_contains([0, 2], "my_array_string", "foo", STRING_ONE)
+    verify_array_contains([1, 2], "my_array_string", "foo", STRING_TWO)
+    verify_array_contains([1],    "my_array_string", "baz", STRING_ONE)
+    verify_array_contains([],     "my_array_string", "baz", STRING_TWO)
 
-      verify_array_query([0, 2], type, lambda { |v| "range(#{v}, #{values[:range_one].join(', ')})" }, "foo")
-      verify_array_query([1, 2], type, lambda { |v| "range(#{v}, #{values[:range_two].join(', ')})" }, "foo")
-      verify_array_query([1], type, lambda { |v| "range(#{v}, #{values[:range_one].join(', ')})" }, "baz")
-      verify_array_query([], type, lambda { |v| "range(#{v}, #{values[:range_two].join(', ')})" }, "baz")
-    end
+    # Ints
+    verify_array_contains([0, 2], "my_array_int", "foo", INT_ONE)
+    verify_array_contains([1, 2], "my_array_int", "foo", INT_TWO)
+    verify_array_contains([1],    "my_array_int", "baz", INT_ONE)
+    verify_array_contains([],     "my_array_int", "baz", INT_TWO)
+
+    verify_array_range([0, 2], "my_array_int", "foo", INT_RANGE_ONE)
+    verify_array_range([1, 2], "my_array_int", "foo", INT_RANGE_TWO)
+    verify_array_range([1],    "my_array_int", "baz", INT_RANGE_ONE)
+    verify_array_range([],     "my_array_int", "baz", INT_RANGE_TWO)
+
+    # Longs
+    verify_array_contains([0, 2], "my_array_long", "foo", LONG_ONE)
+    verify_array_contains([1, 2], "my_array_long", "foo", LONG_TWO)
+    verify_array_contains([1],    "my_array_long", "baz", LONG_ONE)
+    verify_array_contains([],     "my_array_long", "baz", LONG_TWO)
+
+    verify_array_range([0, 2], "my_array_long", "foo", LONG_RANGE_ONE)
+    verify_array_range([1, 2], "my_array_long", "foo", LONG_RANGE_TWO)
+    verify_array_range([1],    "my_array_long", "baz", LONG_RANGE_ONE)
+    verify_array_range([],     "my_array_long", "baz", LONG_RANGE_TWO)
 
     # The fancy syntax works on the lookup field of an array too
-    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("my_array_string")}{'foo'} contains 'bar' order by id asc" })
+    search_and_verify([0, 2], { "yql" => "select * from sources * where #{lookup("my_array_string")}{'foo'} contains '#{STRING_ONE}' order by id asc" })
   end
 
-  # Runs a map lookup on the lookup field of the array, and the equivalent sameElement query on the
-  # array itself, which must match the same documents. The value condition is made for the given
-  # value field name.
-  def verify_array_query(expected_ids, type, value_condition, key)
-    field = "my_array_#{type}"
-    [ "#{lookup(field)} contains mapMatch(key contains '#{key}', #{value_condition.call("value")})",
-      "#{field} contains sameElement(mykey contains '#{key}', #{value_condition.call("myvalue")})" ].each do |where|
-      search_and_verify(expected_ids, { "yql" => "select * from sources * where #{where} order by id asc" })
-    end
+  # Searches for elements with the given key and value, both with a map lookup on the lookup field
+  # of the array, and with the equivalent sameElement query on the array itself. Both must match
+  # the documents with the given ids.
+  def verify_array_contains(expected_ids, field, key, value)
+    verify_array_query(expected_ids, "#{lookup(field)} contains mapMatch(key contains '#{key}', value contains '#{value}')")
+    verify_array_query(expected_ids, "#{field} contains sameElement(mykey contains '#{key}', myvalue contains '#{value}')")
+  end
+
+  # Searches for elements with the given key and a value in the given range, in the same two ways
+  # as verify_array_contains.
+  def verify_array_range(expected_ids, field, key, range)
+    from, to = range
+    verify_array_query(expected_ids, "#{lookup(field)} contains mapMatch(key contains '#{key}', range(value, #{from}, #{to}))")
+    verify_array_query(expected_ids, "#{field} contains sameElement(mykey contains '#{key}', range(myvalue, #{from}, #{to}))")
+  end
+
+  def verify_array_query(expected_ids, where)
+    search_and_verify(expected_ids, { "yql" => "select * from sources * where #{where} order by id asc" })
   end
 
   # A field path update into one array element would leave the synthetic key-value attribute
