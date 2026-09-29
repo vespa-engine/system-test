@@ -32,7 +32,7 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   ######################################################################################################################
-  # Search tests
+  # Basic tests
   ######################################################################################################################
 
   # Values fed by feed_and_wait and feed_arrays_and_wait. The _THREE values are in no document.
@@ -140,6 +140,68 @@ class FastMapSearch < IndexedOnlySearchTest
     URI.encode_www_form([['yql', yql]])
   end
 
+  # Ranges over the values above: each _RANGE_ONE contains the _ONE value,
+  # each _RANGE_TWO contains the _TWO value, and neither contains both.
+  INT_RANGE_ONE = [40, 50]
+  INT_RANGE_TWO = [10, 20]
+  LONG_RANGE_ONE = [4294967330, 4294967350]
+  LONG_RANGE_TWO = [4294967300, 4294967320]
+  FLOAT_RANGE_ONE = [1.0, 2.0]
+  FLOAT_RANGE_TWO = [-0.5, 0.5]
+  DOUBLE_RANGE_ONE = [-3.0, -2.0]
+  DOUBLE_RANGE_TWO = [0.5, 1.0]
+
+  def test_range_basic
+    deploy_and_start
+    feed_and_wait
+
+    range_queries = [:map_match_range_query, :map_range_query]
+    run_range_queries(range_queries, "my_map_int", INT_RANGE_ONE, INT_RANGE_TWO)
+
+    # The endpoints lie beyond the int range, as do the fed values.
+    run_range_queries(range_queries, "my_map_long", LONG_RANGE_ONE, LONG_RANGE_TWO)
+
+    # FLOAT_RANGE_TWO spans zero, where the encoding of the sign changes.
+    run_range_queries(range_queries, "my_map_float", FLOAT_RANGE_ONE, FLOAT_RANGE_TWO)
+
+    # DOUBLE_RANGE_ONE holds negative values only, whose encoding must be inverted to sort correctly.
+    run_range_queries(range_queries, "my_map_double", DOUBLE_RANGE_ONE, DOUBLE_RANGE_TWO)
+  end
+
+  # Runs the queries made by each of the given functions on the lookup field of the given field.
+  # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
+  # range_two contains the 'foo' value of document 1, and neither range contains both.
+  def run_range_queries(make_query_fns, field, range_one, range_two)
+    make_query_fns.each do |make_query_fn|
+      # Only the entry with the queried key is considered: the two documents have different
+      # 'foo' values, so a range around one of them on key 'foo' matches one document only.
+      search_and_verify([0], public_send(make_query_fn, lookup(field), "foo", *range_one))
+      search_and_verify([1], public_send(make_query_fn, lookup(field), "foo", *range_two))
+      search_and_verify([1], public_send(make_query_fn, lookup(field), "baz", *range_one))
+
+      # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
+      search_and_verify([], public_send(make_query_fn, lookup(field), "baz", *range_two))
+
+      assert_summary(public_send(make_query_fn, lookup(field), "foo", *range_one), field)
+    end
+  end
+
+  def map_match_range_query(field, key, from, to)
+    yql = "select * from sources * where #{field} contains mapMatch(" +
+          "key contains '#{key}', range(value, #{from}, #{to}))"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  # fancy syntax: range(field{key}, from, to).
+  def map_range_query(field, key, from, to)
+    yql = "select * from sources * where range(#{field}{'#{key}'}, #{from}, #{to})"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  ######################################################################################################################
+  # Cased/uncased matching
+  ######################################################################################################################
+
   def test_search_cased_uncased
     deploy_and_start("cased_uncased.sd")
 
@@ -240,66 +302,8 @@ class FastMapSearch < IndexedOnlySearchTest
   end
 
   ######################################################################################################################
-  # Range search
+  # Corner cases
   ######################################################################################################################
-
-  # Ranges over the values above: each _RANGE_ONE contains the _ONE value,
-  # each _RANGE_TWO contains the _TWO value, and neither contains both.
-  INT_RANGE_ONE = [40, 50]
-  INT_RANGE_TWO = [10, 20]
-  LONG_RANGE_ONE = [4294967330, 4294967350]
-  LONG_RANGE_TWO = [4294967300, 4294967320]
-  FLOAT_RANGE_ONE = [1.0, 2.0]
-  FLOAT_RANGE_TWO = [-0.5, 0.5]
-  DOUBLE_RANGE_ONE = [-3.0, -2.0]
-  DOUBLE_RANGE_TWO = [0.5, 1.0]
-
-  def test_range_basic
-    deploy_and_start
-    feed_and_wait
-
-    range_queries = [:map_match_range_query, :map_range_query]
-    run_range_queries(range_queries, "my_map_int", INT_RANGE_ONE, INT_RANGE_TWO)
-
-    # The endpoints lie beyond the int range, as do the fed values.
-    run_range_queries(range_queries, "my_map_long", LONG_RANGE_ONE, LONG_RANGE_TWO)
-
-    # FLOAT_RANGE_TWO spans zero, where the encoding of the sign changes.
-    run_range_queries(range_queries, "my_map_float", FLOAT_RANGE_ONE, FLOAT_RANGE_TWO)
-
-    # DOUBLE_RANGE_ONE holds negative values only, whose encoding must be inverted to sort correctly.
-    run_range_queries(range_queries, "my_map_double", DOUBLE_RANGE_ONE, DOUBLE_RANGE_TWO)
-  end
-
-  # Runs the queries made by each of the given functions on the lookup field of the given field.
-  # range_one contains the 'foo' value of document 0 and the 'baz' value of document 1,
-  # range_two contains the 'foo' value of document 1, and neither range contains both.
-  def run_range_queries(make_query_fns, field, range_one, range_two)
-    make_query_fns.each do |make_query_fn|
-      # Only the entry with the queried key is considered: the two documents have different
-      # 'foo' values, so a range around one of them on key 'foo' matches one document only.
-      search_and_verify([0], public_send(make_query_fn, lookup(field), "foo", *range_one))
-      search_and_verify([1], public_send(make_query_fn, lookup(field), "foo", *range_two))
-      search_and_verify([1], public_send(make_query_fn, lookup(field), "baz", *range_one))
-
-      # Document 1 is the only one with the key 'baz', and its 'baz' value is outside range_two.
-      search_and_verify([], public_send(make_query_fn, lookup(field), "baz", *range_two))
-
-      assert_summary(public_send(make_query_fn, lookup(field), "foo", *range_one), field)
-    end
-  end
-
-  def map_match_range_query(field, key, from, to)
-    yql = "select * from sources * where #{field} contains mapMatch(" +
-          "key contains '#{key}', range(value, #{from}, #{to}))"
-    URI.encode_www_form([['yql', yql]])
-  end
-
-  # fancy syntax: range(field{key}, from, to).
-  def map_range_query(field, key, from, to)
-    yql = "select * from sources * where range(#{field}{'#{key}'}, #{from}, #{to})"
-    URI.encode_www_form([['yql', yql]])
-  end
 
   def test_range_int_corner_cases
     deploy_and_start
@@ -356,10 +360,6 @@ class FastMapSearch < IndexedOnlySearchTest
     #puts result
     verify_ids(expected_ids, result)
   end
-
-  ######################################################################################################################
-  # Floating point values
-  ######################################################################################################################
 
   def test_float_corner_cases
     verify_floating_point_corner_cases("my_map_float", "3.0e38")
