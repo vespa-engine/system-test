@@ -198,12 +198,12 @@ class MapSearchPerfTest < PerformanceTest
       # Match documents where the entry with key 'key' has its value within [qval-10, qval+10].
       "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", range(value, #{qval-10}, #{qval+10}))"
     when :fast_range
-      "select * from sources * where #{field}_fast contains sameElement(key contains \"#{key}\", range(value, #{qval-10}, #{qval+10}))"
+      "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", range(value, #{qval-10}, #{qval+10}))"
     when :same_element
       # Match documents where the entry with key 'key' has value 'qval'.
       "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", value = #{qval})"
     when :fast_same_element
-      "select * from sources * where #{field}_fast contains sameElement(key contains \"#{key}\", value = #{qval})"
+      "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", value = #{qval})"
     when :combined
       # Match the combined key/value attribute directly. The value is formatted as an
       # 8-digit unsigned hex number, matching MapSearchDocProc's "key#%08x" encoding.
@@ -226,9 +226,9 @@ class MapSearchPerfTest < PerformanceTest
     when :fast_large_range
       case qval
       when 256
-        "select * from sources * where #{field}_fast contains sameElement(key contains \"#{key}\", range(value, 768, 1023))"
+        "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", range(value, 768, 1023))"
       when 512
-        "select * from sources * where #{field}_fast contains sameElement(key contains \"#{key}\", range(value, 768, 1279))"
+        "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", range(value, 768, 1279))"
       else
         raise "Unhandled value #{qval} for query type: #{query_type}"
       end

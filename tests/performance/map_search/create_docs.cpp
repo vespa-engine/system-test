@@ -79,8 +79,6 @@ void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
             std::string content = make_map_content(map_field.exp_mean, engine);
             printf("\"%s\":{%s}", map_field.name, content.c_str());
             printf(",");
-            printf("\"%s_fast\":{%s}", map_field.name, content.c_str());
-            printf(",");
         }
         printf("\"filter\":%d,", filter[doc_id]);
         printf("\"score\":%d", (int)score_dist(engine));
