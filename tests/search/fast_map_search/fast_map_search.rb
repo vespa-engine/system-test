@@ -325,9 +325,9 @@ class FastMapSearch < IndexedOnlySearchTest
     assert(!rewritten?(field, where), "Expected query not to be rewritten to a fast map lookup: #{where}")
   end
 
-  def rewritten?(field, where)
+  def rewritten?(field, where, lookup_name = LOOKUP)
     result = search({ "yql" => "select * from sources * where #{where}", "tracelevel" => "2" })
-    result.json.to_s.include?("#{field}$#{LOOKUP}")
+    result.json.to_s.include?("#{field}$#{lookup_name}")
   end
 
   ######################################################################################################################
@@ -598,6 +598,28 @@ class FastMapSearch < IndexedOnlySearchTest
 
   def verify_array_query(expected_ids, where)
     search_and_verify(expected_ids, { "yql" => "select * from sources * where #{where} order by id asc" })
+  end
+
+  # A field may have several 'fast-search map field' lookups, each with its own attribute. The 'reversed'
+  # lookup of my_array_string has the struct fields swapped, so it finds the key by the value.
+  def test_several_lookups_per_field
+    deploy_and_start
+    feed_arrays_and_wait
+
+    verify_array_query([0, 2], "my_array_string.lookup{'foo'} contains '#{STRING_ONE}'")
+    verify_array_query([0, 2], "my_array_string.reversed{'#{STRING_ONE}'} contains 'foo'")
+    verify_array_query([1, 2], "my_array_string.reversed{'#{STRING_TWO}'} contains 'foo'")
+    verify_array_query([1],    "my_array_string.reversed{'#{STRING_ONE}'} contains 'baz'")
+    verify_array_query([],     "my_array_string.reversed{'#{STRING_TWO}'} contains 'baz'")
+    verify_array_query([],     "my_array_string.reversed{'foo'} contains '#{STRING_ONE}'")
+
+    # Each lookup is rewritten to its own attribute
+    where = "my_array_string.reversed{'#{STRING_ONE}'} contains 'foo'"
+    assert(rewritten?("my_array_string", where, "reversed"), "Expected query to be rewritten to the reversed lookup: #{where}")
+    assert(!rewritten?("my_array_string", where, "lookup"), "Expected query not to be rewritten to the lookup: #{where}")
+    where = "my_array_string.lookup{'foo'} contains '#{STRING_ONE}'"
+    assert(rewritten?("my_array_string", where, "lookup"), "Expected query to be rewritten to the lookup: #{where}")
+    assert(!rewritten?("my_array_string", where, "reversed"), "Expected query not to be rewritten to the reversed lookup: #{where}")
   end
 
   # A field path update into one array element would leave the synthetic key-value attribute

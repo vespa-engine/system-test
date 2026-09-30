@@ -68,11 +68,16 @@ schema fast_map_search {
       field mykey type string { }
       field myvalue type long { }
     }
+    # A field may have several lookups, each with its own key and value: 'reversed' looks up the key by the value.
     field my_array_string type array<entry_string> {
       indexing: summary
       fast-search map field: lookup {
         key: mykey
         value: myvalue
+      }
+      fast-search map field: reversed {
+        key: myvalue
+        value: mykey
       }
       struct-field mykey { indexing: attribute }
       struct-field myvalue { indexing: attribute }
