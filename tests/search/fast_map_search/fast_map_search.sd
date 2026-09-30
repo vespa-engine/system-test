@@ -41,6 +41,18 @@ schema fast_map_search {
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
+    field my_map_int_key type map<int, string> {
+      indexing: summary
+      fast-search map field: lookup
+      struct-field key { indexing: attribute }
+      struct-field value { indexing: attribute }
+    }
+    field my_map_long_key type map<long, string> {
+      indexing: summary
+      fast-search map field: lookup
+      struct-field key { indexing: attribute }
+      struct-field value { indexing: attribute }
+    }
 
     # An array of struct acts as a map when the struct fields holding the key and the value
     # are named in the 'fast-search map field' block.
