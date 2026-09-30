@@ -3,8 +3,14 @@
 
 require 'performance_test'
 require 'app_generator/search_app'
+require 'reindexing'
 
 class ReindexingAndFeedingTest < PerformanceTest
+
+  include Reindexing
+
+  CLUSTER_ID = 'search'
+  DOCUMENT_TYPE = 'doc'
 
   def initialize(*args)
     super(*args)
@@ -58,8 +64,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     now_seconds = Time.now.to_i                                                         # Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     sleep 10
-    trigger_reindexing
-    reindexing_millis = wait_for_reindexing
+    start_reindexing
+    reindexing_millis = wait_for_reindexing_to_complete(CLUSTER_ID, DOCUMENT_TYPE)
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
@@ -74,9 +80,9 @@ class ReindexingAndFeedingTest < PerformanceTest
     now_seconds = Time.now.to_i    							# Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     sleep 10
-    trigger_reindexing
+    start_reindexing
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
-    reindexing_millis = wait_for_reindexing
+    reindexing_millis = wait_for_reindexing_to_complete(CLUSTER_ID, DOCUMENT_TYPE)
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("label:refeed&nocache", @document_count * 2/ 3)			# Two thirds of the documents should have the "refeed" label
     assert_hitcount("label:initial&nocache", @document_count * 1 / 3)			# The last third should still have the "initial" label
@@ -101,10 +107,10 @@ class ReindexingAndFeedingTest < PerformanceTest
     now_seconds = Time.now.to_i    							# Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     sleep 10
-    trigger_reindexing
+    start_reindexing
     feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 32, :numconnections => 8 })
     feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 32, :numconnections => 8 })
-    reindexing_millis = wait_for_reindexing
+    reindexing_millis = wait_for_reindexing_to_complete(CLUSTER_ID, DOCUMENT_TYPE)
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("count:2&nocache", @document_count)					# All documents should have "counter" incremented by 2
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_update') ])
@@ -135,37 +141,10 @@ class ReindexingAndFeedingTest < PerformanceTest
                { :localfile => true, :feed_node => @qrserver }.merge(config))
   end
 
-  # Wait for reindexing after the given time to have started.
-  def wait_for_reindexing_start(ready_millis)
-    puts "Waiting for reindexing to start, after #{Time.at(ready_millis / 1000)}"
-    while true
-      status = get_reindexing_status
-      puts "Reindexing status: #{status}" if Time.now.sec % 10 == 0
-      break if status and status['startedMillis'] > ready_millis
-      sleep 1
-    end
-  end
-
-  # Wait for reindexing to successfully complete, and return the time used in milliseconds.
-  def wait_for_reindexing
-    puts "Waiting for reindexing to complete"
-    while true
-      status = get_reindexing_status
-      puts "Reindexing status: #{status}" if Time.now.sec % 10 == 0
-      break if status and ["successful", "failed"].include? status['state']
-      sleep 1
-    end
-    assert("successful" == status['state'], "Reindexing should complete successfully")
-    return status['endedMillis'] - status['startedMillis']
-  end
-
-  # Fetch reindexing status from reindexing controller.
-  def get_reindexing_status
-    status = vespa.clustercontrollers["0"].get_reindexing_json
-    return nil if status.nil?
-    cluster = status['clusters']['search']
-    return nil if cluster.nil?
-    return cluster['documentTypes']['doc']
+  # Trigger reindexing of the whole corpus, and wait for it to start
+  def start_reindexing
+    ready = trigger_reindexing(@app)
+    wait_for_reindexing_to_start(CLUSTER_ID, DOCUMENT_TYPE, ready[CLUSTER_ID][DOCUMENT_TYPE])
   end
 
   def generate_feed
@@ -192,37 +171,6 @@ class ReindexingAndFeedingTest < PerformanceTest
 					'id:test:doc::',
 					@document_count,
 					@updates_file)
-  end
-
-  # Trigger reindexing of the whole corpus
-  def trigger_reindexing
-    # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
-    response = http_request(URI(application_url + "reindexing"), {})
-    puts response.body unless response.code.to_i == 200
-    assert(response.code.to_i == 200, "Request should be successful")
-    previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["doc"]["readyMillis"]
-
-    # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
-    response = http_request_post(URI(application_url + "reindex"), {})
-    puts response.body unless response.code.to_i == 200
-    assert(response.code.to_i == 200, "Request should be successful")
-
-    response = http_request(URI(application_url + "reindexing"), {})
-    puts response.body unless response.code.to_i == 200
-    assert(response.code.to_i == 200, "Request should be successful")
-    current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["doc"]["readyMillis"]
-    assert(previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp,
-	   "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
-
-    deploy_app(@app)
-    wait_for_reindexing_start(current_reindexing_timestamp)
-  end
-
-  # Application and tenant names change based on the context this is run in.
-  def application_url
-    tenant = use_shared_configservers ? @tenant_name : "default"
-    application = use_shared_configservers ? @application_name : "default"
-    "http://#{vespa.nodeproxies.first[1].addr_configserver[0]}:#{19071}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
 
