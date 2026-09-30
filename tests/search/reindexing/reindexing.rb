@@ -4,9 +4,12 @@
 require 'indexed_streaming_search_test'
 require 'document'
 require 'document_set'
+require 'reindexing'
 
 # TODO: class ReindexingTest < IndexedOnlySearchTest
 class ReindexingTest < IndexedStreamingSearchTest
+
+  include Reindexing
 
   DOCUMENT_COUNT = 1000
   MUSIC_CLUSTER_ID = 'music'
@@ -46,13 +49,9 @@ class ReindexingTest < IndexedStreamingSearchTest
     wait_for_config_generation_proxy(get_generation(deploy_output))
 
     puts "Triggering reindexing"
-    reindexing_timestamp = trigger_reindexing(app, "search", "item")
-
-    puts "Waiting for reindexing to actually start"
-    wait_for_reindexing_to_start("search", "item", reindexing_timestamp)
-
-    puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
-    wait_for_reindexing_to_complete("search", "item", reindexing_timestamp, 1)
+    ready = trigger_reindexing(app)
+    wait_for_reindexing(ready)
+    assert_documents_reindexed_after(ready["search"]["item"], 1, document_type: "item")
 
     puts "Feeding another document"
     doc = Document.new("id:test:item::1}")
@@ -84,16 +83,10 @@ class ReindexingTest < IndexedStreamingSearchTest
     feed_and_wait_for_docs(MOVIE_DOC_TYPE, DOCUMENT_COUNT, { :file => movie_file, :feed_node => container_node, :localfile => true })
 
     puts "Triggering reindexing"
-    # Get the reindexing timestamp from MUSIC_CLUSTER_ID and MUSIC_DOC_TYPE
-    reindexing_timestamp = trigger_reindexing(app, MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE)
-
-    puts "Waiting for reindexing to actually start"
-    wait_for_reindexing_to_start(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp)
-    wait_for_reindexing_to_start(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, reindexing_timestamp)
-
-    puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
-    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp, DOCUMENT_COUNT)
-    wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, reindexing_timestamp, DOCUMENT_COUNT)
+    ready = trigger_reindexing(app)
+    wait_for_reindexing(ready)
+    assert_documents_reindexed_after(ready[MUSIC_CLUSTER_ID][MUSIC_DOC_TYPE], DOCUMENT_COUNT, document_type: MUSIC_DOC_TYPE)
+    assert_documents_reindexed_after(ready[MOVIE_CLUSTER_ID][MOVIE_DOC_TYPE], DOCUMENT_COUNT, document_type: MOVIE_DOC_TYPE)
   end
 
   def test_reindexing_with_binary_in_text_field
@@ -127,14 +120,9 @@ class ReindexingTest < IndexedStreamingSearchTest
     assert_hitcount("title:ulimit", 1)
 
     puts "Triggering reindexing"
-    # Get the reindexing timestamp from MUSIC_CLUSTER_ID and MUSIC_DOC_TYPE
-    reindexing_timestamp = trigger_reindexing(app, MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE)
-
-    puts "Waiting for reindexing to actually start"
-    wait_for_reindexing_to_start(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp)
-
-    puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
-    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp, DOCUMENT_COUNT + 1)
+    ready = trigger_reindexing(app)
+    wait_for_reindexing(ready)
+    assert_documents_reindexed_after(ready[MUSIC_CLUSTER_ID][MUSIC_DOC_TYPE], DOCUMENT_COUNT + 1, document_type: MUSIC_DOC_TYPE)
     assert_hitcount("title:ulimit", 0) unless is_streaming
     @ignorable_messages.append(/classified as binary data/)
   end
@@ -151,69 +139,6 @@ class ReindexingTest < IndexedStreamingSearchTest
     feed_file
   end
 
-
-  private
-  def trigger_reindexing(app, cluster_id, document_type)
-    # Before triggering the reindexing, there is no reindexing status. So no point in checking it here.
-    # Trigger reindexing
-    response = http_request_post(URI(application_v2_url_prefix + 'reindex'), {})
-    assert(response.code.to_i == 200, "Triggering reindexing of documents should give 200 response")
-
-    # Now, we should get a reindexing status
-    response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
-    assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
-    reindexing_timestamp = get_json(response)['clusters'][cluster_id]['ready'][document_type]['readyMillis']
-    assert(!reindexing_timestamp.nil?, "No reindexing timestamp obtained")
-
-    # We have to redeploy the application to actually start the reindexing
-    deploy_app(app)
-
-    reindexing_timestamp
-  end
-
-  private
-  def wait_for_reindexing_to_complete(cluster_id, document_type, reindexing_timestamp = nil, number_of_documents = nil)
-    puts "Waiting for reindexing to complete for '#{document_type}@#{cluster_id}'"
-    while true
-      status = get_reindexing_status_from_cluster_controller(cluster_id, document_type)
-      puts "Reindexing status for '#{document_type}@#{cluster_id}': #{status}"
-      break if status and ['successful', 'failed'].include? status['state']
-      sleep 5
-    end
-    assert('successful' == status['state'], "Reindexing should complete successfully")
-    if reindexing_timestamp and number_of_documents
-      assert_hitcount("#{document_type}_indexed_at_seconds:#{CGI::escape('<')}#{reindexing_timestamp/1000}&nocache", 0)
-      assert_hitcount("#{document_type}_indexed_at_seconds:#{CGI::escape('>')}#{reindexing_timestamp/1000}&nocache", number_of_documents)
-    end
-  end
-
-  private
-  def get_reindexing_status_from_cluster_controller(cluster_id, document_type)
-    status = vespa.clustercontrollers["0"].get_reindexing_json
-    return nil if status.nil?
-    cluster = status['clusters'][cluster_id]
-    return nil if cluster.nil?
-    return cluster['documentTypes'][document_type]
-  end
-
-  # Wait for reindexing after the given time to have started.
-  def wait_for_reindexing_to_start(cluster_id, document_type, ready_millis)
-    puts "Waiting for reindexing to start for '#{document_type}@#{cluster_id}', after #{Time.at(ready_millis / 1000)}"
-    while true
-      status = get_reindexing_status_from_cluster_controller(cluster_id, document_type)
-      puts "Reindexing status for '#{document_type}@#{cluster_id}': #{status}" if Time.now.sec % 10 == 0
-      break if status and status['startedMillis'] > ready_millis
-      sleep 5
-    end
-  end
-
-  private
-  def application_v2_url_prefix
-    tenant = use_shared_configservers ? @tenant_name : "default"
-    application = use_shared_configservers ? @application_name : "default"
-    cfg_hostname = vespa.nodeproxies.first[1].addr_configserver[0]
-    "http://#{cfg_hostname}:19071/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
-  end
 
   def feed_bad_binary_file
     doc = Document.new('id:ns:music::bin-sh-binary')

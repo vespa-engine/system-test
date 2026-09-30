@@ -1,11 +1,13 @@
 # coding: utf-8
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
+require 'reindexing'
 require 'search/schemachanges/schemachanges_base'
 
 class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
 
   include SchemaChangesBase
+  include Reindexing
 
   def setup
     set_owner("hmusum")
@@ -52,16 +54,12 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     assert_hitcount("f1:b", 2)
     assert_hitcount("f3:%3E29", 2)
 
-    trigger_reindexing
+    ready = trigger_reindexing(nil)
 
-    # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
+    # Redeploy again to start reindexing, then wait for document 1 to be reindexed
     redeploy("test.1.sd")
-    start_time = Time.now
-    until search("sddocname:test").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 120 # seconds
-      sleep 1
-    end
+    wait_for_reindexing(ready)
     assert_result("sddocname:test", @test_dir + "result.2.json")
-    puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
   def test_need_refeed_after_indexing_mode_change
@@ -109,14 +107,13 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     assert_hitcount("f1:b", 1)          # No index for old document
     assert_hitcount("f3:%3E29", 2)      # But attributes work
 
-    trigger_reindexing
+    ready = trigger_reindexing(nil)
 
-    # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
+    # Redeploy again to start reindexing, then wait for document 1 to be reindexed
     deploy_app(app)
-    start_time = Time.now
-    wait_for_hitcount("f1:b", 2, 120) # Wait for refeed to populate index with annotations.
+    wait_for_reindexing(ready)
+    assert_hitcount("f1:b", 2) # Reindexing populates the index with annotations
     assert_result("sddocname:test", @test_dir + "result.2.json")
-    puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
   # Wait for convergence of all services in the application — specifically document processors
@@ -129,24 +126,6 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     assert(generation == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"],
            "Should converge on generation #{generation}")
     puts "Services converged on new config generation after #{Time.now - start_time} seconds"
-  end
-
-  # Wait for new document types to be discovered by the reindexer, and then trigger reindexing of the whole corpus
-  def trigger_reindexing
-    # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
-    response = http_request(URI(application_url + "reindexing"), {})
-    assert(response.code.to_i == 200, "Request should be successful")
-    previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
-
-    # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
-    response = http_request_post(URI(application_url + "reindex"), {})
-    assert(response.code.to_i == 200, "Request should be successful")
-
-    response = http_request(URI(application_url + "reindexing"), {})
-    assert(response.code.to_i == 200, "Request should be successful")
-    current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
-    assert(previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp,
-           "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be before current (#{current_reindexing_timestamp})")
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
