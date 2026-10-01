@@ -1,0 +1,11 @@
+# Copyright Vespa.ai. All rights reserved.
+schema books {
+  document books {
+    field author type string {
+      indexing: index | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+  }
+}
