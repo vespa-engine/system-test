@@ -4,13 +4,13 @@ schema cased_uncased {
   document cased_uncased {
     field string_map type map<string, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field cased_string_map type map<string, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key {
         indexing: attribute
         match: cased
@@ -22,13 +22,13 @@ schema cased_uncased {
     }
     field int_map type map<string, int> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field cased_int_map type map<string, int> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key {
         indexing: attribute
         match: cased
@@ -37,13 +37,13 @@ schema cased_uncased {
     }
     field long_map type map<string, long> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field cased_long_map type map<string, long> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key {
         indexing: attribute
         match: cased
@@ -53,7 +53,7 @@ schema cased_uncased {
     # A numeric key has no casing, so only the value is cased
     field int_key_cased_value_map type map<int, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value {
         indexing: attribute

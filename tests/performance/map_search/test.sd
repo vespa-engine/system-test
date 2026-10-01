@@ -14,7 +14,7 @@ schema test {
         #attribute: fast-search
         rank: filter
       }
-      fast-search map field: fast_lookup
+      fast-search-map-field fast_lookup
     }
     field kv_5_combined_attr type array<string> {
       indexing: attribute
@@ -32,7 +32,7 @@ schema test {
         #attribute: fast-search
         rank: filter
       }
-      fast-search map field: fast_lookup
+      fast-search-map-field fast_lookup
     }
     field kv_25_combined_attr type array<string> {
       indexing: attribute
@@ -50,7 +50,7 @@ schema test {
         #attribute: fast-search
         rank: filter
       }
-      fast-search map field: fast_lookup
+      fast-search-map-field fast_lookup
     }
     field kv_125_combined_attr type array<string> {
       indexing: attribute

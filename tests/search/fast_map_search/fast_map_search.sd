@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-# Every field with 'fast-search map field' also has struct-field attributes. Queries on the
+# Every field with 'fast-search-map-field' also has struct-field attributes. Queries on the
 # lookup field (my_map_int.lookup{"foo"}) are rewritten to the synthetic key-value attribute,
 # while queries on the field itself (my_map_int{"foo"}) use the struct-field attributes,
 # so the tests can verify that the rewrite does not change which documents match.
@@ -13,49 +13,49 @@ schema fast_map_search {
 
     field my_map_string type map<string, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_int type map<string, int> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_long type map<string, long> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_float type map<string, float> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_double type map<string, double> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_int_key type map<int, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
     field my_map_long_key type map<long, string> {
       indexing: summary
-      fast-search map field: lookup
+      fast-search-map-field lookup
       struct-field key { indexing: attribute }
       struct-field value { indexing: attribute }
     }
 
     # An array of struct acts as a map when the struct fields holding the key and the value
-    # are named in the 'fast-search map field' block.
+    # are named in the 'fast-search-map-field' block.
     struct entry_string {
       field mykey type string { }
       field myvalue type string { }
@@ -71,11 +71,11 @@ schema fast_map_search {
     # A field may have several lookups, each with its own key and value: 'reversed' looks up the key by the value.
     field my_array_string type array<entry_string> {
       indexing: summary
-      fast-search map field: lookup {
+      fast-search-map-field lookup {
         key: mykey
         value: myvalue
       }
-      fast-search map field: reversed {
+      fast-search-map-field reversed {
         key: myvalue
         value: mykey
       }
@@ -84,7 +84,7 @@ schema fast_map_search {
     }
     field my_array_int type array<entry_int> {
       indexing: summary
-      fast-search map field: lookup {
+      fast-search-map-field lookup {
         key: mykey
         value: myvalue
       }
@@ -93,7 +93,7 @@ schema fast_map_search {
     }
     field my_array_long type array<entry_long> {
       indexing: summary
-      fast-search map field: lookup {
+      fast-search-map-field lookup {
         key: mykey
         value: myvalue
       }

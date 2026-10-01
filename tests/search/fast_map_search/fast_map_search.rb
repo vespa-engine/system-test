@@ -12,7 +12,7 @@ class FastMapSearch < IndexedOnlySearchTest
   RIGHT_OPEN = "{bounds:\"rightOpen\"}"
   OPEN = "{bounds:\"open\"}"
 
-  # The name given to the lookup field in 'fast-search map field', which queries must use,
+  # The name given to the lookup field in 'fast-search-map-field', which queries must use,
   # as in my_map.lookup{"key"} = 42, to be rewritten to a fast map lookup
   LOOKUP = "lookup"
 
@@ -287,7 +287,7 @@ class FastMapSearch < IndexedOnlySearchTest
   # Query rewriting
   ######################################################################################################################
 
-  # A query on the lookup field of a field with 'fast-search map field' is rewritten by the container
+  # A query on the lookup field of a field with 'fast-search-map-field' is rewritten by the container
   # to the synthetic key-value attribute, which the query trace names as <field>$<lookup>. A query on
   # the field itself is left alone and searches the struct-field attributes.
   def test_rewrite
@@ -604,7 +604,7 @@ class FastMapSearch < IndexedOnlySearchTest
     search_and_verify(expected_ids, { "yql" => "select * from sources * where #{where} order by id asc" })
   end
 
-  # A field may have several 'fast-search map field' lookups, each with its own attribute. The 'reversed'
+  # A field may have several 'fast-search-map-field' lookups, each with its own attribute. The 'reversed'
   # lookup of my_array_string has the struct fields swapped, so it finds the key by the value.
   def test_several_lookups_per_field
     deploy_and_start
@@ -646,7 +646,7 @@ class FastMapSearch < IndexedOnlySearchTest
     JSON
     output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_array_string' has 'fast-search map field', which does not support field path updates/, output)
+    assert_match(/Field 'my_array_string' has 'fast-search-map-field', which does not support field path updates/, output)
     assert_equal(elements, vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_array_string"])
   end
 
@@ -763,7 +763,7 @@ class FastMapSearch < IndexedOnlySearchTest
     JSON
     output = feed(:file => update_file, :exceptiononfailure => false, :stderr => true)
 
-    assert_match(/Field 'my_map_string' has 'fast-search map field', which does not support field path updates/, output)
+    assert_match(/Field 'my_map_string' has 'fast-search-map-field', which does not support field path updates/, output)
     assert_equal({ "foo" => "stale", "baz" => "keep" }, stored_map)
   end
 
@@ -794,7 +794,7 @@ class FastMapSearch < IndexedOnlySearchTest
           }
           field my_map_int type map<string, int> {
             indexing: summary
-            #{with_lookup ? "fast-search map field: #{LOOKUP}" : ""}
+            #{with_lookup ? "fast-search-map-field #{LOOKUP}" : ""}
             struct-field key { indexing: attribute }
             struct-field value { indexing: attribute }
           }
@@ -910,7 +910,7 @@ class FastMapSearch < IndexedOnlySearchTest
         document fast_map_search {
           field cased_key_only type map<string, string> {
             indexing: summary
-            fast-search map field: lookup
+            fast-search-map-field lookup
             struct-field key {
               indexing: attribute
               match: cased
@@ -929,7 +929,7 @@ class FastMapSearch < IndexedOnlySearchTest
         document fast_map_search {
           field cased_value_only type map<string, string> {
             indexing: summary
-            fast-search map field: lookup
+            fast-search-map-field lookup
             struct-field key { indexing: attribute }
             struct-field value {
               indexing: attribute
@@ -952,7 +952,7 @@ class FastMapSearch < IndexedOnlySearchTest
           }
           field my_array type array<entry> {
             indexing: summary
-            fast-search map field: lookup
+            fast-search-map-field lookup
           }
         }
       }
@@ -970,7 +970,7 @@ class FastMapSearch < IndexedOnlySearchTest
           }
           field my_array type array<entry> {
             indexing: summary
-            fast-search map field: lookup {
+            fast-search-map-field lookup {
               key: nokey
               value: myvalue
             }
