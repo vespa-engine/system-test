@@ -111,7 +111,7 @@ module Reindexing
       status = reindexing_status(cluster_id, document_type)
       state = status && status['state']
       if state != last_state || polls % REINDEXING_LOG_EVERY_POLLS == 0
-        puts "Reindexing status for '#{document_type}' in cluster '#{cluster_id}': #{status}"
+        puts "Reindexing status for '#{document_type}' in cluster '#{cluster_id}': #{status.nil? ? 'none yet' : status}"
         last_state = state
       end
       return status if yield(status)

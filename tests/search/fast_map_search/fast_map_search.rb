@@ -1,8 +1,12 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'indexed_only_search_test'
+require 'reindexing'
 
 class FastMapSearch < IndexedOnlySearchTest
+
+  include Reindexing
+
   CLOSED = ""
   LEFT_OPEN = "{bounds:\"leftOpen\"}"
   RIGHT_OPEN = "{bounds:\"rightOpen\"}"
@@ -772,6 +776,90 @@ class FastMapSearch < IndexedOnlySearchTest
 
   def stored_map
     vespa.document_api_v1.get("id:fast_map_search:fast_map_search::0").fields["my_map_string"]
+  end
+
+  ######################################################################################################################
+  # Redeployment and reindexing
+  ######################################################################################################################
+
+  def redeploy_schema(with_lookup)
+    <<~SD
+      schema fast_map_search {
+        field indexed_at_seconds type long {
+          indexing: now | attribute
+        }
+        document fast_map_search {
+          field id type int {
+            indexing: attribute | summary
+          }
+          field my_map_int type map<string, int> {
+            indexing: summary
+            #{with_lookup ? "fast-search map field: #{LOOKUP}" : ""}
+            struct-field key { indexing: attribute }
+            struct-field value { indexing: attribute }
+          }
+        }
+      }
+    SD
+  end
+
+  def test_redeploy_and_reindexing
+    deploy_app(SearchApp.new.sd(write_sd(redeploy_schema(false))))
+    start
+
+    # Document 0 holds INT_ONE under 'foo', and document 1 holds INT_TWO under 'foo' and INT_ONE under 'baz'
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::0")
+                                      .add_field("id", 0)
+                                      .add_field("my_map_int", { "foo" => INT_ONE }))
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::1")
+                                      .add_field("id", 1)
+                                      .add_field("my_map_int", { "foo" => INT_TWO, "baz" => INT_ONE }))
+    wait_for_hitcount('query=sddocname:fast_map_search', 2)
+    verify_lookup([0], "my_map_int", "foo", INT_ONE)
+    verify_lookup([1], "my_map_int", "baz", INT_ONE)
+
+    puts "Redeploying with a lookup field on my_map_int"
+    app = SearchApp.new.sd(write_sd(redeploy_schema(true)))
+    deploy_output = redeploy(app)
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_config_generation_proxy(get_generation(deploy_output))
+
+    # The config server marks the document type for reindexing when the attribute is added, but the cluster
+    # controller learns of that only through config built on a later deployment, so nothing is reindexed yet.
+    puts "Querying after redeployment, before reindexing"
+    assert_rewritten("my_map_int", "#{lookup("my_map_int")}{'foo'} = #{INT_ONE}")
+    verify_lookup([0], "my_map_int", "foo", INT_ONE)
+    verify_lookup([1], "my_map_int", "baz", INT_ONE)
+    verify_lookup([], lookup("my_map_int"), "foo", INT_ONE)
+    verify_lookup([], lookup("my_map_int"), "baz", INT_ONE)
+
+    # Document 2, fed after the redeployment, holds INT_ONE under 'foo' like document 0, but the lookup finds it
+    vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::2")
+                                      .add_field("id", 2)
+                                      .add_field("my_map_int", { "foo" => INT_ONE }))
+    wait_for_hitcount('query=sddocname:fast_map_search', 3)
+    verify_lookup([0, 2], "my_map_int", "foo", INT_ONE)
+    verify_lookup([2], lookup("my_map_int"), "foo", INT_ONE)
+
+    puts "Triggering reindexing"
+    ready = trigger_reindexing(app)
+    wait_for_reindexing(ready)
+
+    # Every document is in the attribute now, so the lookup field and the map itself match the same
+    puts "Querying after reindexing"
+    assert_documents_reindexed_after(ready["search"]["fast_map_search"], 3, field: "indexed_at_seconds")
+    [lookup("my_map_int"), "my_map_int"].each do |field|
+      verify_lookup([0, 2], field, "foo", INT_ONE)
+      verify_lookup([1], field, "baz", INT_ONE)
+      verify_lookup([1], field, "foo", INT_TWO)
+      verify_lookup([], field, "baz", INT_TWO)
+    end
+  end
+
+  # Verifies that field{key} = value matches the documents with the given ids, where field is a map or its lookup field
+  def verify_lookup(expected_ids, field, key, value)
+    search_and_verify(expected_ids,
+                      { "yql" => "select * from sources * where #{field}{'#{key}'} = #{value} order by id asc" })
   end
 
   ######################################################################################################################
