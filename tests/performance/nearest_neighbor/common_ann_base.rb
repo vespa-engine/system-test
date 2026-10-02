@@ -40,13 +40,13 @@ class CommonAnnBaseTest < PerformanceTest
     download_file_from_s3(file_name, vespa_node, 'nearest-neighbor')
   end
 
-  def feed_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16")
+  def feed_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16", include_nni_stats = true)
     profiler_start
     node_file = nn_download_file(feed_file, vespa.adminserver)
     run_feeder(node_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
     vespa.adminserver.execute("ls -ld #{node_file} #{selfdir}", :exceptiononfailure => false)
     profiler_report("feed")
-    print_nni_stats(doc_type, tensor)
+    print_nni_stats(doc_type, tensor) if include_nni_stats
   end
 
   def print_nni_stats(doc_type, tensor, annotation = "none")
@@ -87,8 +87,21 @@ class CommonAnnBaseTest < PerformanceTest
     query_tensor = params[:query_tensor] || "q_vec"
     annotation = params[:annotation] || "none"
     lazy_filter = params[:lazy_filter] || false
+    exact_match_tensor = params[:exact_match_tensor] || doc_tensor
+    quantization_bits = params[:quantization_bits] || nil
+    exact_match_rank_profile = params[:exact_match_rank_profile] || 'default'
+    approx_match_rank_profile = params[:approx_match_rank_profile] || 'default'
+    use_exact_for_approx_match_phase = params[:use_exact_for_approx_match_phase] || false
 
-    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
+    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, " +
+         "filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, " +
+         "filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, " +
+         "slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}, " +
+         "quantization_bits=#{quantization_bits.nil? ? 'N/A' : quantization_bits}, " +
+         "exact_match_tensor=#{exact_match_tensor.nil? ? "N/A" : exact_match_tensor}, " +
+         "exact_match_rank_profile=#{exact_match_rank_profile}, " +
+         "approx_match_rank_profile=#{approx_match_rank_profile}, " +
+         "use_exact_for_approx_match_phase=#{use_exact_for_approx_match_phase}"
     result = RecallResult.new(target_hits)
 
     query_data = []
@@ -120,19 +133,28 @@ class CommonAnnBaseTest < PerformanceTest
 
     batch_size = (query_data.size.to_f / num_threads.to_f).ceil
     batches = query_data.each_slice(batch_size).to_a
-    puts "calc_recall_for_queries: query_data.size=#{query_data.size}, num_threads=#{num_threads}, batch_size=#{batch_size}, batches.size=#{batches.size}"
+    puts "calc_recall_for_queries: query_data.size=#{query_data.size}, num_threads=#{num_threads}, " +
+         "batch_size=#{batch_size}, batches.size=#{batches.size}"
     assert_equal(batches.size, num_threads)
     threads = []
     for i in 0...num_threads
       threads << Thread.new(batches[i]) do |batch|
-        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
+        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
+                                    filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch,
+                                    result, doc_type, doc_tensor, query_tensor, exact_match_tensor,
+                                    exact_match_rank_profile, approx_match_rank_profile,
+                                    use_exact_for_approx_match_phase)
       end
     end
     threads.each(&:join)
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
     radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
     lazy_str = lazy_filter ? "-lazy" : ""
-    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
+    label = params[:label] || "#{use_exact_for_approx_match_phase ? 'exact' : 'hnsw'}-th#{target_hits}" +
+            "-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}" +
+            "-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
+    # Put quantization level first, if present, since we consider it an Important Detail(tm)
+    label = "q#{quantization_bits}-#{label}" unless quantization_bits.nil?
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),
@@ -149,9 +171,17 @@ class CommonAnnBaseTest < PerformanceTest
                   metric_filler(RECALL_MEDIAN, result.median)])
   end
 
-  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
+  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
+                                  filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch,
+                                  result, doc_type, doc_tensor, query_tensor, exact_match_tensor,
+                                  exact_match_rank_profile, approx_match_rank_profile,
+                                  use_exact_for_approx_match_phase)
     batch.each do |datum|
-      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius,
+                                           approximate_threshold, filter_first_threshold, filter_first_exploration,
+                                           slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor,
+                                           exact_match_tensor, exact_match_rank_profile, approx_match_rank_profile,
+                                           use_exact_for_approx_match_phase)
       result.add(raw_recall)
     end
   end
@@ -162,8 +192,15 @@ class CommonAnnBaseTest < PerformanceTest
     proxy_node.copy_remote_file_to_local_file(proxy_file, local_file)
   end
 
-  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
-    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
+                              filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum,
+                              doc_type, doc_tensor, query_tensor, exact_match_tensor, exact_match_rank_profile,
+                              approx_match_rank_profile, use_exact_for_approx_match_phase)
+    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
+                                          filter_first_threshold, filter_first_exploration, slack, lazy_filter,
+                                          datum, doc_type, doc_tensor, query_tensor, exact_match_tensor,
+                                          exact_match_rank_profile, approx_match_rank_profile,
+                                          use_exact_for_approx_match_phase)
     result = search_with_timeout(20, query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
@@ -175,11 +212,18 @@ class CommonAnnBaseTest < PerformanceTest
     recall.to_i
   end
 
-  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
+                                    filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum,
+                                    doc_type, doc_tensor, query_tensor, exact_match_tensor, exact_match_rank_profile,
+                                    approx_match_rank_profile, use_exact_for_approx_match_phase)
     "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{datum.vector}" +
     "&nnr.enable=true&nnr.docTensor=#{doc_tensor}&nnr.targetHits=#{target_hits}&nnr.exploreHits=#{explore_hits}&nnr.filterPercent=#{filter_percent}" +
     "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}" +
-    "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}&nnr.radius=#{radius}&nnr.latitude=#{datum.latitude}&nnr.longitude=#{datum.longitude}&nnr.lazyFilter=#{lazy_filter}"
+    "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}&nnr.radius=#{radius}&nnr.latitude=#{datum.latitude}&nnr.longitude=#{datum.longitude}&nnr.lazyFilter=#{lazy_filter}" +
+    "&nnr.approxMatchRankProfile=#{approx_match_rank_profile}" +
+    "&nnr.exactMatchRankProfile=#{exact_match_rank_profile}" +
+    "&nnr.exactMatchTensor=#{exact_match_tensor}" +
+    "&nnr.useExactForApproxMatchPhase=#{use_exact_for_approx_match_phase}"
   end
 
   class RecallResult

@@ -6,12 +6,6 @@ class AnnMipsWiki < CommonMipsBase
 
   def setup
     super
-    set_owner("boeker")
-  end
-
-  def test_mips_with_wiki_dataset
-    set_description("Test performance and recall for MIPS using the Wiki simple english dataset")
-
     # The data set used is Wikipedia simple english from December 2022:
     # https://huggingface.co/datasets/Cohere/wikipedia-22-12-simple-embeddings
     # This consists of 485851 paragraphs across 187340 wikipedia documents.
@@ -34,13 +28,38 @@ class AnnMipsWiki < CommonMipsBase
     #
     # How to upload data files to S3 is described here:
     # https://git.ouryahoo.com/pages/vespa/documentation/documentation/devguide/testing-system-performance-tests.html
- 
+
     @paragraph_docs = @data_path + "paragraph_docs.400k.json"
     @queries = @data_path + "paragraph_queries.10k.txt"
     @query_vectors = @data_path + "paragraph_vectors.1k.txt"
+  end
 
+  def test_mips_with_wiki_dataset
+    set_owner('boeker')
+    set_description("Test performance and recall for MIPS using the Wiki simple English dataset")
     run_mips_test(selfdir + "mips/wiki/paragraph.sd", @paragraph_docs, "paragraph", "paragraph")
   end
 
+  def test_mips_with_wiki_dataset_quantized_1_bit
+    do_test_mips_wiki_dataset_quantized(bits: 1)
+  end
+
+  def test_mips_with_wiki_dataset_quantized_2_bits
+    do_test_mips_wiki_dataset_quantized(bits: 2)
+  end
+
+  def test_mips_with_wiki_dataset_quantized_3_bits
+    do_test_mips_wiki_dataset_quantized(bits: 3)
+  end
+
+  def test_mips_with_wiki_dataset_quantized_4_bits
+    do_test_mips_wiki_dataset_quantized(bits: 4)
+  end
+
+  def do_test_mips_wiki_dataset_quantized(bits:)
+    set_owner('vekterli')
+    set_description("Test performance and recall for #{bits}-bit quantized MIPS using the Wiki simple English dataset")
+    run_quantized_mips_test(selfdir + "mips/wiki/q#{bits}/paragraph.sd", @paragraph_docs, 'paragraph', 'paragraph', bits)
+  end
 
 end

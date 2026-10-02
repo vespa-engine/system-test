@@ -58,6 +58,9 @@ public class NearestNeighborRecallSearcher extends Searcher {
         var enable = props.getString("nnr.enable");
         if (enable != null && enable.equals("true")) {
             String docTensor = props.getString("nnr.docTensor", "vec_m16");
+            String exactMatchTensor = props.getString("nnr.exactMatchTensor", docTensor);
+            String exactMatchRankProfile = props.getString("nnr.exactMatchRankProfile", "default");
+            String approxMatchRankProfile = props.getString("nnr.approxMatchRankProfile", "default");
             String queryTensor = props.getString("nnr.queryTensor", "q_vec");
             String label = props.getString("nnr.label", "nns");
             int targetHits = props.getInteger("nnr.targetHits", 10);
@@ -71,18 +74,36 @@ public class NearestNeighborRecallSearcher extends Searcher {
             double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.3"));
             double slack = Double.parseDouble(props.getString("nnr.slack", "0.00"));
             boolean lazyFilter = Boolean.parseBoolean(props.getString("nnr.lazyFilter", "false"));
+            // Having approximate search use exact matching may sound counterintuitive (and perhaps even
+            // a bit silly!), but it's useful when measuring the upper bound of recall for quantized
+            // tensors (which are an approximation even when using exact search). HNSW recall can never
+            // reasonably go _beyond_ this upper bound, so it can be used to better distinguish between
+            // the recall loss from quantization alone vs. the loss from the HNSW approximations.
+            boolean useExactForApproxMatchPhase = Boolean.parseBoolean(props.getString("nnr.useExactForApproxMatchPhase", "false"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
+            // Note that the exact match tensor may not be equal to the ANN tensor. This is to ensure
+            // that ANN recall is computed correctly when the doc tensor is quantized, where an exact
+            // nearest neighbor search will not give the source of truth of the full precision data set.
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, false, idField);
+                    exactMatchTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude,
+                    longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter,
+                    false, idField, exactMatchRankProfile);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude,
+                    approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter,
+                    !useExactForApproxMatchPhase, idField, approxMatchRankProfile);
 
             try {
-                int recall = calcRecall(exactHits, approxHits, targetHits);
+                // For quantized tensors, the relevance contained in the full precision brute force search
+                // hits and the quantized tensor hits will not match exactly (and the degree of "not exactly"
+                // depends inherently on the dataset and quantization bit count used). So disable this check
+                // entirely when quantization is used. Recall metrics must suffice to capture the relevance.
+                boolean enableRelevanceCheck = docTensor.equals(exactMatchTensor);
+                int recall = calcRecall(exactHits, approxHits, targetHits, enableRelevanceCheck);
                 var hit = new Hit("recall/0");
                 hit.setField("recall", recall);
                 var result = new Result(query);
@@ -109,8 +130,9 @@ public class NearestNeighborRecallSearcher extends Searcher {
                                                         String docTensor, String queryTensor, String label,
                                                         int targetHits, int exploreHits, int filterPercent,
                                                         double radius, double latitude, double longitude,
-                                                        double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
-                                                        double slack, boolean lazyFilter, boolean approximate, String idField) {
+                                                        double approximateThreshold, double filterFirstThreshold,
+                                                        double filterFirstExploration, double slack, boolean lazyFilter,
+                                                        boolean approximate, String idField, String rankProfile) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
         nni.setLabel(label);
         nni.setTargetNumHits(targetHits);
@@ -147,6 +169,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.properties().set("summary", parentQuery.properties().getString("summary"));
         query.setHits(targetHits);
 
+        query.properties().set("ranking.profile", rankProfile);
         query.properties().set("ranking.matching.approximateThreshold", approximateThreshold);
         query.properties().set("ranking.matching.filterFirstThreshold", filterFirstThreshold);
         query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
@@ -177,7 +200,8 @@ public class NearestNeighborRecallSearcher extends Searcher {
         return hits;
     }
 
-    private int calcRecall(List<SimpleHit> exactHits, List<SimpleHit> approxHits, int targetHits) throws RelevanceMismatchException {
+    private int calcRecall(List<SimpleHit> exactHits, List<SimpleHit> approxHits, int targetHits,
+                           boolean enableRelevanceCheck) throws RelevanceMismatchException {
         int recall = 0;
 
         HashMap<String,Double> map = new HashMap<String,Double>();
@@ -189,7 +213,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
             Double exact_relevance = map.get(hit.id);
             if (exact_relevance != null) {
                 recall += 1;
-                if (Math.abs(hit.relevance - exact_relevance) > 1e-5) {
+                if (enableRelevanceCheck && Math.abs(hit.relevance - exact_relevance) > 1e-5) {
                     throw new RelevanceMismatchException("Relevance mismatch (eps=1e-5) in document '" +
                             hit.id + "': relevance in exactHits is " + exact_relevance + ", relevance in approxHits is " + hit.relevance);
                 }
