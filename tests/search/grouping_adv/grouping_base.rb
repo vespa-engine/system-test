@@ -336,6 +336,22 @@ module GroupingBase
     check_query('all(group(a) filter(not in(a, "a1")) each(output(count())))', 'predicate-1')
     check_query('all(group(sf) filter(in(sf, "2.9", "3.9", "4.9", "5.9", "6.9", "7.9")) each(output(count())))', 'range-1', 40)
     check_query('all(group(a) filter(in(n, "1", "2")) each(output(count())))', 'in-1')
+
+    # Parameter substitution: the same filters with values resolved from query parameters instead of literals
+    check_query('all(group(a) filter(regex(@pattern, a)) each(output(count())))', 'filter-1', params: { 'pattern' => '^a1$' })
+    check_query('all(group(a) filter(not regex(@pattern, a)) each(output(count())))', 'predicate-1', params: { 'pattern' => '^a1$' })
+    check_query('all(group(a) filter(regex(@p1, a) or regex(@p2, a)) each(output(count())))', 'predicate-2', params: { 'p1' => '^a1$', 'p2' => '^a2$' })
+    check_query('all(group(sf) filter(range(@lo, @hi, sf)) each(output(count())))', 'range-1', 40, params: { 'lo' => '2.9', 'hi' => '8.9' })
+    # A parameter in in() is a list, on the same formats as in (@list) in YQL
+    check_query('all(group(a) filter(in(a, @values)) each(output(count())))', 'predicate-2', params: { 'values' => 'a1, a2' })
+    check_query('all(group(a) filter(in(a, "a1", @values)) each(output(count())))', 'predicate-2', params: { 'values' => 'a2' })
+    check_query('all(group(a) filter(in(n, @values)) each(output(count())))', 'in-1', params: { 'values' => '["1", "2"]' })
+    # A parameter in expression position is a string constant, here used as a constant group key with a label
+    check_query('all(group(@label) filter(regex(@pattern, a)) each(output(count())) as(@name))', 'param-label-1',
+                params: { 'label' => 'true', 'pattern' => '^a1$', 'name' => 'a1_filter' })
+    # Parameters are also resolved for grouping given in YQL
+    check_yql_query('all(group(a) filter(regex(@pattern, a)) each(output(count())))', 'filter-1', params: { 'pattern' => '^a1$' })
+    check_yql_query('all(group(a) filter(in(a, @values)) each(output(count())))', 'predicate-2', params: { 'values' => 'a1, a2' })
   end
 
   def querytest_argmin
@@ -433,9 +449,18 @@ module GroupingBase
     check_fullquery(full_query, file)
   end
 
-  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true, rank_profile="default", timezone="utc")
+  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true, rank_profile="default", timezone="utc", params: {})
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&timeout=#{timeout}" +
-      "&groupingSessionCache=#{session_cache}&ranking.profile=#{rank_profile}&timezone=#{timezone}"
+      "&groupingSessionCache=#{session_cache}&ranking.profile=#{rank_profile}&timezone=#{timezone}" +
+      params.map { |name, value| "&#{name}=#{value}" }.join
+    check_fullquery(full_query, file)
+  end
+
+  def check_yql_query(grouping, file, params: {})
+    yql = "select * from test where sddocname contains \"test\" | #{grouping}"
+    full_query = '/search/?' + URI.encode_www_form([['yql', yql], ['streaming.selection', 'true'], ['hits', '0'],
+                                             ['timeout', DEFAULT_TIMEOUT], ['groupingSessionCache', 'true'],
+                                             ['ranking.profile', 'default'], ['timezone', 'utc']] + params.to_a)
     check_fullquery(full_query, file)
   end
 
