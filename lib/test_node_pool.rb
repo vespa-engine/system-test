@@ -94,7 +94,8 @@ class TestNodePool
     nodes.each do |node|
       begin
         TCPSocket.new(node, TestBase::DRUBY_REMOTE_PORT).close
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError
+      # Since Ruby 3.2 a connect timeout raises IO::TimeoutError (an IOError) instead of Errno::ETIMEDOUT
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError, IOError
         @log.warn "Unable to free node at #{node}:#{TestBase::DRUBY_REMOTE_PORT} due to connection failure. Node will be dangling and not used in further tests."
         next
       end
