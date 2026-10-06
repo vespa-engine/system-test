@@ -32,7 +32,10 @@ class CommonMipsBase < CommonAnnBaseTest
   end
 
   def run_quantized_mips_test(sd_file, feed_file, doc_type, query_tensor, qbits)
-    deploy_app(create_app(sd_file))
+    app = create_app(sd_file)
+    # Temporary override to observe recall-effects of two-phase HNSW insertions
+    app.tune_searchnode({ :feeding => { :concurrency => 0.25 } }) if qbits == 4
+    deploy_app(app)
     start
     @container = vespa.container.values.first
 
