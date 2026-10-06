@@ -1,0 +1,87 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    # Uniformly distributed over [0, 100), used to select a given percentage of the corpus:
+    # 'bucket < P' matches P% of the documents. See create_docs.cpp.
+    field bucket type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field year type int {
+      indexing: attribute | summary
+    }
+    field price type double {
+      indexing: attribute | summary
+    }
+    field discount type float {
+      indexing: attribute | summary
+    }
+    field popularity type int {
+      indexing: attribute | summary
+    }
+    field rating type float {
+      indexing: attribute | summary
+    }
+    field category type string {
+      indexing: attribute | summary
+    }
+  }
+
+  document-summary minimal {
+    summary bucket {}
+  }
+
+  rank-profile sorting {
+    inputs {
+      query(w_price) double: 0.5
+      query(w_pop) double: 0.001
+    }
+
+    # trivial wrapper around a single attribute
+    function price_attr() {
+      expression: attribute(price)
+    }
+    # a few attributes and arithmetic
+    function final_price() {
+      expression: attribute(price) * (1.0 - attribute(discount))
+    }
+    # a more expensive expression using several attributes and functions
+    function complex_score() {
+      expression {
+        log(1.0 + attribute(popularity)) * attribute(rating) /
+          (1.0 + max(0, 2025 - attribute(year)) / 10.0) +
+        if (attribute(discount) > 0.275, 5.0, 0.0) +
+        sqrt(attribute(price)) / 10.0
+      }
+    }
+    # depends on query input values
+    function weighted() {
+      expression: query(w_price) * attribute(price) + query(w_pop) * attribute(popularity)
+    }
+    # coarse value with many ties, used as primary key in multi-level sorting
+    function decade() {
+      expression: floor(attribute(year) / 10)
+    }
+
+    sort-features {
+      price_attr
+      final_price
+      complex_score
+      weighted
+      decade
+    }
+
+    # only used when sorting on [rank] or when not sorting at all
+    first-phase {
+      expression: complex_score
+    }
+  }
+
+  # same as 'sorting', but with a cheap first-phase expression
+  rank-profile sorting_simple inherits sorting {
+    first-phase {
+      expression: final_price
+    }
+  }
+}
