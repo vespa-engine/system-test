@@ -12,7 +12,7 @@ schema paragraph {
       attribute {
         distance-metric: dotproduct
         quantization {
-          bits: 3
+          bits: %{QUANTIZATION_BITS} # Substituted by test
         }
       }
       index {
