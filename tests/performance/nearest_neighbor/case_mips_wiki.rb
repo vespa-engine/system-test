@@ -59,7 +59,7 @@ class AnnMipsWiki < CommonMipsBase
   def do_test_mips_wiki_dataset_quantized(bits:)
     set_owner('vekterli')
     set_description("Test performance and recall for #{bits}-bit quantized MIPS using the Wiki simple English dataset")
-    run_quantized_mips_test(selfdir + "mips/wiki/q#{bits}/paragraph.sd", @paragraph_docs, 'paragraph', 'paragraph', bits)
+    run_quantized_mips_test(selfdir + 'mips/wiki/quantized', 'paragraph.sd', @paragraph_docs, 'paragraph', 'paragraph', bits)
   end
 
 end

@@ -35,6 +35,31 @@ class CommonAnnBaseTest < PerformanceTest
     node.execute('lscpu', :exceptiononfailure => false)
   end
 
+  # Takes an application package directory and a single (relative) SD file name within
+  # and returns a directory path that contains a copy of the application package but
+  # with the contents of the SD file rewritten based on `substitutions`.
+  #
+  # Example:
+  # If the SD file contains "hello %{FOO}!" and `substitutions` is {'FOO' => 'world'},
+  # the resulting SD file contents will be "hello world!".
+  #
+  # No attempt is made to detect non-matching substitution patterns in the file, so use
+  # with care. Must only be used with trusted input arguments.
+  def copy_app_with_templated_sd_file(src_app_dir, sd_file, substitutions)
+    unless File.exist?(src_app_dir + '/' + sd_file)
+      raise "expected #{sd_file} to exist in directory #{src_app_dir}"
+    end
+    gen_dir = dirs.tmpdir + 'gen_app_dir'
+    FileUtils.cp_r(src_app_dir, gen_dir)
+    # We have sed at home
+    sd_data = File.read(src_app_dir + '/' + sd_file)
+    substitutions.each_pair do |from, to|
+      sd_data.gsub!(/%\{#{from}\}/, to.to_s)
+    end
+    File.write(gen_dir + '/' + sd_file, sd_data)
+    gen_dir
+  end
+
   def nn_download_file(file_name, vespa_node)
     puts "Trying to download from NN s3: #{file_name}"
     download_file_from_s3(file_name, vespa_node, 'nearest-neighbor')
