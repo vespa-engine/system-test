@@ -41,7 +41,10 @@ class SortFeaturesPerfTest < PerformanceTest
   def test_sort_features
     set_description('Test performance of sorting on rank features (sort-features) ' +
                     'for result sets of 1%, 10%, 50%, 75% and 100% of the corpus')
-    deploy_app(SearchApp.new.sd(selfdir + 'test.sd').threads_per_search(1))
+    app = SearchApp.new.sd(selfdir + 'test.sd')
+    app.search.tune_searchnode({'requestthreads' => { 'search' => 32, 'persearch' => 4, 'resultprocessing' => 32 }})
+    app.threads_per_search(4)
+    deploy_app(app)
     @container = vespa.container.values.first
     compile_create_docs
     start
@@ -284,7 +287,7 @@ class SortFeaturesPerfTest < PerformanceTest
     fillers = [parameter_filler('label', label),
                parameter_filler('variant', variant[0]),
                parameter_filler('hit_percentage', hit_percentage),
-               parameter_filler('sortspec', variant[2] || ''),
+               parameter_filler('sortspec', variant[2] || 'none'),
                memory_filler]
     memory_phase(label)
     profiler_start
