@@ -294,7 +294,7 @@ class SortFeaturesPerfTest < PerformanceTest
     run_fbench2(@container,
                 container_query_file,
                 { :runtime => 20,
-                  :clients => 1,
+                  :clients => 10,
                   :append_str => '&hits=10&summary=minimal&timeout=20s',
                   :result_file => result_file },
                 fillers)
