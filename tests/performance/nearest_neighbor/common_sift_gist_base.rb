@@ -8,12 +8,12 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
   FBENCH_TIME = 10
 
-  def create_app(test_folder, concurrency = nil, threads_per_search = 1)
+  def create_app_from_dir(app_dir, concurrency = nil, threads_per_search = 1)
     add_bundle(selfdir + "NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
-    app = SearchApp.new.sd(selfdir + test_folder + "/test.sd").
-      search_dir(selfdir + test_folder + "/search").
+    app = SearchApp.new.sd(app_dir + "/test.sd").
+      search_dir(app_dir + "/search").
       threads_per_search(threads_per_search).
       container(Container.new("combinedcontainer").
                 jvmoptions('-Xms8g -Xmx8g').
@@ -21,10 +21,21 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 docproc(DocumentProcessing.new).
                 documentapi(ContainerDocumentApi.new)).
       indexing("combinedcontainer")
-    if (concurrency != nil)
+    if concurrency != nil
       app.tune_searchnode({:feeding => {:concurrency => concurrency}})
     end
-    return app
+    app
+  end
+
+  def create_app(test_folder, concurrency = nil, threads_per_search = 1)
+    create_app_from_dir(selfdir + test_folder, concurrency, threads_per_search)
+  end
+
+  # puts, but sporting a silk tie with stripes (ooh!)
+  def fancy_puts(str)
+    puts '----'
+    puts str
+    puts '----'
   end
 
   def get_type_string(filter_percent, threads_per_search)
@@ -185,7 +196,11 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}",
+                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}" +
+                                "&ranking.matching.approximateThreshold=#{approximate_threshold}" +
+                                "&ranking.matching.filterFirstThreshold=#{filter_first_threshold}" +
+                                "&ranking.matching.filterFirstExploration=#{filter_first_exploration}" +
+                                "&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
@@ -200,27 +215,31 @@ class CommonSiftGistBase < CommonAnnBaseTest
   #
   # In Vespa the same value is (target_hits + explore_hits)
 
-  def run_target_hits_10_tests
+  def run_target_hits_10_tests(recall_params={})
     [0, 10, 30, 70, 110, 190, 390, 590, 790].each do |explore_hits|
+      fancy_puts "Benchmarking and checking recall for target_hits=10, explore_hits=#{explore_hits}"
       query_and_benchmark(HNSW, 10, explore_hits)
-      calc_recall_for_queries(10, explore_hits)
+      calc_recall_for_queries(10, explore_hits, recall_params)
     end
 
     [0.1, 0.2].each do |slack|
+      fancy_puts "Benchmarking and checking recall for target_hits=10, slack=#{slack}"
       query_and_benchmark(HNSW, 10, 0, {:slack => slack})
-      calc_recall_for_queries(10, 0, {:slack => slack})
+      calc_recall_for_queries(10, 0, recall_params.merge({:slack => slack}))
     end
   end
 
-  def run_target_hits_100_tests
+  def run_target_hits_100_tests(recall_params={})
     [0, 20, 100, 300, 500, 700].each do |explore_hits|
+      fancy_puts "Benchmarking and checking recall for target_hits=100, explore_hits=#{explore_hits}"
       query_and_benchmark(HNSW, 100, explore_hits)
-      calc_recall_for_queries(100, explore_hits)
+      calc_recall_for_queries(100, explore_hits, recall_params)
     end
 
     [0.1, 0.2].each do |slack|
+      fancy_puts "Benchmarking and checking recall for target_hits=100, slack=#{slack}"
       query_and_benchmark(HNSW, 100, 0, {:slack => slack})
-      calc_recall_for_queries(100, 0, {:slack => slack})
+      calc_recall_for_queries(100, 0, recall_params.merge({:slack => slack}))
     end
   end
 
