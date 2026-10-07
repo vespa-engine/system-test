@@ -31,20 +31,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     deploy_and_feed
     copy_query_file
     warmup
-    t = Thread.new() { watch(@container) }
-    begin
-      run_queries
-    ensure
-      t.kill
-      t.join
-    end
-  end
-
-  def watch(node)
-    while true
-      out = node.execute("turbostat sleep 20 2>&1 | grep -v not.effective", :noecho => true)
-      puts ">>>\n#{out}<<<"
-    end
+    run_queries
   end
 
   def generate_feed_and_queries
