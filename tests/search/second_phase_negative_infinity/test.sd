@@ -1,0 +1,21 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema test {
+  document test {
+    field first type int {
+      indexing: attribute | summary
+    }
+    field second type int {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile log-rank-profile {
+    first-phase {
+      expression: attribute(first)
+    }
+    second-phase {
+      expression: log10(attribute(second)) # this scores -inf when second == 0
+      rerank-count: 10
+    }
+  }
+}
