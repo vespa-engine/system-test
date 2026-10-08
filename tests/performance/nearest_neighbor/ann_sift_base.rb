@@ -83,6 +83,7 @@ class AnnSiftBase < CommonSiftGistBase
     }
     fancy_puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
     calc_recall_for_queries(10, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
+    calc_recall_for_queries(100, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
 
     run_target_hits_10_tests(recall_params)
     run_target_hits_100_tests(recall_params)
