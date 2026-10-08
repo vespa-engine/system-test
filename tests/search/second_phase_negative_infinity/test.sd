@@ -35,4 +35,14 @@ schema test {
       min-groups: 3
     }
   }
+  # Each thread has its own first-phase heap of rerank-count hits, but only the best
+  # rerank-count hits in total are reranked. The other hits in the heaps get their
+  # first-phase score rescaled.
+  rank-profile log-rank-profile-two-threads inherits log-rank-profile {
+    num-threads-per-search: 2
+    second-phase {
+      expression: log10(attribute(second)) # this scores -inf when second == 0
+      rerank-count: 2
+    }
+  }
 }
