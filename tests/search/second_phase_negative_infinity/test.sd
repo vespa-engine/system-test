@@ -8,6 +8,10 @@ schema test {
     field second type int {
       indexing: attribute | summary
     }
+    field group type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
   }
   rank-profile log-rank-profile {
     first-phase {
@@ -16,6 +20,19 @@ schema test {
     second-phase {
       expression: log10(attribute(second)) # this scores -inf when second == 0
       rerank-count: 10
+    }
+  }
+  # At most rerank-count / min-groups = 1 hit per group is reranked. Hits in the
+  # first-phase heap that are rejected by diversity get their first-phase score rescaled.
+  rank-profile log-rank-profile-diversity inherits log-rank-profile {
+    num-threads-per-search: 1
+    second-phase {
+      expression: log10(attribute(second)) # this scores -inf when second == 0
+      rerank-count: 3
+    }
+    diversity {
+      attribute: group
+      min-groups: 3
     }
   }
 }
