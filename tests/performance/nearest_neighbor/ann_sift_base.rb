@@ -10,8 +10,8 @@ class AnnSiftBase < CommonSiftGistBase
     @base_fvecs = @data_path + "sift_base.fvecs"
     @query_fvecs = @data_path + "sift_query.fvecs"
     @dimensions = 128
-
-    @num_queries_for_benchmark = 10000
+    @num_documents = 1_000_000
+    @num_queries_for_benchmark = 10_000
   end
 
   def run_sift_test(sd_dir, test_threads_per_search = false, mixed_tensor = false)
@@ -19,18 +19,17 @@ class AnnSiftBase < CommonSiftGistBase
     start
 
     num_queries_for_recall = 100
-    num_documents = 1_000_000
     num_updates = 200_000
     filter_values = [1, 10, 50, 90, 95, 99]
 
     # Smaller values that can be used for development and testing
     #num_queries_for_recall = 10
-    #num_documents = 20_000
+    #@num_documents = 20_000
     #num_updates = 10_000
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
-    feed_and_benchmark(num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
+    feed_and_benchmark(@num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
@@ -55,7 +54,46 @@ class AnnSiftBase < CommonSiftGistBase
     # This feed is updating documents [500000-700000) with the same values as documents [0-200000).
     # This ensures that the vector values actually changes,
     # and avoids the optimization that skips changing the HNSW graphs when vectors are unchanged.
-    feed_and_benchmark(num_updates, "1M-updates", {:start_with_docid => num_documents / 2, :operation => "update", :mixed_tensor => mixed_tensor})
+    feed_and_benchmark(num_updates, "1M-updates", {
+      :start_with_docid => @num_documents / 2,
+      :operation => "update",
+      :mixed_tensor => mixed_tensor
+    })
+  end
+
+  def run_quantized_sift_test(sd_dir, bits:)
+    gen_app_dir = copy_app_with_templated_sd_file(sd_dir, 'test.sd', {'QUANTIZATION_BITS' => bits})
+    deploy_app(create_app_from_dir(gen_app_dir, 0.3, 1))
+    start
+
+    num_queries_for_recall = 100
+    num_updates = 200_000
+
+    compile_generators
+    generate_vectors_for_recall(num_queries_for_recall)
+    feed_and_benchmark(@num_documents, "1M-docs")
+
+    query_and_benchmark(BRUTE_FORCE, 10, 0)
+    query_and_benchmark(HNSW, 10, 0)
+
+    recall_params = {
+      :doc_tensor => 'vec_m16',
+      :exact_match_tensor => 'vec_f32',
+      :quantization_bits => bits
+    }
+    fancy_puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
+    calc_recall_for_queries(10, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
+    calc_recall_for_queries(100, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
+
+    run_target_hits_10_tests(recall_params)
+    run_target_hits_100_tests(recall_params)
+
+    fancy_puts "Benchmarking feed with #{num_updates} partial updates"
+    # See run_sift_test for rationale
+    feed_and_benchmark(num_updates, "1M-updates", {
+      :start_with_docid => @num_documents / 2,
+      :operation => "update"
+    })
   end
 
   def run_sift_filter_first_test(sd_dir, mixed_tensor = false)
@@ -63,13 +101,16 @@ class AnnSiftBase < CommonSiftGistBase
     start
 
     num_queries_for_recall = 100
-    num_documents = 1_000_000
     filter_values_denominator = 10_000 # filter_values below are per myriad
     filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
-    feed_and_benchmark(num_documents, "1M-docs", {:filter_values => filter_values, :filter_values_denominator => filter_values_denominator, :mixed_tensor => mixed_tensor})
+    feed_and_benchmark(@num_documents, "1M-docs", {
+      :filter_values => filter_values,
+      :filter_values_denominator => filter_values_denominator,
+      :mixed_tensor => mixed_tensor
+    })
 
     # Warm-up
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -94,12 +135,11 @@ class AnnSiftBase < CommonSiftGistBase
     start
 
     num_queries_for_recall = 100
-    num_documents = 1_000_000
     radii = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 10000, 20000, 30000]
 
     # Smaller values that can be used for development and testing
     #num_queries_for_recall = 10
-    #num_documents = 20_000
+    #@num_documents = 20_000
 
     bounding_box_globe = {
       :latitude_lower => -90.0,
@@ -111,7 +151,7 @@ class AnnSiftBase < CommonSiftGistBase
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
     generate_locations_for_recall(num_queries_for_recall, bounding_box_globe)
-    feed_and_benchmark(num_documents, "1M-docs", {:radii => radii}.merge(bounding_box_globe))
+    feed_and_benchmark(@num_documents, "1M-docs", {:radii => radii}.merge(bounding_box_globe))
 
     query_and_benchmark(BRUTE_FORCE, 10, 0, {:radius => 50.0}.merge(bounding_box_globe))
 
@@ -134,16 +174,15 @@ class AnnSiftBase < CommonSiftGistBase
 
     num_queries_for_recall = 100
     documents_to_benchmark_at = 500_000
-    documents_in_total = 1_000_000
 
     # Smaller values that can be used for development and testing
     #num_queries_for_recall = 10
     #documents_to_benchmark_at = 5_000
-    #documents_in_total = 10_000
+    #@num_documents = 10_000
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
-    run_removal_test(documents_to_benchmark_at, documents_in_total, "1M-docs")
+    run_removal_test(documents_to_benchmark_at, @num_documents, "1M-docs")
   end
 
 end
