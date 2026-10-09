@@ -20,6 +20,7 @@ require 'app_generator/test/containertest'
 require 'app_generator/test/configtest'
 require 'test/distr_bucketdb_parser_test'
 require 'test/distributionstates_test'
+require 'test/test_selector_test'
 
 if File.exist?(Environment.instance.vespa_home)
   # Add tests that require a Vespa installation to run here

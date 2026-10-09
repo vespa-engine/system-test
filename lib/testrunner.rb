@@ -168,6 +168,7 @@ class TestRunner
     @log.debug("Running tests with a process pool of #{max_procs} procs.")
 
     @backend.initialize_testrun(@test_objects)
+    @test_objects = @backend.select_testcases(@test_objects)
 
     client_endpoint = DrbEndpoint.new("localhost:#{TestBase::DRUBY_NODE_POOL_PORT}")
     allocator_client = client_endpoint.create_client(with_object: nil)

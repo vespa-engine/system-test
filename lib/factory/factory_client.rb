@@ -40,7 +40,8 @@ class FactoryClient
 
     test_run_data = { :durations => Hash.new {0},
                       :testStatus => Hash.new { "new" },
-                      :valgrind => response["useValgrind"] }
+                      :valgrind => response["useValgrind"],
+                      :testsToRun => response["testsToRun"] }
 
     response["testDurations"].each do |test_object|
       test_data = Hash[test_object]
