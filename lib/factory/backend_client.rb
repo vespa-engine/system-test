@@ -3,6 +3,7 @@
 require 'zlib'
 require 'pathname'
 require 'factory_client'
+require 'test_selector'
 
 class SimpleSystestSorter
 
@@ -49,6 +50,7 @@ class BackendClient
     @durations = {}
     @durations.default = 1500
     @testStatus = {}
+    @tests_to_run = nil
   end
 
   def initialize_testrun(test_objects)
@@ -57,6 +59,16 @@ class BackendClient
     @durations = response[:durations]
     @testStatus = response[:testStatus]
     @valgrind = response[:valgrind]
+    @tests_to_run = response[:testsToRun]
+  end
+
+  def select_testcases(test_objects)
+    selected, unknown = TestSelector.select(test_objects, @tests_to_run)
+    unless @tests_to_run.nil? || @tests_to_run.empty?
+      @log.info("Factory asked to run #{@tests_to_run.size} tests: running #{selected.size} of the #{test_objects.size} tests found")
+      unknown.each { |name| @log.warn("Factory asked to run #{name}, which was not found") }
+    end
+    selected
   end
 
   def sort_testcases(test_objects)

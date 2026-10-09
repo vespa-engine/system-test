@@ -19,6 +19,10 @@ class BackendReporter < BackendClient
     super(test_objects)
   end
 
+  def select_testcases(test_objects)
+    super(test_objects)
+  end
+
   def sort_testcases(test_objects)
     super(test_objects)
   end
@@ -77,6 +81,10 @@ class BackendReporter
     test_objects.each do |object, method|
       @test_names << "#{object.class}::#{method.to_s}"
     end
+  end
+
+  def select_testcases(test_objects)
+    test_objects
   end
 
   def sort_testcases(test_objects)
