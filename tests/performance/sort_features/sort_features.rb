@@ -40,11 +40,9 @@ class SortFeaturesPerfTest < PerformanceTest
 
   def test_sort_features
     set_description('Test performance of sorting on rank features (sort-features) ' +
-                    'for result sets of 1%, 10%, 50%, 75% and 100% of the corpus')
-    app = SearchApp.new.sd(selfdir + 'test.sd')
-    app.search.tune_searchnode({'requestthreads' => { 'search' => 32, 'persearch' => 4, 'resultprocessing' => 32 }})
-    app.threads_per_search(4)
-    deploy_app(app)
+                    'for result sets of 1%, 10%, 50%, 75% and 100% of the corpus, ' +
+                    'and of many small such queries contending for the result processing limiter')
+    deploy_app(create_app(32))
     @container = vespa.container.values.first
     compile_create_docs
     start
@@ -57,10 +55,19 @@ class SortFeaturesPerfTest < PerformanceTest
       validate_hitcounts
       validate_sorting
       run_query_and_profile
+      run_limiter_contention
     ensure
       stop_memory_sampler
     end
     report_memory_summary
+  end
+
+  def create_app(result_processing_threads)
+    app = SearchApp.new.sd(selfdir + 'test.sd')
+    app.search.tune_searchnode({'requestthreads' => { 'search' => 32, 'persearch' => 4,
+                                                      'resultprocessing' => result_processing_threads }})
+    app.threads_per_search(4)
+    app
   end
 
   # Proton memory usage is sampled once per second by a background thread during the
@@ -278,8 +285,22 @@ class SortFeaturesPerfTest < PerformanceTest
     end
   end
 
-  def query_and_profile(hit_percentage, variant)
+  # With resultprocessing=4, every query sorting on a rank feature takes all 4 units of the
+  # result processing limiter (QueryLimiter), so these queries are serialized node-wide however
+  # few hits they have. Many clients of small such queries then hand the limiter over to each
+  # other at a high rate, with many waiters. The limiter is reconfigured without a restart.
+  def run_limiter_contention
+    output = deploy_app(create_app(4))
+    wait_for_reconfig(get_generation(output).to_i)
+    config = getvespaconfig('vespa.config.search.core.proton', @proton.config_id)
+    assert_equal(4, config['search']['memory']['limiter']['maxthreads'])
+    do_search('feature_attr', 1)
+    query_and_profile(1, VARIANTS.find { |v| v[0] == 'feature_attr' }, 'contention', 32)
+  end
+
+  def query_and_profile(hit_percentage, variant, label_suffix = nil, clients = 10)
     label = "#{variant[0]}_p#{hit_percentage}"
+    label += "_#{label_suffix}" if label_suffix
     local_query_file = dirs.tmpdir + "query_#{label}.txt"
     File.write(local_query_file, get_query(hit_percentage, variant) + "\n")
     container_query_file = copy_to_container(local_query_file)
@@ -294,7 +315,7 @@ class SortFeaturesPerfTest < PerformanceTest
     run_fbench2(@container,
                 container_query_file,
                 { :runtime => 20,
-                  :clients => 10,
+                  :clients => clients,
                   :append_str => '&hits=10&summary=minimal&timeout=20s',
                   :result_file => result_file },
                 fillers)
