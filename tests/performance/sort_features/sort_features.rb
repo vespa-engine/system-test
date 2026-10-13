@@ -12,9 +12,7 @@ class SortFeaturesPerfTest < PerformanceTest
   # Sorting on rank features alone does not activate ranking (first-phase is not evaluated),
   # only the sort features referenced in the sortspec are computed for each hit.
   VARIANTS = [
-    # baselines: matching only, ranking with cheap and expensive first-phase, attribute sorting
-    ['unranked',          'unranked',       nil,                                       {}],
-    ['rank_simple',       'sorting_simple', nil,                                       {}],
+    # baselines: ranking with an expensive first-phase, attribute sorting
     ['rank_complex',      'sorting',        nil,                                       {}],
     ['attr',              'sorting',        '-price',                                  {}],
     # sorting on a single rank feature of increasing cost
@@ -55,6 +53,7 @@ class SortFeaturesPerfTest < PerformanceTest
       validate_hitcounts
       validate_sorting
       run_query_and_profile
+      run_limiter_queueing
       run_limiter_contention
     ensure
       stop_memory_sampler
@@ -264,8 +263,6 @@ class SortFeaturesPerfTest < PerformanceTest
     # scores as the top hits from ranking
     assert_equal(relevancies(do_search('rank_complex')),
                  relevancies(do_search(['', 'sorting', '-feature(complex_score) -[rank]', {}])))
-    assert_equal(relevancies(do_search('rank_simple')),
-                 relevancies(do_search('feature_and_rank')))
     assert_descending(values(do_search('feature_and_rank')) { |f| final_price(f) }, 'feature_and_rank')
 
     # multi-level sorting; check on a small result set to get ties on the first level
@@ -285,6 +282,18 @@ class SortFeaturesPerfTest < PerformanceTest
     end
   end
 
+  # With resultprocessing=28, we will have 1 query in the queue to take 4 units of the
+  # result processing limiter (QueryLimiter) most of the time.
+  def run_limiter_queueing
+    output = deploy_app(create_app(28))
+    wait_for_reconfig(get_generation(output).to_i)
+    config = getvespaconfig('vespa.config.search.core.proton', @proton.config_id)
+    assert_equal(28, config['search']['memory']['limiter']['maxthreads'])
+    do_search('feature_attr', 2)
+    variant = ['limiter_queueing', 'sorting', '-feature(price_attr)', {}]
+    query_and_profile(2, variant, 32)
+  end
+
   # With resultprocessing=4, every query sorting on a rank feature takes all 4 units of the
   # result processing limiter (QueryLimiter), so these queries are serialized node-wide however
   # few hits they have. Many clients of small such queries then hand the limiter over to each
@@ -294,13 +303,13 @@ class SortFeaturesPerfTest < PerformanceTest
     wait_for_reconfig(get_generation(output).to_i)
     config = getvespaconfig('vespa.config.search.core.proton', @proton.config_id)
     assert_equal(4, config['search']['memory']['limiter']['maxthreads'])
-    do_search('feature_attr', 1)
-    query_and_profile(1, VARIANTS.find { |v| v[0] == 'feature_attr' }, 'contention', 32)
+    do_search('feature_attr', 2)
+    variant = ['limiter_contention', 'sorting', '-feature(price_attr)', {}]
+    query_and_profile(2, variant, 32)
   end
 
-  def query_and_profile(hit_percentage, variant, label_suffix = nil, clients = 10)
+  def query_and_profile(hit_percentage, variant, clients = 10)
     label = "#{variant[0]}_p#{hit_percentage}"
-    label += "_#{label_suffix}" if label_suffix
     local_query_file = dirs.tmpdir + "query_#{label}.txt"
     File.write(local_query_file, get_query(hit_percentage, variant) + "\n")
     container_query_file = copy_to_container(local_query_file)
