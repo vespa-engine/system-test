@@ -36,8 +36,6 @@ class CommonMipsBase < CommonAnnBaseTest
                                                   {'QUANTIZATION_BITS' => qbits})
     # For the MIPS tests we only use the app SD file itself
     app = create_app(gen_app_dir + '/' + sd_file_name)
-    # Temporary override to observe recall-effects of two-phase HNSW insertions
-    app.tune_searchnode({ :feeding => { :concurrency => 0.25 } }) if qbits == 4
     deploy_app(app)
     start
     @container = vespa.container.values.first
