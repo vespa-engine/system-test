@@ -11,15 +11,9 @@ schema test {
       }
       struct-field value {
         indexing: attribute
-        #attribute: fast-search
         rank: filter
       }
       fast-search-map-field fast_lookup
-    }
-    field kv_5_combined_attr type array<string> {
-      indexing: attribute
-      attribute: fast-search
-      rank: filter
     }
     field kv_25 type map<string, int> {
       indexing: summary
@@ -29,15 +23,9 @@ schema test {
       }
       struct-field value {
         indexing: attribute
-        #attribute: fast-search
         rank: filter
       }
       fast-search-map-field fast_lookup
-    }
-    field kv_25_combined_attr type array<string> {
-      indexing: attribute
-      attribute: fast-search
-      rank: filter
     }
     field kv_125 type map<string, int> {
       indexing: summary
@@ -47,15 +35,9 @@ schema test {
       }
       struct-field value {
         indexing: attribute
-        #attribute: fast-search
         rank: filter
       }
       fast-search-map-field fast_lookup
-    }
-    field kv_125_combined_attr type array<string> {
-      indexing: attribute
-      attribute: fast-search
-      rank: filter
     }
     # Independent single-value filter field used for AND-combination queries.
     field filter type int {
