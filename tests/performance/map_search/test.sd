@@ -9,6 +9,10 @@ schema test {
         indexing: attribute
         attribute: fast-search
       }
+      struct-field value {
+        indexing: attribute
+        rank: filter
+      }
       fast-search-map-field fast_lookup
     }
     field kv_25 type map<string, int> {
@@ -17,6 +21,10 @@ schema test {
         indexing: attribute
         attribute: fast-search
       }
+      struct-field value {
+        indexing: attribute
+        rank: filter
+      }
       fast-search-map-field fast_lookup
     }
     field kv_125 type map<string, int> {
@@ -24,6 +32,10 @@ schema test {
       struct-field key {
         indexing: attribute
         attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+        rank: filter
       }
       fast-search-map-field fast_lookup
     }

@@ -34,7 +34,43 @@ class MapSearchPerfTest < PerformanceTest
 
     feed_docs
     validate_data
+    validate_fast_search
     run_query_and_profile
+  end
+
+  # Checks that the fast-search-map-field queries return exactly the same documents as
+  # the equivalent sameElement queries on the plain map attributes.
+  def validate_fast_search
+    for map_size in @map_sizes do
+      for query_type_pair in [[:range, :fast_range], [:same_element, :fast_same_element], [:large_range, :fast_large_range]] do
+        query_type = query_type_pair[0]
+        fast_query_type = query_type_pair[1]
+        for key in @query_keys do
+          for qval in query_values(query_type) do
+            label = get_label(map_size, query_type, key, qval)
+            puts "Validating fast-search for #{label}"
+            case query_type
+            when :range, :large_range
+              assert_same_hits(get_yql(map_size, query_type, key, qval), get_yql(map_size, fast_query_type, key, qval))
+            else
+              for v in (qval-10)..(qval+10) do
+                assert_same_hits(get_yql(map_size, query_type, key, v), get_yql(map_size, fast_query_type, key, v))
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def assert_same_hits(yql, fast_yql)
+    result = search({"yql" => yql + " order by \"[docid]\"", "hits" => 100})
+    fast_result = search({"yql" => fast_yql + " order by \"[docid]\"", "hits" => 100})
+    assert_equal(result.hitcount, fast_result.hitcount)
+
+    result_ids = result.hit.map{ |hit| hit.field["documentid"]}
+    fast_result_ids = fast_result.hit.map{ |hit| hit.field["documentid"]}
+    assert_equal(result_ids, fast_result_ids)
   end
 
   def compile_create_docs
@@ -70,7 +106,7 @@ class MapSearchPerfTest < PerformanceTest
   # The value(s) the query matches against.
   def query_values(query_type)
     case query_type
-    when :fast_large_range
+    when :large_range, :fast_large_range
       [256, 512]
     else
       [700, 1000]
@@ -113,10 +149,25 @@ class MapSearchPerfTest < PerformanceTest
   def get_yql(map_size, query_type, key, qval)
     field = "kv_#{map_size}"
     case query_type
+    when :range
+      # Match documents where the entry with key 'key' has its value within [qval-10, qval+10].
+      "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", range(value, #{qval-10}, #{qval+10}))"
     when :fast_range
       "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", range(value, #{qval-10}, #{qval+10}))"
+    when :same_element
+      # Match documents where the entry with key 'key' has value 'qval'.
+      "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", value = #{qval})"
     when :fast_same_element
       "select * from sources * where #{field}.fast_lookup contains mapMatch(key contains \"#{key}\", value = #{qval})"
+    when :large_range
+      case qval
+      when 256
+        "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", range(value, 768, 1023))"
+      when 512
+        "select * from sources * where #{field} contains sameElement(key contains \"#{key}\", range(value, 768, 1279))"
+      else
+        raise "Unhandled value #{qval} for query type: #{query_type}"
+      end
     when :fast_large_range
       case qval
       when 256
