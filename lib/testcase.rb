@@ -241,7 +241,7 @@ class TestCase
   end
 
   # return the timeout (in seconds) for each phase of this test
-  # override in specific tests to provide longer timeout if needed
+  # override in specific tests only to provide a longer timeout than inherited
   def timeout_seconds
     return 1200
   end
@@ -250,15 +250,18 @@ class TestCase
     stop
   end
 
-  # method wrapping timeout_seconds, to multiply timeout by 5 if
-  # test is run through valgrind
+  # Timeout for each phase of this test. A timeout given by the test runner is a lower
+  # bound for timeout_seconds. The result is multiplied if the test is run through
+  # valgrind or with sanitizers.
   def get_timeout
+    runner_timeout = @cmd_args[:timeout]
+    timeout = runner_timeout ? [timeout_seconds, runner_timeout].max : timeout_seconds
     if @valgrind
-      return timeout_seconds * TestBase::VALGRIND_TIMEOUT_MULTIPLIER
+      return timeout * TestBase::VALGRIND_TIMEOUT_MULTIPLIER
     elsif has_active_sanitizers
-      return timeout_seconds * TestBase::SANITIZERS_TIMEOUT_MULTIPLIER
+      return timeout * TestBase::SANITIZERS_TIMEOUT_MULTIPLIER
     else
-      return timeout_seconds
+      return timeout
     end
   end
 
@@ -300,12 +303,12 @@ class TestCase
       output("My coredump dir is: #{@dirs.coredir}")
       output("My current work directory is: #{`/bin/pwd`}")
       Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout_length|
-        output("Timeout length (setup): " + timeout_length.to_s)
+        timeout_text = timeout_length ? timeout_length.to_s : "none"
+        output("Timeout length (setup): " + timeout_text)
         if test_method !~ /(.*)__([A-Z_]+)$/
           setup
         end
-        output("Timeout length (test_method: " + test_method.to_s + "): " +
-               timeout_length.to_s)
+        output("Timeout length (test_method: " + test_method.to_s + "): " + timeout_text)
         vespa.nodeproxies.each do |hostname, node|
           parent_node_name = node.parent_node_name
           output("Host \"#{hostname}\" (parent \"#{parent_node_name}\")")
