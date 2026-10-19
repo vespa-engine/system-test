@@ -37,6 +37,7 @@ class TestRunner
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
     @dns_settle_time = options[:dns_settle_time] ? options[:dns_settle_time] : 0
     @force_valgrind = options[:force_valgrind] ? options[:force_valgrind] : false
+    @timeout = options[:timeout]
 
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
@@ -123,7 +124,8 @@ class TestRunner
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
-                                                              :perf_recording => @perf_recording })
+                                                              :perf_recording => @perf_recording,
+                                                              :timeout => @timeout })
 
             # No need to do more as performance is a test class property
             break if @performance != testclass.performance?
@@ -295,6 +297,10 @@ if __FILE__ == $0
     end
     opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off' 'some' or 'all'. Default off.") do |perf_recording|
       options[:perf_recording] = perf_recording
+    end
+    opts.on("-t", "--timeout SECONDS", Integer, "Timeout per test phase in seconds (lower bound for the test's own timeout). Default: test's own timeout.") do |timeout|
+      raise OptionParser::InvalidArgument, "--timeout must be positive: #{timeout}" if timeout <= 0
+      options[:timeout] = timeout
     end
     opts.on("-V", "--vespaversion VERSION", String, "Vespa version to use.") do |version|
       options[:vespaversion] = version

@@ -109,6 +109,10 @@ class AutoRunner
       @cmd_args.delete(:nopreclean)
       @cmd_args[:forked] = uri
     }
+    opts.on("--timeout SECONDS", Integer, "Timeout per test phase in seconds (lower bound for the test's own timeout). Default: test's own timeout.") { |v|
+      raise OptionParser::InvalidArgument, "--timeout must be positive: #{v}" if v <= 0
+      @cmd_args[:timeout] = v
+    }
     opts.on("--platform-label LABEL", String, "Platform label, example: RHEL7-64") { |v| @cmd_args[:platform_label] = v }
     opts.on("--build-version VERSION", String, "Build version, example: HEAD") { |v| @cmd_args[:buildversion] = v }
     opts.on("--build-name LABEL", String, "Build name, example: 6.10.51") { |v| @cmd_args[:buildname] = v }
