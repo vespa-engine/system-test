@@ -5,6 +5,8 @@ require 'search/opentelemetry/otelcolservice'
 
 class OpenTelemetryTest < IndexedOnlySearchTest
 
+  SHOW_TRACES = false
+
   def setup
     set_owner('toregge')
     @collector = nil
@@ -60,10 +62,32 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     @collector.stop
     traces = @collector.local_traces
     puts "---- start traces"
+    num_resource_spans = 0
+    num_scope_spans = 0
+    num_spans = 0
     File.foreach(traces, chomp: true) do |line|
-      puts JSON.pretty_generate(JSON.parse(line))
+      json = JSON.parse(line)
+      puts JSON.pretty_generate(json) if SHOW_TRACES
+      resourceSpans = json['resourceSpans']
+      unless resourceSpans.nil?
+        resourceSpans.each do |resourceSpan|
+          num_resource_spans = num_resource_spans + 1
+          scopeSpans = resourceSpan['scopeSpans']
+          unless scopeSpans.nil?
+            scopeSpans.each do |scopeSpan|
+              num_scope_spans = num_scope_spans + 1
+              spans = scopeSpan['spans']
+              unless spans.nil?
+                spans.each do |span|
+                  num_spans = num_spans + 1
+                end
+              end
+            end
+          end
+        end
+      end
     end
-    puts "---- end traces"
+    puts "---- end traces, #{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
   end
 
 end
