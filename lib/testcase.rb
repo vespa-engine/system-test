@@ -65,6 +65,7 @@ class TestCase
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
+  attr_accessor :dirty_feature_flags
   attr_accessor :sanitizers
 
   # Creates and returns a new TestCase object.
@@ -93,6 +94,7 @@ class TestCase
     @num_hosts = 1
     @dirty_nodeproxies = {}
     @dirty_environment_settings = false
+    @dirty_feature_flags = false
     @disable_log_query_and_result = nil
     @connection_error = false
     @current_assert_file = nil
@@ -1046,6 +1048,13 @@ class TestCase
     assert_not_nil(match_info)
     assert_not_nil(match_info[1])
     return match_info[1].to_i
+  end
+
+  # Temporarily overrides setting, will be set back at end of test
+  def set_feature_flag(node, id, rules)
+    @dirty_feature_flags = true
+    add_dirty_nodeproxies({node.name => node})
+    Environment.instance.set_remote_feature_flag(node, id, rules)
   end
 
 end

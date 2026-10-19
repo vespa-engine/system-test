@@ -66,6 +66,14 @@ module NodeServerInterface
     @node_server.override_environment_setting(name, value)
   end
 
+  def reset_feature_flags
+    @node_server.reset_feature_flags
+  end
+
+  def set_feature_flag(id, rules)
+    @node_server.set_feature_flag(id, rules)
+  end
+
   def get_stateline(path)
     @node_server.get_stateline(path)
   end

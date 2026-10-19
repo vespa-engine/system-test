@@ -143,6 +143,7 @@ class VespaModel
     @testcase.hostlist.each do |hostname|
       node_proxy = NodeProxy.new(hostname, @testcase)
       detect_sanitizers(node_proxy)
+      reset_remote_environment_and_feature_flags(node_proxy)
       @nodeproxies[hostname] = node_proxy
     end
   end
@@ -829,6 +830,11 @@ class VespaModel
     end
   end
 
+  def reset_remote_environment_and_feature_flags(handle)
+    Environment.instance.reset_environment(handle)
+    Environment.instance.reset_remote_feature_flags(handle)
+  end
+
   def detect_sanitizers(handle)
     sanitizers = handle.detect_sanitizers
     @testcase.detected_sanitizers(sanitizers)
@@ -960,6 +966,9 @@ class VespaModel
           fail_unblessed_processes(handle)
           if @testcase.dirty_environment_settings
             Environment.instance.reset_environment(handle)
+          end
+          if @testcase.dirty_feature_flags
+            Environment.instance.reset_remote_feature_flags(handle)
           end
           if not @testcase.leave_loglevels
             reset_logctl(handle)
