@@ -2,6 +2,7 @@
 
 require 'executor'
 require 'default_env_file'
+require 'feature_flags_file'
 require 'uri'
 
 # A base class for a singleton providing the default environment in
@@ -61,6 +62,7 @@ class EnvironmentBase
     @additional_start_base_commands = ""
     @maven_snapshot_url = nil # TODO
     @default_env_file = DefaultEnvFile.new(@vespa_home)
+    @feature_flags_file = FeatureFlagsFile.new(@vespa_home)
   end
 
   def set_addr_configserver(testcase, config_hostnames)
@@ -112,6 +114,26 @@ class EnvironmentBase
 
   def override_environment_setting(testcase, name, value)
     @default_env_file.set(name, value)
+  end
+
+  def reset_remote_feature_flags(node)
+    node.reset_feature_flags
+  end
+
+  def set_remote_feature_flag(node, id, rules)
+    node.set_feature_flag(id, rules)
+  end
+
+  def backup_feature_flags(force)
+    @feature_flags_file.backup(force)
+  end
+
+  def reset_feature_flags
+    @feature_flags_file.restore
+  end
+
+  def set_feature_flag(id, rules)
+    @feature_flags_file.set(id, rules)
   end
 
 end

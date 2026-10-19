@@ -116,6 +116,14 @@ class NodeServer
     Environment.instance.override_environment_setting(@testcase, name, value)
   end
 
+  def reset_feature_flags
+    Environment.instance.reset_feature_flags
+  end
+
+  def set_feature_flag(id, rules)
+    Environment.instance.set_feature_flag(id, rules)
+  end
+
   def remote_eval(expr)
     eval(expr)
   end
@@ -917,6 +925,7 @@ def main(callback_endpoint)
   end
 
   Environment.instance.backup_environment_setting(false)
+  Environment.instance.backup_feature_flags(false)
 
   front_object = NodeServer.new(hostname, short_hostname)
 
