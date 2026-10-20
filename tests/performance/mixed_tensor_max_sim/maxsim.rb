@@ -18,7 +18,7 @@ class MixedTensorMaxSim < PerformanceTest
     start
 
     remote_file = "https://data.vespa-cloud.com/tests/performance/max-sim-colpali-vectors.json.zst"
-    cmd = "curl -s '#{remote_file}' | zstdcat"
+    cmd = "curl --fail --silent --show-error '#{remote_file}' | zstdcat"
     #can also use local file 
     #cmd = " cat #{selfdir}max-sim-colpali-vectors.json.zst | zstdcat"
     

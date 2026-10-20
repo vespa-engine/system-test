@@ -59,17 +59,17 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
   def create_index
     @node.copy(selfdir + "app_es/index-settings.json", dirs.tmpdir)
     node_file = dirs.tmpdir + "index-settings.json"
-    @node.execute("curl -X PUT '#{@es_endpoint}/product?pretty' -H 'Content-Type: application/json' -d @#{node_file}")
+    @node.execute("curl --silent --show-error -X PUT '#{@es_endpoint}/product?pretty' -H 'Content-Type: application/json' -d @#{node_file}")
   end
 
   def dump_thread_stats
     puts "Thread pool statistics:"
-    @node.execute("curl -X GET '#{@es_endpoint}/_cat/thread_pool?h=name,type,size'")
+    @node.execute("curl --fail --silent --show-error -X GET '#{@es_endpoint}/_cat/thread_pool?h=name,type,size'")
   end
 
   def dump_jvm_stats
     puts "JVM statistics:"
-    @node.execute("curl -X GET '#{@es_endpoint}/_nodes/stats/jvm?pretty'")
+    @node.execute("curl --fail --silent --show-error -X GET '#{@es_endpoint}/_nodes/stats/jvm?pretty'")
   end
 
   def es_feed(feed_file, num_docs, num_threads, label, with_profiler)
@@ -84,7 +84,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     system_sampler.start
     profiler_start
     start_time = Time.now
-    @node.execute("curl -X POST '#{@es_endpoint}/product/_forcemerge?max_num_segments=#{max_segments}&pretty'")
+    @node.execute("curl --fail --silent --show-error -X POST '#{@es_endpoint}/product/_forcemerge?max_num_segments=#{max_segments}&pretty'")
     refresh_index
     elapsed_sec = Time.now - start_time
     puts "Elapsed time force merge (sec): #{elapsed_sec}"
@@ -119,7 +119,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
       t = Thread.new do
         puts "Starting thread #{Thread.current.object_id} to feed #{slice.size} files..."
         for file in slice
-          @node.execute("curl -X POST '#{@es_endpoint}/_bulk?pretty&filter_path=took,errors,items.*.error' -s -H 'Content-Type: application/x-ndjson' --data-binary @#{file}")
+          @node.execute("curl --fail --silent --show-error -X POST '#{@es_endpoint}/_bulk?pretty&filter_path=took,errors,items.*.error' -H 'Content-Type: application/x-ndjson' --data-binary @#{file}")
         end
       end
       threads.push(t)
@@ -132,7 +132,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     elapsed_sec = Time.now - start_time
     puts "Elapsed time feeding (sec): #{elapsed_sec}"
     profiler_report(label) if with_profiler
-    count_res = @node.execute("curl -X GET '#{@es_endpoint}/_count?pretty'")
+    count_res = @node.execute("curl --fail --silent --show-error -X GET '#{@es_endpoint}/_count?pretty'")
     count = JSON.parse(count_res)["count"].to_i
     assert_equal(num_docs, count, "Expected #{num_docs} documents in the index, but was #{count}")
     segments = num_search_segments
@@ -148,16 +148,16 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
 
   def refresh_index
     # A refresh makes recent operations performed on one or more indices available for search.
-    @node.execute("curl -X POST '#{@es_endpoint}/_refresh?pretty'")
+    @node.execute("curl --fail --silent --show-error -X POST '#{@es_endpoint}/_refresh?pretty'")
   end
 
   def flush_index
     # A flush is writing the memory segments to disk.
-    @node.execute("curl -X POST '#{@es_endpoint}/product/_flush?pretty'")
+    @node.execute("curl --fail --silent --show-error -X POST '#{@es_endpoint}/product/_flush?pretty'")
   end
 
   def num_search_segments
-    @node.execute("curl -X GET '#{@es_endpoint}/product/_segments?pretty' | jq '.indices.product.shards[\"0\"][0].num_search_segments'").to_i
+    @node.execute("curl --fail --silent --show-error -X GET '#{@es_endpoint}/product/_segments?pretty' | jq '.indices.product.shards[\"0\"][0].num_search_segments'").to_i
   end
 
   def prepare_feed_files(feed_file, feed_dir, lines_per_file)

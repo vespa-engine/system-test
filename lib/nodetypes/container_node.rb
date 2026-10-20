@@ -191,7 +191,7 @@ class ContainerNode < VespaNode
       timeout = timeout <= 1 ? 1 : timeout >= visit_seconds ? visit_seconds : timeout
       parameters[:timeout] = timeout
       uri = to_uri(sub_path: sub_path, parameters: parameters)
-      command="curl -m #{2 * visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
+      command="curl --silent --show-error -m #{2 * visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
               " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
       json = JSON.parse(execute(command))
       raise json['message'] if json['message']
