@@ -1,0 +1,42 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field sv type tensor(x{}) {
+      indexing: attribute | summary
+    }
+    field sv_fast type tensor(x{}) {
+      indexing: attribute | summary
+      attribute: fast-rank
+    }
+    field svf type tensor<float>(x{}) {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(q) tensor(x{})
+      query(qf) tensor<float>(x{})
+    }
+    function dp_sv() {
+      expression: sum(query(q) * attribute(sv))
+    }
+    function dp_sv_fast() {
+      expression: sum(query(q) * attribute(sv_fast))
+    }
+    function dp_svf() {
+      expression: sum(query(qf) * attribute(svf))
+    }
+    first-phase {
+      expression: itemRawScore(stw)
+    }
+    summary-features {
+      itemRawScore(stw)
+      dp_sv
+      dp_sv_fast
+      dp_svf
+    }
+  }
+}
