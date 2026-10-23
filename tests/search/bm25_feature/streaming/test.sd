@@ -28,6 +28,10 @@ schema test {
       bm25(contenta)
       elementwise(bm25(content),x,double)
       elementwise(bm25(contenta),x,double)
+      bm25(field: content, label: x)
+      bm25(content, label: y)
+      bm25_for_labels(content)
+      bm25_for_labels(contenta)
     }
   }
   rank-profile default inherits avgfl100 {

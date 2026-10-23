@@ -17,6 +17,7 @@ class QueryFeaturesDocFreq < IndexedStreamingSearchTest
     run_test_term_with_docfreq_from_backend unless is_streaming
     run_test_term_with_significance_from_query
     run_test_term_with_docfreq_from_query
+    run_test_query_term_document_frequency
   end
 
   def run_test_term_with_docfreq_from_backend
@@ -75,6 +76,27 @@ class QueryFeaturesDocFreq < IndexedStreamingSearchTest
     # Scaling frequency and count doesn't change legacy significance
     assert_approx(sig_10_of_100, get_df_significance(100, 1000), eps)
     assert_approx(sig_8_of_100, get_df_significance(80, 1000), eps)
+  end
+
+  def run_test_query_term_document_frequency
+    # Letter n of the alphabet, counting from 0, occurs in 10 - n documents. Streaming search
+    # has no document frequencies of its own, so it reports 0 unless the query provides one.
+    exp = is_streaming ? {'0' => 0, '1' => 0, '2' => 0} : {'0' => 10, '1' => 9, '2' => 1}
+    assert_query_term_document_frequency(exp, 'a contains "a" and a contains "b" and a contains "j"')
+
+    # The documentFrequency annotation overrides the document frequency
+    exp = {'0' => 7, '1' => (is_streaming ? 0 : 9)}
+    assert_query_term_document_frequency(exp, 'a contains ({documentFrequency: {frequency: 7, count: 100}}"a") and a contains "b"')
+
+    # Cells are labeled with the query term index, and terms searching other fields are left out
+    assert_query_term_document_frequency({'1' => 3},
+                                         'other contains "x" or a contains ({documentFrequency: {frequency: 3, count: 10}}"b")')
+  end
+
+  def assert_query_term_document_frequency(expected, where)
+    yql = "select * from sources * where #{where}"
+    sf = search({'yql' => yql}).hit[0].field["summaryfeatures"]
+    assert_mapped_tensor_feature(expected, sf, "queryTermDocumentFrequency(a)", "tensor<float>(term{})")
   end
 
 

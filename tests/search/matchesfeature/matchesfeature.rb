@@ -17,6 +17,7 @@ class MatchesFeature < IndexedStreamingSearchTest
 
     verify_matches
     verify_matchcount
+    verify_matches_for_labels
   end
 
   def verify_matches
@@ -78,6 +79,41 @@ class MatchesFeature < IndexedStreamingSearchTest
     assert_matches({"matchCount(f1)" => 1}, "query=\"a b\"")
     assert_matches({"matchCount(f1)" => 3}, "query=(a+d+b)")
     assert_matches({"matchCount(f1)" => 3}, "query=a b d")
+  end
+
+  def verify_matches_for_labels
+    # No labels in the query
+    assert_matches_for_labels(yql_query("f1 contains 'a'"))
+    # A label gets a cell only for the field its term searches, and in the field-less variant
+    assert_matches_for_labels(yql_query("f1 contains ({label:'x'}'a')"), f1: {'x' => 1}, any: {'x' => 1})
+    assert_matches_for_labels(yql_query("f2 contains ({label:'x'}'b')"), f2: {'x' => 1}, any: {'x' => 1})
+    assert_matches_for_labels(yql_query("f3 contains ({label:'x'}'a')"), f3: {'x' => 1}, any: {'x' => 1})
+    # A label whose term did not match gets no cell
+    assert_matches_for_labels(yql_query("f1 contains ({label:'x'}'a') or f1 contains ({label:'y'}'c')"),
+                              f1: {'x' => 1}, any: {'x' => 1})
+    # A label carried by several query items matches if any of them matched
+    assert_matches_for_labels(yql_query("f1 contains ({label:'x'}'c') or f3 contains ({label:'x'}'a')"),
+                              f3: {'x' => 1}, any: {'x' => 1})
+    assert_matches_for_labels(yql_query("f1 contains ({label:'x'}'a') or f1 contains ({label:'x'}'c')"),
+                              f1: {'x' => 1}, any: {'x' => 1})
+    # Each matching label gets one cell with value 1, however many of its items matched
+    assert_matches_for_labels(yql_query("f1 contains ({label:'x'}'a') or f1 contains ({label:'x'}'b') or f1 contains ({label:'y'}'d')"),
+                              f1: {'x' => 1, 'y' => 1}, any: {'x' => 1, 'y' => 1})
+    # Labeled phrases
+    assert_matches_for_labels(yql_query("f1 contains ({label:'p'}phrase('a', 'b')) or f1 contains ({label:'q'}phrase('b', 'a'))"),
+                              f1: {'p' => 1}, any: {'p' => 1})
+    # The labeled operator searches no field of its own, so only the field-less variant sees it
+    assert_matches_for_labels(yql_query("rank(f1 contains 'a', labeled(f1 contains 'd', 'w', 1.0))"), any: {'w' => 1})
+    assert_matches_for_labels(yql_query("rank(f1 contains 'a', labeled(f1 contains 'c', 'w', 1.0))"))
+  end
+
+  def assert_matches_for_labels(query, f1: {}, f2: {}, f3: {}, any: {})
+    sf = search(query).hit[0].field['summaryfeatures']
+    type = 'tensor<float>(label{})'
+    assert_mapped_tensor_feature(f1, sf, 'matches_for_labels(f1)', type)
+    assert_mapped_tensor_feature(f2, sf, 'matches_for_labels(f2)', type)
+    assert_mapped_tensor_feature(f3, sf, 'matches_for_labels(f3)', type)
+    assert_mapped_tensor_feature(any, sf, 'matches_for_labels', type)
   end
 
   def assert_matches(expected, query)
