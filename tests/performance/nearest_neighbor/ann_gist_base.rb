@@ -31,16 +31,20 @@ class AnnGistBase < CommonSiftGistBase
     generate_vectors_for_recall(num_queries_for_recall)
     feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
 
-    query_and_benchmark(BRUTE_FORCE, 10, 0)
+    calc_recall_for_queries(100, 0)
+    calc_recall_for_queries(100, 0, {:filter_percent => 50})
+    calc_recall_for_queries(100, 0, {:filter_percent => 90})
 
-    run_target_hits_10_tests
+    #query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    filter_values.each do |filter_percent|
-      query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
-      # Standard HNSW
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
-    end
+    #run_target_hits_10_tests
+
+    #filter_values.each do |filter_percent|
+    #  query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
+    #  # Standard HNSW
+    #  query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
+    #  calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
+    #end
   end
 
   def run_gist_filter_first_test(sd_dir)
