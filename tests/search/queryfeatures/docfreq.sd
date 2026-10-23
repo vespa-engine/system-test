@@ -4,6 +4,9 @@ schema docfreq {
     field a type string {
       indexing: index | summary
     }
+    field other type string {
+      indexing: index | summary
+    }
   }
   fieldset default {
     fields: a
@@ -12,6 +15,7 @@ schema docfreq {
   rank-profile default {
     summary-features { 
       term(0).significance
+      queryTermDocumentFrequency(a)
     }
   }
 }

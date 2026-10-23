@@ -139,6 +139,16 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_filtered_terms
   end
 
+  def test_bm25_label_features
+    set_description("Test the bm25 rank feature restricted to a query item label, and the bm25_for_labels rank feature")
+    deploy_app(SearchApp.new.sd(selfdir + (is_streaming ? "streaming/test.sd" : "test.sd")))
+    start
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
+
+    assert_bm25_label_scores unless is_streaming
+    assert_bm25_label_scores(add_docfreq: true)
+  end
+
   def test_enable_bm25_feature
     @params = { :search_type => 'INDEXED' }
     set_description("Test regeneration of interleaved features when enabling bm25 feature")
@@ -359,6 +369,49 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
                              score(4, 12, near_idfs['a'], avg_field_length) +
                              score(4, 12, near_idfs['b'], avg_field_length)],
                             'content')
+  end
+
+  def assert_bm25_label_scores(add_docfreq: false)
+    idfs = content_document_frequencies.transform_values { |freq| idf(freq) }
+    scorer = Bm25Scorer.new(idfs, 4, 4, content_reverse_index)
+    # A labeled term and an unlabeled term
+    assert_bm25_label_scores_for_query(scorer, [['a', 'x'], ['d', nil]], '%s and %s', [0, 2], add_docfreq)
+    # Two terms carrying the same label
+    assert_bm25_label_scores_for_query(scorer, [['a', 'x'], ['d', 'x']], '%s and %s', [0, 2], add_docfreq)
+    # Label y does not match document 2
+    assert_bm25_label_scores_for_query(scorer, [['a', 'x'], ['b', 'y'], ['d', nil]], '%s and (%s or %s)', [0, 1, 2], add_docfreq)
+  end
+
+  # Terms are [term, label] pairs searching field content, combined into a query by _template_.
+  def assert_bm25_label_scores_for_query(scorer, terms, template, exp_docs, add_docfreq)
+    where = template % terms.map { |term, label| make_content_term(term, label, add_docfreq) }
+    result = search(URI.encode_www_form([['yql', "select * from sources * where #{where}"], ['ranking', 'default']]))
+    assert_hitcount(result, exp_docs.size)
+    result.hit.each do |hit|
+      doc = hit.field['documentid'].split(':')[4].to_i
+      assert(exp_docs.include?(doc), "Unexpected hit for document #{doc}")
+      exp_label_scores = Hash.new(0.0)
+      terms.each do |term, label|
+        exp_label_scores[label] += scorer.bm25_score(term, doc) unless label.nil?
+      end
+      exp_label_scores.delete_if { |label, score| score == 0.0 }
+      # bm25(field: content, label: x) and bm25(content, label: y) in the schema are returned with normalized names
+      exp_features = { 'bm25(content)' => terms.sum { |term, label| scorer.bm25_score(term, doc) },
+                       'bm25("field:content","label:x")' => exp_label_scores['x'],
+                       'bm25(content,"label:y")' => exp_label_scores['y'] }
+      mf = hit.field['matchfeatures']
+      assert_features(exp_features, mf)
+      assert_mapped_tensor_feature(exp_label_scores, mf, 'bm25_for_labels(content)', 'tensor<float>(label{})', 1e-5)
+      assert_mapped_tensor_feature({}, mf, 'bm25_for_labels(contenta)', 'tensor<float>(label{})')
+    end
+  end
+
+  def make_content_term(term, label, add_docfreq)
+    annotations = []
+    annotations.push("label: \"#{label}\"") unless label.nil?
+    annotations.push("documentFrequency: {frequency: #{content_document_frequencies[term]}, count: 3}") if add_docfreq
+    annotation = annotations.empty? ? '' : "{#{annotations.join(', ')}}"
+    "content contains (#{annotation}\"#{term}\")"
   end
 
   def idf(matching_doc_count, total_doc_count = 3)

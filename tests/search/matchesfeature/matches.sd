@@ -49,6 +49,10 @@ schema matches {
       matches(f5)
       matches(f5,0)
       matches(f5,1)
+      matches_for_labels(f1)
+      matches_for_labels(f2)
+      matches_for_labels(f3)
+      matches_for_labels
     }
   }
 }

@@ -1344,6 +1344,21 @@ module TestBase
     end
   end
 
+  # Asserts that feature _name_ in the _actual_ features hash is a tensor of type _type_ with
+  # a single mapped dimension, holding exactly the cells in _expected_cells_ (label => value).
+  def assert_mapped_tensor_feature(expected_cells, actual, name, type, eps = 1e-6)
+    puts "assert_mapped_tensor_feature: #{name}:#{expected_cells}"
+    assert(actual.has_key?(name), "Actual hash does not contain feature '#{name}'")
+    feature = actual.fetch(name)
+    assert_equal(type, feature['type'], "Feature '#{name}' does not have expected type")
+    cells = feature['cells']
+    assert_equal(expected_cells.keys.sort, cells.keys.sort, "Feature '#{name}' does not have expected cell labels")
+    expected_cells.each do |label, value|
+      assert_approx(value, cells[label], eps,
+                    "Feature '#{name}' does not have expected value for cell '#{label}'. Expected: #{value} ~ #{eps}. Actual: #{cells[label]}")
+    end
+  end
+
   # Checks that the expected and actual numbers are approximately equal using the given epsilon.
   def check_approx(exp, act, eps = 1e-6)
     return ((exp >= (act - eps)) and (exp <= (act + eps)))
