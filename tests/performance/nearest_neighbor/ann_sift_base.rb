@@ -20,7 +20,7 @@ class AnnSiftBase < CommonSiftGistBase
 
     num_queries_for_recall = 100
     num_updates = 200_000
-    filter_values = [1, 10, 50, 90, 95, 99]
+    filter_values = [1, 10, 50, 80, 90, 95, 99]
 
     # Smaller values that can be used for development and testing
     #num_queries_for_recall = 10
@@ -31,34 +31,38 @@ class AnnSiftBase < CommonSiftGistBase
     generate_vectors_for_recall(num_queries_for_recall)
     feed_and_benchmark(@num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
 
-    query_and_benchmark(BRUTE_FORCE, 10, 0)
+    #query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    run_target_hits_10_tests
+    #run_target_hits_10_tests
 
-    run_target_hits_100_tests
+    #run_target_hits_100_tests
 
-    filter_values.each do |filter_percent|
-      query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
-      # Standard HNSW
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
-    end
+    calc_recall_for_queries(100, 0)
+    calc_recall_for_queries(100, 0, {:filter_percent => 50})
+    calc_recall_for_queries(100, 0, {:filter_percent => 90})
 
-    if test_threads_per_search
-      [1, 2, 4, 8, 16].each do |threads|
-        # Standard HNSW
-        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :threads_per_search => threads})
-      end
-    end
+    #filter_values.each do |filter_percent|
+    #  query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
+    #  # Standard HNSW
+    #  query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
+    #  calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
+    #end
 
-    # This feed is updating documents [500000-700000) with the same values as documents [0-200000).
-    # This ensures that the vector values actually changes,
-    # and avoids the optimization that skips changing the HNSW graphs when vectors are unchanged.
-    feed_and_benchmark(num_updates, "1M-updates", {
-      :start_with_docid => @num_documents / 2,
-      :operation => "update",
-      :mixed_tensor => mixed_tensor
-    })
+    #if test_threads_per_search
+    #  [1, 2, 4, 8, 16].each do |threads|
+    #    # Standard HNSW
+    #    query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :threads_per_search => threads})
+    #  end
+    #end
+
+    ## This feed is updating documents [500000-700000) with the same values as documents [0-200000).
+    ## This ensures that the vector values actually changes,
+    ## and avoids the optimization that skips changing the HNSW graphs when vectors are unchanged.
+    #feed_and_benchmark(num_updates, "1M-updates", {
+    #  :start_with_docid => @num_documents / 2,
+    #  :operation => "update",
+    #  :mixed_tensor => mixed_tensor
+    #})
   end
 
   def run_quantized_sift_test(sd_dir, bits:)
