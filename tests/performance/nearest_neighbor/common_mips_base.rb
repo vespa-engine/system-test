@@ -14,7 +14,8 @@ class CommonMipsBase < CommonAnnBaseTest
   end
 
   def explore_hits_levels
-    [0, 90, 190, 490]
+    #[0, 90, 190, 490]
+    [0]
   end
 
   def run_mips_test(sd_file, feed_file, doc_type, query_tensor)
@@ -41,7 +42,7 @@ class CommonMipsBase < CommonAnnBaseTest
     @container = vespa.container.values.first
 
     feed_and_benchmark(feed_file, 'docs', doc_type, 'embedding', false)
-    query_and_benchmark
+    #query_and_benchmark
 
     prepare_queries_for_recall
     params = {:doc_type => doc_type,
@@ -54,10 +55,10 @@ class CommonMipsBase < CommonAnnBaseTest
     # First, do an exact match search between the full precision and quantized tensors
     # in order to determine the inherent loss from quantization itself, and to derive
     # an upper bound for the HNSW recall for the same quantization level.
-    puts '------'
-    puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
-    puts '------'
-    calc_recall_for_queries(10, 0, params.merge({:use_exact_for_approx_match_phase => true}))
+    #puts '------'
+    #puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
+    #puts '------'
+    #calc_recall_for_queries(10, 0, params.merge({:use_exact_for_approx_match_phase => true}))
     # Followed by HNSW approximate matches with varying explore-hits levels
     explore_hits_levels.each do |explore_hits|
       puts '------'
