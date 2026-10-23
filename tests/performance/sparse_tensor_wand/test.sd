@@ -1,0 +1,47 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field sv type tensor<float>(x{}) {
+      indexing: attribute
+    }
+    field sv_fast type tensor<float>(x{}) {
+      indexing: attribute
+      attribute: fast-rank
+    }
+    field ws type weightedset<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+  rank-profile base {
+    inputs {
+      query(q) tensor<float>(x{})
+    }
+  }
+  rank-profile stw inherits base {
+    first-phase {
+      expression: rawScore(sv)
+    }
+  }
+  rank-profile stw_fast inherits base {
+    first-phase {
+      expression: rawScore(sv_fast)
+    }
+  }
+  rank-profile wand {
+    first-phase {
+      expression: rawScore(ws)
+    }
+  }
+  rank-profile bruteforce inherits base {
+    first-phase {
+      expression: sum(query(q) * attribute(sv))
+    }
+  }
+}
