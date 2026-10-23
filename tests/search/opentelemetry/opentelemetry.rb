@@ -57,7 +57,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     num_scope_spans = 0
     num_spans = 0
     @proton_process_starting = 0
-    @proton_process_starting_first_event = 0
+    @proton_process_starting_started_proton = 0
     traces.each do |json|
       resourceSpans = json['resourceSpans']
       unless resourceSpans.nil?
@@ -75,8 +75,8 @@ class OpenTelemetryTest < IndexedOnlySearchTest
                     events = span['events']
                     unless events.nil?
                       events.each do |event|
-                        if event['name'] == 'first event'
-                          @proton_process_starting_first_event += 1
+                        if event['name'] == 'Started proton'
+                          @proton_process_starting_started_proton += 1
                         end
                       end
                     end
@@ -90,7 +90,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
       end
     end
     puts "#{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
-    puts "#{@proton_process_starting} proton_process_starting, #{@proton_process_starting_first_event} proton_process_starting_first_event"
+    puts "#{@proton_process_starting} proton_process_starting, #{@proton_process_starting_started_proton} proton_process_starting_started_proton"
   end
 
   def test_basictraces
@@ -116,7 +116,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     traces = read_traces
     process_traces(traces)
     assert_equal(1, @proton_process_starting)
-    assert_equal(1, @proton_process_starting_first_event)
+    assert_equal(1, @proton_process_starting_started_proton)
   end
 
 end
