@@ -40,6 +40,59 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     vespa.document_api_v1.put(doc)
   end
 
+  def read_traces
+    traces = []
+    puts "---- start traces" if SHOW_TRACES
+    File.foreach(@collector.local_traces, chomp: true) do |line|
+      json = JSON.parse(line)
+      puts JSON.pretty_generate(json) if SHOW_TRACES
+      traces.push(json)
+    end
+    puts "---- end traces" if SHOW_TRACES
+    traces
+  end
+
+  def process_traces(traces)
+    num_resource_spans = 0
+    num_scope_spans = 0
+    num_spans = 0
+    @proton_process_starting = 0
+    @proton_process_starting_first_event = 0
+    traces.each do |json|
+      resourceSpans = json['resourceSpans']
+      unless resourceSpans.nil?
+        resourceSpans.each do |resourceSpan|
+          num_resource_spans += 1
+          scopeSpans = resourceSpan['scopeSpans']
+          unless scopeSpans.nil?
+            scopeSpans.each do |scopeSpan|
+              num_scope_spans += 1
+              spans = scopeSpan['spans']
+              unless spans.nil?
+                spans.each do |span|
+                  if span['name'] == 'Proton process starting'
+                    @proton_process_starting += 1
+                    events = span['events']
+                    unless events.nil?
+                      events.each do |event|
+                        if event['name'] == 'first event'
+                          @proton_process_starting_first_event += 1
+                        end
+                      end
+                    end
+                  end
+                  num_spans += 1
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    puts "#{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
+    puts "#{@proton_process_starting} proton_process_starting, #{@proton_process_starting_first_event} proton_process_starting_first_event"
+  end
+
   def test_basictraces
     set_description('Check that traces are propagated from vespa backend using opentelemetry sdk')
     workdir = "#{dirs.tmpdir}basictraces"
@@ -60,34 +113,10 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     vespa.stop_base
     vespa.stop_configservers
     @collector.stop
-    traces = @collector.local_traces
-    puts "---- start traces"
-    num_resource_spans = 0
-    num_scope_spans = 0
-    num_spans = 0
-    File.foreach(traces, chomp: true) do |line|
-      json = JSON.parse(line)
-      puts JSON.pretty_generate(json) if SHOW_TRACES
-      resourceSpans = json['resourceSpans']
-      unless resourceSpans.nil?
-        resourceSpans.each do |resourceSpan|
-          num_resource_spans = num_resource_spans + 1
-          scopeSpans = resourceSpan['scopeSpans']
-          unless scopeSpans.nil?
-            scopeSpans.each do |scopeSpan|
-              num_scope_spans = num_scope_spans + 1
-              spans = scopeSpan['spans']
-              unless spans.nil?
-                spans.each do |span|
-                  num_spans = num_spans + 1
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-    puts "---- end traces, #{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
+    traces = read_traces
+    process_traces(traces)
+    assert_equal(1, @proton_process_starting)
+    assert_equal(1, @proton_process_starting_first_event)
   end
 
 end
