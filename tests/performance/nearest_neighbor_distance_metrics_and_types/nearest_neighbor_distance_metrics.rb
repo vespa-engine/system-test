@@ -22,7 +22,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     start
   
     remote_file = "https://data.vespa-cloud.com/tests/performance/vectors.100k.perf.json.zst"
-    cmd = "curl -s '#{remote_file}' | zstdcat"
+    cmd = "curl --fail --silent --show-error '#{remote_file}' | zstdcat"
     run_stream_feeder(cmd, [])
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
