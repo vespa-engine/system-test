@@ -175,6 +175,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
         query.properties().set("ranking.matching.explorationSlack", slack);
         query.properties().set("ranking.matching.lazyFilter", lazyFilter);
+        query.properties().set("timeout", "20");
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());
