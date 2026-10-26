@@ -77,11 +77,13 @@ def write_queries(variant, target_hits, num_queries)
   end
 end
 
-case ARGV[0]
-when "docs"
-  write_docs(Integer(ARGV[1]))
-when "queries"
-  write_queries(ARGV[1], Integer(ARGV[2]), Integer(ARGV[3]))
-else
-  raise "Usage: gen_data.rb docs <num_docs> | gen_data.rb queries <variant> <target_hits> <num_queries>"
+if __FILE__ == $0
+  case ARGV[0]
+  when "docs"
+    write_docs(Integer(ARGV[1]))
+  when "queries"
+    write_queries(ARGV[1], Integer(ARGV[2]), Integer(ARGV[3]))
+  else
+    raise "Usage: gen_data.rb docs <num_docs> | gen_data.rb queries <variant> <target_hits> <num_queries>"
+  end
 end
