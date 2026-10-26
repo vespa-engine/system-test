@@ -19,7 +19,6 @@ import com.yahoo.vespa.config.ConfigPayload;
 import com.yahoo.vespa.config.GenerationCounter;
 import com.yahoo.vespa.config.GetConfigRequest;
 import com.yahoo.vespa.config.PayloadChecksum;
-import com.yahoo.vespa.config.PayloadChecksums;
 import com.yahoo.vespa.config.buildergen.ConfigDefinition;
 import com.yahoo.vespa.config.protocol.ConfigResponse;
 import com.yahoo.vespa.config.protocol.SlimeConfigResponse;
@@ -161,12 +160,12 @@ public class TestConfigServer implements RequestHandler, Runnable {
         List<String> lines = readLines(file);
         ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(lines);
         String xxhash = ConfigUtils.getXxhash64(payload);
-        PayloadChecksums checksums = PayloadChecksums.from(new PayloadChecksum(xxhash, PayloadChecksum.Type.XXHASH64));
+        PayloadChecksum checksum = new PayloadChecksum(xxhash);
         ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
         String defMd5 = defCache.get(cKey);
         if (defMd5 != null) {
             ConfigKey<?> key = new ConfigKey<>(name, configId, namespace);
-            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), checksums, getApplicationGeneration()));
+            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), checksum, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
         }
@@ -181,8 +180,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
         }
     }
 
-    private ConfigResponse createResponse(ConfigPayload payload, PayloadChecksums payloadChecksums, long applicationGeneration) {
-        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, payloadChecksums);
+    private ConfigResponse createResponse(ConfigPayload payload, PayloadChecksum payloadChecksum, long applicationGeneration) {
+        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, payloadChecksum);
     }
 
     private void loadDefFile(File file) {
