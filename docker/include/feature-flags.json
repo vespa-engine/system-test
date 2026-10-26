@@ -54,6 +54,7 @@
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 1.0 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
+        { "id" : "use-ml-model-import-cache", "rules" : [ { "value" : true } ] },
         { "id" : "enable-landlock", "rules" : [ { "value" : true } ] }
     ]
 
