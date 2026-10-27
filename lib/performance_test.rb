@@ -336,7 +336,9 @@ class PerformanceTest < TestCase
 
           @perf_record_pids[node] = {}
           @perf_record_pids[node]['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
-          @perf_record_pids[node]['container'] = node.get_pids('java.*-Dconfig.id=[a-z0-9]*/container[.][0-9]')
+          if @perf_recording != "proton"
+            @perf_record_pids[node]['container'] = node.get_pids('java.*-Dconfig.id=[a-z0-9]*/container[.][0-9]')
+          end
           if @perf_recording == "all"
             @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
             @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
