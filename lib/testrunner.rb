@@ -295,7 +295,7 @@ if __FILE__ == $0
     opts.on("-p", "--performance", "Run performance tests.") do |p|
       options[:performance] = p
     end
-    opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off' 'some' or 'all'. Default off.") do |perf_recording|
+    opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off', 'proton', 'some' or 'all'. Default off.") do |perf_recording|
       options[:perf_recording] = perf_recording
     end
     opts.on("-t", "--timeout SECONDS", Integer, "Timeout per test phase in seconds (lower bound for the test's own timeout). Default: test's own timeout.") do |timeout|

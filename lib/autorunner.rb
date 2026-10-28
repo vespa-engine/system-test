@@ -92,7 +92,7 @@ class AutoRunner
     opts.on("--leave-loglevels", "Do not alter log levels or remove logctl files.") do
       @cmd_args[:leave_loglevels] = true
     end
-    opts.on("--perf-recording type", "perf recoding type {off, some, all}.") do | type |
+    opts.on("--perf-recording type", "perf recording type {off, proton, some, all}.") do | type |
       @cmd_args[:perf_recording] = type
     end
     opts.on("--vespa-version VERSION", String, "Specify vespa version being used, 5.1.3, 5.1.3.0.20120120.121212, etc") do |val|

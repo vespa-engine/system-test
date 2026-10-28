@@ -40,6 +40,7 @@ class SortFeaturesPerfTest < PerformanceTest
     set_description('Test performance of sorting on rank features (sort-features) ' +
                     'for result sets of 1%, 10%, 50%, 75% and 100% of the corpus, ' +
                     'and of many small such queries contending for the result processing limiter')
+    @perf_recording = 'proton'
     deploy_app(create_app(32))
     @container = vespa.container.values.first
     compile_create_docs

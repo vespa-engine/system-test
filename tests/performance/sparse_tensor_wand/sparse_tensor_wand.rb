@@ -23,6 +23,7 @@ class SparseTensorWandPerformanceTest < PerformanceTest
   def test_sparse_tensor_wand
     set_description("Test performance of the sparseTensorWand query operator, compared with " +
                     "wand over a weighted set and brute force dot product in ranking")
+    @perf_recording = 'proton'
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
