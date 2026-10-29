@@ -38,8 +38,8 @@ class AnnSiftBase < CommonSiftGistBase
     #run_target_hits_100_tests
 
     calc_recall_for_queries(10, 0)
-    calc_recall_for_queries(10, 0, {:filter_percent => 50})
-    calc_recall_for_queries(10, 0, {:filter_percent => 90})
+    #calc_recall_for_queries(10, 0, {:filter_percent => 50})
+    #calc_recall_for_queries(10, 0, {:filter_percent => 90})
 
     #filter_values.each do |filter_percent|
     #  query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
