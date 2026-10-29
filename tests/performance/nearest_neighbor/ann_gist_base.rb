@@ -31,9 +31,9 @@ class AnnGistBase < CommonSiftGistBase
     generate_vectors_for_recall(num_queries_for_recall)
     feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
 
-    calc_recall_for_queries(100, 0)
-    calc_recall_for_queries(100, 0, {:filter_percent => 50})
-    calc_recall_for_queries(100, 0, {:filter_percent => 90})
+    calc_recall_for_queries(10, 0)
+    calc_recall_for_queries(10, 0, {:filter_percent => 50})
+    calc_recall_for_queries(10, 0, {:filter_percent => 90})
 
     #query_and_benchmark(BRUTE_FORCE, 10, 0)
 
