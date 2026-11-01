@@ -91,8 +91,9 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_ids('tags.key contains "red"', [0])
     assert_ids('tags.key contains "color"', [0])
     assert_ids('tags.value contains "sky"', [1])
-    # Struct field indexes are stemmed like other indexes
-    assert_ids('tags.key contains "colors"', [0])
+    # Struct field indexes are stemmed like other indexes ("reds" stems to "red"; "colors" is not stemmed at all)
+    assert_ids('tags.key contains "reds"', [0])
+    assert_ids('persons.name contains "smiths"', [0, 1])
     assert_ids('tags contains sameElement(key contains "red", value contains "sun")', [0])
     assert_ids('tags contains sameElement(key contains "blue", value contains "night")', [0])
     assert_ids('tags contains sameElement(key contains "blue", value contains "sky")', [1])
