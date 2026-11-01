@@ -31,6 +31,8 @@ class StructFieldIndex < IndexedOnlySearchTest
   end
 
   def deploy_and_feed
+    # Struct field indexes are rejected at deployment unless enabled by this flag
+    set_feature_flag(vespa.nodeproxies.values.first, 'allow-struct-field-index', ['value' => 'allow'])
     deploy_app(SearchApp.new.sd(selfdir + 'test.sd'))
     start
     feed_docs
@@ -107,6 +109,68 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_ids('names contains "doe"', [0, 1])
 
     assert_matching_elements('persons contains sameElement(name contains "jane", year = 1990)', { '1' => 1.0 })
+    assert_matched_elements_only
+  end
+
+  def assert_matched_elements_only
+    john_smith = { 'name' => 'John Smith', 'year' => 1980 }
+    jane_doe = { 'name' => 'Jane Doe', 'year' => 1990 }
+    john_doe = { 'name' => 'John Doe', 'year' => 1990 }
+    no_name = { 'year' => 1980 }
+    jane_smith = { 'name' => 'Jane Smith', 'year' => 1985 }
+    alice = { 'name' => 'Alice Smith', 'year' => 2000 }
+    carol = { 'name' => 'Carol Jones', 'year' => 1960 }
+    bob = { 'name' => 'Bob Doe', 'year' => 1970 }
+    # Note: Empty arrays and empty maps are not rendered in search results
+    empty = nil
+
+    # sameElement over struct field indexes only
+    assert_matched(1, 'persons contains sameElement(name contains "john", name contains "doe")', 'persons_meo', [john_doe])
+    assert_matched(0, 'tags contains sameElement(key contains "blue", value contains "night")', 'tags_meo', { 'blue' => 'Night' })
+    # sameElement over struct field indexes and attributes
+    assert_matched(0, 'persons contains sameElement(name contains "jane", year = 1990)', 'persons_meo', [jane_doe])
+    assert_matched(1, 'persons contains sameElement(name contains "jane", year = 1985)', 'persons_meo', [jane_smith])
+    assert_matched(0, 'people contains sameElement(key contains "c", value.name contains "carol")', 'people_meo', { 'c' => carol })
+    assert_matched(0, 'people contains sameElement(value.name contains "alice", value.year = 2000)', 'people_meo', { 'a' => alice })
+
+    # Single term on a struct field index
+    assert_matched(0, 'persons.name contains "jane"', 'persons_meo', [jane_doe])
+    assert_matched(1, 'persons.name contains "jane"', 'persons_meo', [jane_smith])
+    assert_matched(1, 'persons.name contains "doe" or persons.name contains "smith"', 'persons_meo', [john_doe, jane_smith])
+    assert_matched(0, 'tags.key contains "red"', 'tags_meo', { 'Red Color' => 'Bright Sun' })
+    assert_matched(1, 'tags.value contains "sky"', 'tags_meo', { 'blue' => 'Dark Sky' })
+    assert_matched(0, 'people.value.name contains "smith"', 'people_meo', { 'a' => alice })
+    # Single term on a struct field attribute (baseline). The element without a name must not shift the element ids.
+    assert_matched(0, 'persons.year = 1980', 'persons_meo', [john_smith])
+    assert_matched(1, 'persons.year = 1980', 'persons_meo', [no_name])
+    assert_matched(1, 'people.key contains "b"', 'people_meo', { 'b' => bob })
+
+    # near / onear on a struct field index
+    assert_matched(0, 'persons.name contains near("smith", "john")', 'persons_meo', [john_smith])
+    assert_matched(0, 'persons.name contains onear("jane", "doe")', 'persons_meo', [jane_doe])
+
+    # Fieldset of struct field indexes, matching in two complex fields
+    assert_matched(1, 'names contains "doe"', 'persons_meo', [john_doe])
+    assert_matched(1, 'names contains "doe"', 'people_meo', { 'b' => bob })
+    assert_matched(0, 'names contains "doe"', 'people_meo', empty)
+
+    # No elements matched in the other fields
+    assert_matched(0, 'persons.name contains "jane"', 'tags_meo', empty)
+    assert_matched(0, 'persons.name contains "jane"', 'people_meo', empty)
+    assert_matched(0, 'tags.key contains "red"', 'persons_meo', empty)
+
+    # select-elements-by a summary feature over the complex field
+    assert_matched(0, 'persons contains sameElement(name contains "jane", year = 1990)', 'persons_sel', [jane_doe])
+    assert_matched(1, 'persons contains sameElement(name contains "john", name contains "doe")', 'persons_sel', [john_doe])
+  end
+
+  # Checks the summary field in summary 'matched' for the document with the given id, among the hits for 'where'.
+  def assert_matched(id, where, field, exp_value)
+    yql = "select * from sources * where (#{where}) and id = #{id}"
+    result = search({ 'yql' => yql, 'summary' => 'matched', 'hits' => '10' })
+    children = result.json['root']['children'] || []
+    assert_equal(1, children.size, "Unexpected hits for: #{yql}")
+    assert_equal(exp_value, children[0]['fields'][field], "Unexpected #{field} for: #{yql}")
   end
 
   # Checks the elements of 'persons' matched in the only hit, as seen from ranking.
