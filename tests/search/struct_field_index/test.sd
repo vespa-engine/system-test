@@ -1,0 +1,55 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    struct person {
+      field name type string {}
+      field year type int {}
+    }
+    field id type int {
+      indexing: attribute | summary
+    }
+    # Index "persons.name" next to struct field attribute "persons.year"
+    field persons type array<person> {
+      indexing: summary
+      struct-field name {
+        indexing: index
+      }
+      struct-field year {
+        indexing: attribute
+      }
+    }
+    # Indexes "tags.key" and "tags.value"
+    field tags type map<string, string> {
+      indexing: summary
+      struct-field key {
+        indexing: index
+      }
+      struct-field value {
+        indexing: index
+      }
+    }
+    # Index "people.value.name" next to struct field attributes "people.key" and "people.value.year"
+    field people type map<string, person> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.name {
+        indexing: index
+      }
+      struct-field value.year {
+        indexing: attribute
+      }
+    }
+  }
+  # Struct field indexes are indexes also when used in a fieldset
+  fieldset names {
+    fields: persons.name, people.value.name
+  }
+  rank-profile default {
+    # The complex field as seen from ranking, also when it has struct field indexes
+    match-features {
+      elementwise(matches(persons),x,double)
+    }
+  }
+}
