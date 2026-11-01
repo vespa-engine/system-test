@@ -22,8 +22,15 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_remove
   end
 
-  # Disabled: field path updates into fields with struct field indexes are rejected by the indexing docproc,
-  # as the updated values would not be tokenized. Enable when the indexing pipeline supports them.
+  def test_struct_field_index_element_assign
+    set_description('Test assigning a whole element of an array of struct field with struct field indexes')
+    deploy_and_feed
+    assert_element_assign
+  end
+
+  # Disabled: other field path updates into fields with struct field indexes (map entries, and struct fields
+  # of elements) are rejected by the indexing docproc, as the updated values would not be tokenized.
+  # Enable when the indexing pipeline supports them.
   def no_test_struct_field_index_field_path_updates
     set_description('Test field path updates into array of struct and map fields with struct field indexes')
     deploy_and_feed
@@ -228,6 +235,29 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_ids('people contains sameElement(key contains "c", value.name contains "carol")', [0])
   end
 
+  # Assigns of whole array elements, on the documents from feed_docs. The assigned element must be tokenized
+  # and indexed like when assigning the whole field, and line up with the struct field attributes.
+  def assert_element_assign
+    field_path_update('persons[0]', { 'name' => 'Dan Doe', 'year' => 2021 })
+    assert_ids('persons contains sameElement(name contains "dan", year = 2021)', [0])
+    assert_ids('persons contains sameElement(name contains "john", year = 1980)', [])
+    assert_ids('persons contains sameElement(name contains "jane", year = 1990)', [0])
+    assert_ids('persons.name contains "john"', [1])
+    assert_matched(0, 'persons.name contains "dan"', 'persons_meo', [{ 'name' => 'Dan Doe', 'year' => 2021 }])
+
+    # Also from the disk index
+    vespa.search['search'].first.trigger_flush
+    assert_ids('persons contains sameElement(name contains "dan", year = 2021)', [0])
+    assert_ids('persons.name contains "john"', [1])
+
+    # Assign the element without a name in the other document
+    field_path_update('persons[1]', { 'name' => 'Erin Doe', 'year' => 1980 }, 'assign', 1)
+    assert_ids('persons contains sameElement(name contains "erin", year = 1980)', [1])
+    assert_ids('persons contains sameElement(name contains "jane", year = 1985)', [1])
+    assert_matched(1, 'persons.name contains "doe"', 'persons_meo',
+                   [{ 'name' => 'John Doe', 'year' => 1990 }, { 'name' => 'Erin Doe', 'year' => 1980 }])
+  end
+
   # Field path updates of single elements, struct fields of elements, and map entries, on the documents
   # from feed_docs. The updated values must be tokenized and indexed like when assigning the whole field.
   def assert_field_path_updates
@@ -261,8 +291,8 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_ids('people.value.name contains "alice"', [])
   end
 
-  def field_path_update(field_path, value, operation = 'assign')
-    upd = DocumentUpdate.new('test', 'id:test:test::0')
+  def field_path_update(field_path, value, operation = 'assign', id = 0)
+    upd = DocumentUpdate.new('test', "id:test:test::#{id}")
     upd.addOperation(operation, field_path, value)
     vespa.document_api_v1.update(upd)
   end
