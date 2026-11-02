@@ -1,0 +1,24 @@
+# Copyright Vespa.ai. All rights reserved.
+schema book {
+
+    explanation: Books with their authors
+
+    document book {
+        field title type string {
+            indexing: index | summary
+            explanation: The title of the book
+        }
+        field year type int {
+            indexing: attribute | summary
+            explanation: The year the book was first published
+        }
+    }
+
+    rank-profile newest {
+        explanation: Ranks the most recently published books first
+        first-phase {
+            expression: attribute(year)
+        }
+    }
+
+}
