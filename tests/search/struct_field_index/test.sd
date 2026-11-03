@@ -1,78 +1,99 @@
 # Copyright Vespa.ai. All rights reserved.
 schema test {
-  document test {
-    struct person {
-      field name type string {}
-      field year type int {}
+    struct complex {
+        field a type int {}
+        field b type string {}
+        field c type string {}
+        field d type string {}
     }
-    field id type int {
-      indexing: attribute | summary
+    document test {
+        struct person {
+            field name type string {}
+            field year type int {}
+        }
+        field id type int {
+            indexing: attribute | summary
+        }
+        # Index "persons.name" next to struct field attribute "persons.year"
+        field persons type array<person> {
+            indexing: summary
+            struct-field name {
+                indexing: index
+            }
+            struct-field year {
+                indexing: attribute
+            }
+        }
+        # Indexes "tags.key" and "tags.value"
+        field tags type map<string, string> {
+            indexing: summary
+            struct-field key {
+                indexing: index
+            }
+            struct-field value {
+                indexing: index
+            }
+        }
+        # Index "people.value.name" next to struct field attributes "people.key" and "people.value.year"
+        field people type map<string, person> {
+            indexing: summary
+            struct-field key {
+                indexing: attribute
+            }
+            struct-field value.name {
+                indexing: index
+            }
+            struct-field value.year {
+                indexing: attribute
+            }
+        }
+        field metadata type array<complex> {
+            indexing: summary
+            struct-field a {
+                indexing: attribute
+            }
+            struct-field b {
+                indexing: attribute
+            }
+            struct-field c {
+                indexing: index
+            }
+            struct-field d {
+                indexing: index
+            }
+        }
     }
-    # Index "persons.name" next to struct field attribute "persons.year"
-    field persons type array<person> {
-      indexing: summary
-      struct-field name {
-        indexing: index
-      }
-      struct-field year {
-        indexing: attribute
-      }
+    # Struct field indexes are indexes also when used in a fieldset
+    fieldset names {
+        fields: persons.name, people.value.name
     }
-    # Indexes "tags.key" and "tags.value"
-    field tags type map<string, string> {
-      indexing: summary
-      struct-field key {
-        indexing: index
-      }
-      struct-field value {
-        indexing: index
-      }
+    # Elements matched by struct field indexes are included, like those matched by struct field attributes
+    document-summary matched {
+        summary id {}
+        summary persons_meo {
+            source: persons
+            matched-elements-only
+        }
+        summary tags_meo {
+            source: tags
+            matched-elements-only
+        }
+        summary people_meo {
+            source: people
+            matched-elements-only
+        }
+        summary persons_sel {
+            source: persons
+            select-elements-by: elementwise(matches(persons),x,double)
+        }
     }
-    # Index "people.value.name" next to struct field attributes "people.key" and "people.value.year"
-    field people type map<string, person> {
-      indexing: summary
-      struct-field key {
-        indexing: attribute
-      }
-      struct-field value.name {
-        indexing: index
-      }
-      struct-field value.year {
-        indexing: attribute
-      }
+    rank-profile default {
+        # The complex field as seen from ranking, also when it has struct field indexes
+        match-features {
+            elementwise(matches(persons),x,double)
+        }
+        summary-features {
+            elementwise(matches(persons),x,double)
+        }
     }
-  }
-  # Struct field indexes are indexes also when used in a fieldset
-  fieldset names {
-    fields: persons.name, people.value.name
-  }
-  # Elements matched by struct field indexes are included, like those matched by struct field attributes
-  document-summary matched {
-    summary id {}
-    summary persons_meo {
-      source: persons
-      matched-elements-only
-    }
-    summary tags_meo {
-      source: tags
-      matched-elements-only
-    }
-    summary people_meo {
-      source: people
-      matched-elements-only
-    }
-    summary persons_sel {
-      source: persons
-      select-elements-by: elementwise(matches(persons),x,double)
-    }
-  }
-  rank-profile default {
-    # The complex field as seen from ranking, also when it has struct field indexes
-    match-features {
-      elementwise(matches(persons),x,double)
-    }
-    summary-features {
-      elementwise(matches(persons),x,double)
-    }
-  }
 }

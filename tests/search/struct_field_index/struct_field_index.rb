@@ -51,22 +51,26 @@ class StructFieldIndex < IndexedOnlySearchTest
     put_doc(0,
             [{ 'name' => 'John Smith', 'year' => 1980 }, { 'name' => 'Jane Doe', 'year' => 1990 }],
             { 'Red Color' => 'Bright Sun', 'blue' => 'Night' },
-            { 'a' => { 'name' => 'Alice Smith', 'year' => 2000 }, 'c' => { 'name' => 'Carol Jones', 'year' => 1960 } })
+            { 'a' => { 'name' => 'Alice Smith', 'year' => 2000 }, 'c' => { 'name' => 'Carol Jones', 'year' => 1960 } },
+            [{ 'a' => 1, 'b' => 17, 'c' => 'Foo Bar Baz', 'd' => 'The quick brown Fox'}])
     # The second element has no name, which must not shift the element ids of the name index
     # relative to the year attribute. The years differ, so a shift would change the hits.
     put_doc(1,
             [{ 'name' => 'John Doe', 'year' => 1990 }, { 'year' => 1980 }, { 'name' => 'Jane Smith', 'year' => 1985 }],
             { 'blue' => 'Dark Sky' },
-            { 'b' => { 'name' => 'Bob Doe', 'year' => 1970 } })
+            { 'b' => { 'name' => 'Bob Doe', 'year' => 1970 } },
+            [{ 'a' => 1, 'b' => 17, 'c' => 'Bar Baz', 'd' => 'The quick brown Fox'},
+             { 'a' => 1, 'b' => 17, 'c' => 'Foo Bar Baz', 'd' => 'The quick Fox'}])
     wait_for_hitcount('?query=sddocname:test', 2)
   end
 
-  def put_doc(id, persons, tags, people)
+  def put_doc(id, persons, tags, people, metadata = [])
     doc = Document.new("id:test:test::#{id}").
             add_field('id', id).
             add_field('persons', persons).
             add_field('tags', tags).
-            add_field('people', people)
+            add_field('people', people).
+            add_field('metadata', metadata)
     vespa.document_api_v1.put(doc)
   end
 
@@ -84,6 +88,7 @@ class StructFieldIndex < IndexedOnlySearchTest
     assert_ids('persons contains sameElement(name contains "jane", year = 1985)', [1])
     assert_ids('persons contains sameElement(name contains "jane", year = 1980)', [])
     assert_ids('persons contains sameElement(name contains "john", year = 1970)', [])
+    assert_ids('metadata contains sameElement(a=1, range(b, 10, 20), c contains "foo", d contains "brown")', [0])
     # Positions do not run across elements
     assert_ids('persons.name contains phrase("smith", "jane")', [])
 
