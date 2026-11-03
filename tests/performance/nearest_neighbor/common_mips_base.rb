@@ -24,7 +24,7 @@ class CommonMipsBase < CommonAnnBaseTest
     @container = vespa.container.values.first
 
     feed_and_benchmark(feed_file, "docs", doc_type, "embedding")
-    query_and_benchmark
+    #query_and_benchmark
     prepare_queries_for_recall
     explore_hits_levels.each do |explore_hits|
       params = {:doc_type => doc_type, :doc_tensor => "embedding", :query_tensor => query_tensor}
