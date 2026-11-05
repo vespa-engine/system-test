@@ -3,19 +3,57 @@ require 'indexed_streaming_search_test'
 
 class LexicalRangeSearch < IndexedStreamingSearchTest
 
+  def self.final_test_methods
+    ['test_hit_limit']
+  end
+
   DEBUG = false
 
-  CLOSED = ""
-  LEFT_OPEN = "{bounds:\"leftOpen\"}"
-  RIGHT_OPEN = "{bounds:\"rightOpen\"}"
-  OPEN = "{bounds:\"open\"}"
+  CLOSED = {}
+  LEFT_OPEN = {"bounds" => "leftOpen"}
+  RIGHT_OPEN = {"bounds" => "rightOpen"}
+  OPEN = {"bounds" => "open"}
 
-  CASED_FIELDS = %w[string_single_cased string_single_fast_cased string_multi_cased string_multi_fast_cased]
-  UNCASED_FIELDS = %w[string_single string_single_fast string_multi string_multi_fast]
-  FIELDS = CASED_FIELDS + UNCASED_FIELDS
+  SINGLE_VALUE_CASED_SLOW_FIELDS = %w[
+    string_single_cased
+  ]
+  SINGLE_VALUE_CASED_FAST_FIELDS = %w[
+    string_single_fast_cased_btree_hash
+    string_single_fast_cased_btree
+    string_single_fast_cased_hash
+  ]
+  SINGLE_VALUE_UNCASED_SLOW_FIELDS = %w[
+    string_single
+  ]
+  SINGLE_VALUE_UNCASED_FAST_FIELDS = %w[
+    string_single_fast_btree
+  ]
+  MULTI_VALUE_CASED_SLOW_FIELDS = %w[
+    string_multi_cased
+  ]
+  MULTI_VALUE_CASED_FAST_FIELDS = %w[
+    string_multi_fast_cased_btree_hash
+    string_multi_fast_cased_btree
+    string_multi_fast_cased_hash
+  ]
+  MULTI_VALUE_UNCASED_SLOW_FIELDS = %w[
+    string_multi
+  ]
+  MULTI_VALUE_UNCASED_FAST_FIELDS = %w[
+    string_multi_fast_btree
+  ]
 
-  SINGLE_VALUE_FIELDS = %w[string_single_cased string_single_fast_cased string_single string_single_fast]
-  MULTI_VALUE_FIELDS = %w[string_multi_cased string_multi_fast_cased string_multi string_multi_fast]
+  SINGLE_VALUE_CASED_FIELDS = SINGLE_VALUE_CASED_SLOW_FIELDS + SINGLE_VALUE_CASED_FAST_FIELDS
+  SINGLE_VALUE_UNCASED_FIELDS = SINGLE_VALUE_UNCASED_SLOW_FIELDS + SINGLE_VALUE_UNCASED_FAST_FIELDS
+  SINGLE_VALUE_FIELDS = SINGLE_VALUE_CASED_FIELDS + SINGLE_VALUE_UNCASED_FIELDS
+
+  MULTI_VALUE_CASED_FIELDS = MULTI_VALUE_CASED_SLOW_FIELDS + MULTI_VALUE_CASED_FAST_FIELDS
+  MULTI_VALUE_UNCASED_FIELDS = MULTI_VALUE_UNCASED_SLOW_FIELDS + MULTI_VALUE_UNCASED_FAST_FIELDS
+  MULTI_VALUE_FIELDS = MULTI_VALUE_CASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
+
+  FIELDS = SINGLE_VALUE_FIELDS + MULTI_VALUE_FIELDS
+  CASED_FIELDS = SINGLE_VALUE_CASED_FIELDS + MULTI_VALUE_CASED_FIELDS
+  UNCASED_FIELDS = SINGLE_VALUE_UNCASED_FIELDS + MULTI_VALUE_UNCASED_FIELDS
 
   def setup
     set_owner("boeker")
@@ -32,17 +70,14 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Sorted: #{words.sort}"
     id = 0
     words.each do |word|
-      vespa.document_api_v1.put(Document.new("id:test:test::#{id}")
-                                        .add_field("id", id)
-                                        .add_field("string_single", word)
-                                        .add_field("string_single_fast", word)
-                                        .add_field("string_multi", [word])
-                                        .add_field("string_multi_fast", [word])
-                                        .add_field("string_single_cased", word)
-                                        .add_field("string_single_fast_cased", word)
-                                        .add_field("string_multi_cased", [word])
-                                        .add_field("string_multi_fast_cased", [word])
-      )
+      doc = Document.new("id:test:test::#{id}").add_field("id", id)
+      SINGLE_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, word)
+      end
+      MULTI_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, [word])
+      end
+      vespa.document_api_v1.put(doc)
       id += 1
     end
     wait_for_hitcount('query=sddocname:test', words.size)
@@ -69,6 +104,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     # Verify cased matching: The order will be exactly as in the list above
     puts "Cased tests"
     CASED_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       verify_words_cased(words, field_name)
     end
 
@@ -83,6 +119,7 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Uncased tests"
 
     UNCASED_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
       # 1 to 3
       # Closed: 0 and 4 will also match
       search_and_verify([0, 1, 2, 3, 4], CLOSED, field_name, words[1], words[3])
@@ -150,17 +187,32 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     assert_equal(expected_ids_array, got_ids_array)
   end
 
-  def get_yql_query(annotation, field_name, from, to)
+  def get_yql_query(annotations, field_name, from, to)
+    annotation_string = "{"
+    first = true
+    annotations.each do |k, v|
+      annotation_string += ", " unless first
+      first = false
+      if v.is_a? String
+        annotation_string += "#{k}:\"#{v}\""
+      else
+        annotation_string += "#{k}:#{v}"
+      end
+    end
+    annotation_string += "}"
+
     from_str = from.nil? ? "-Infinity" : "\"#{from}\""
     to_str = to.nil? ? "Infinity" : "\"#{to}\""
-    {"yql" => "select * from sources * where (#{annotation}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
+    {"yql" => "select * from sources * where (#{annotation_string}range(#{field_name}, #{from_str}, #{to_str})) order by id asc", "hits" => 100}
   end
 
-  def get_select_query(annotation, field_name, from, to)
-    lower_bound = from.nil? ? {} : { ((annotation.eql? LEFT_OPEN) || (annotation.eql? OPEN) ? ">" : ">=") => from }
-    upper_bound = to.nil? ? {} : { ((annotation.eql? RIGHT_OPEN) || (annotation.eql? OPEN) ? "<" : "<=") => to }
+  def get_select_query(annotations, field_name, from, to)
+    left_open = annotations.key?("bounds") && (annotations["bounds"].eql?("leftOpen") || annotations["bounds"].eql?("open"))
+    right_open = annotations.key?("bounds") && (annotations["bounds"].eql?("rightOpen") || annotations["bounds"].eql?("open"))
+    lower_bound = from.nil? ? {} : { (left_open ? ">" : ">=") => from }
+    upper_bound = to.nil? ? {} : { (right_open ? "<" : "<=") => to }
 
-    json = { "select" => { "where" => { "range" => [ field_name, lower_bound.merge(upper_bound) ] } },
+    json = { "select" => { "where" => { "range" => { "children" => [ field_name, lower_bound.merge(upper_bound) ], "attributes" => annotations.except("bounds") } }},
              "sorting" => "id",
              "hits" => 100,
              "timeout" => 5 }
@@ -190,18 +242,14 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       end
       hex_strings << "bar" + to_hex(2 * n) # Searching with prefix "bar" for twice the number should also work
 
-
-      vespa.document_api_v1.put(Document.new("id:test:test::#{n}")
-                                        .add_field("id", n)
-                                        .add_field("string_single", hex_string)
-                                        .add_field("string_single_fast", hex_string)
-                                        .add_field("string_multi", hex_strings)
-                                        .add_field("string_multi_fast", hex_strings)
-                                        .add_field("string_single_cased", hex_string)
-                                        .add_field("string_single_fast_cased", hex_string)
-                                        .add_field("string_multi_cased", hex_strings)
-                                        .add_field("string_multi_fast_cased", hex_strings)
-      )
+      doc = Document.new("id:test:test::#{n}").add_field("id", n)
+      SINGLE_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, hex_string)
+      end
+      MULTI_VALUE_FIELDS.each do |field_name|
+        doc.add_field(field_name, hex_strings)
+      end
+      vespa.document_api_v1.put(doc)
     end
     wait_for_hitcount('query=sddocname:test', range.size)
   end
@@ -225,10 +273,10 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
       # Using Infinity on the left or right with "foo" or "bar" also selects all the values without a prefix or with the "junk" prefix => Matches everything
       puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
       range.each do |mid|
-        search_and_verify_hex(range.first..range.last, "", field_name, nil, mid, "foo")
-        search_and_verify_hex(range.first..range.last, "", field_name, nil, mid, "bar", 2)
-        search_and_verify_hex(range.first..range.last, "", field_name, mid, nil, "foo", 1)
-        search_and_verify_hex(range.first..range.last, "", field_name, mid, nil, "bar", 2)
+        search_and_verify_hex(range.first..range.last, CLOSED, field_name, nil, mid, "foo")
+        search_and_verify_hex(range.first..range.last, CLOSED, field_name, nil, mid, "bar", 2)
+        search_and_verify_hex(range.first..range.last, CLOSED, field_name, mid, nil, "foo", 1)
+        search_and_verify_hex(range.first..range.last, CLOSED, field_name, mid, nil, "bar", 2)
       end
 
     end
@@ -238,12 +286,12 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     puts "Testing field '#{field_name}' with hex numbers from #{range.first} to #{range.last}: Unbounded ranges"
 
     # Unbounded on both sides
-    search_and_verify_hex(range.first..range.last, "", field_name, nil, nil)
+    search_and_verify_hex(range.first..range.last, CLOSED, field_name, nil, nil)
 
     # Unbounded on one side
     range.each do |mid|
-      search_and_verify_hex(range.first..mid, "", field_name, nil, mid)
-      search_and_verify_hex(mid..range.last, "", field_name, mid, nil)
+      search_and_verify_hex(range.first..mid, CLOSED, field_name, nil, mid)
+      search_and_verify_hex(mid..range.last, CLOSED, field_name, mid, nil)
     end
   end
 
@@ -264,6 +312,162 @@ class LexicalRangeSearch < IndexedStreamingSearchTest
     hex_from = from.nil? ? nil : "#{prefix}#{to_hex(factor * from)}"
     hex_to = to.nil? ? nil : "#{prefix}#{to_hex(factor * to)}"
     search_and_verify(expected_ids, annotation, field_name, hex_from, hex_to)
+  end
+
+  def test_hit_limit
+    @params = { :search_type => "INDEXED" }
+    set_description("Verify that the hitLimit annotation works")
+    deploy_app(SearchApp.new.cluster_name("test").sd(selfdir+"test.sd"))
+    start
+
+    range = (10..20)
+    feed_hex_docs(range)
+
+    puts "Bounded ranges"
+    FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
+      # The hitLimit annotation requires an attribute with fast search enabled using a btree dictionary
+      btree = field_name.include?("btree")
+      prefix = field_name.include?("multi") ? "foo" : ""
+
+      from = 12
+      to = 18
+      [0, 1, 2, 3].each do |i|
+        if btree
+          # ascending
+          search_and_verify_hex(from..from+i, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from..from+i, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..from+1+i, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..from+1+i, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(to-i..to, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(to-i..to, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(to-1-i..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(to-1-i..to-1, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        else
+          # Without a btree, the hitLimit should be ignored
+          # ascending
+          search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to-1, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from..to-1, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(from+1..to-1, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        end
+      end
+
+      # Check that we still can get the whole range
+      search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => to - from + 1}), field_name, from, to, prefix)
+      # hitLimit larger than range
+      search_and_verify_hex(from..to, CLOSED.merge({"hitLimit" => to - from + 10}), field_name, from, to, prefix)
+
+      # Now with a range that is larger than the range of documents
+      from = 0
+      to = 100
+      [0, 1, 2, 3].each do |i|
+        if btree
+          # ascending
+          search_and_verify_hex(range.begin..range.begin+i, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range.begin..range.begin+i, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range.begin..range.begin+i, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range.begin..range.begin+i, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(range.end-i..range.end, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range.end-i..range.end, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range.end-i..range.end, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range.end-i..range.end, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        else
+          # ascending
+          search_and_verify_hex(range, CLOSED.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, RIGHT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, LEFT_OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+          search_and_verify_hex(range, OPEN.merge({"hitLimit" => i + 1}), field_name, from, to, prefix)
+
+          # descending
+          search_and_verify_hex(range, CLOSED.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, LEFT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, RIGHT_OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+          search_and_verify_hex(range, OPEN.merge({"hitLimit" => i + 1, "descending" => true}), field_name, from, to, prefix)
+        end
+      end
+    end
+
+    puts "Unbounded ranges"
+    SINGLE_VALUE_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
+      btree = field_name.include?("btree")
+      from = 12
+      to = 18
+
+      if btree
+        # Unbounded to the left: hitLimit is ignored for reasons (see implementation)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 3}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 3}), field_name, nil, to)
+
+        search_and_verify_hex([20], CLOSED.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex([20], OPEN.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex([19, 20], CLOSED.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex([19, 20], OPEN.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex([18, 19, 20], CLOSED.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex([18, 19, 20], OPEN.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+      else
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 1}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 2}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to, CLOSED.merge({"hitLimit" => 3}), field_name, nil, to)
+        search_and_verify_hex(range.begin..to-1, OPEN.merge({"hitLimit" => 3}), field_name, nil, to)
+
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from..range.end, CLOSED.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+        search_and_verify_hex(from+1..range.end, OPEN.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil)
+      end
+
+      search_and_verify_hex(10..18, CLOSED.merge({"hitLimit" => 100}), field_name, nil, to)
+      search_and_verify_hex(10..17, OPEN.merge({"hitLimit" => 100}), field_name, nil, to)
+      search_and_verify_hex(10..20, CLOSED.merge({"hitLimit" => 100}), field_name, nil, nil)
+      search_and_verify_hex(10..20, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil)
+    end
+
+    MULTI_VALUE_FIELDS.each do |field_name|
+      puts "Testing field '#{field_name}'"
+      from = 12
+      to = 18
+
+      # Every document also contains the prefix-less values and the junk values, so everything matches all the time
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 1}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 2}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 3}), field_name, nil, to, "foo")
+
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 1, "descending" => true}), field_name, from, nil, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 2, "descending" => true}), field_name, from, nil, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 3, "descending" => true}), field_name, from, nil, "foo")
+
+      # We get all documents every time
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 100}), field_name, nil, to, "foo")
+      search_and_verify_hex(range, CLOSED.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
+      search_and_verify_hex(range, OPEN.merge({"hitLimit" => 100}), field_name, nil, nil, "foo")
+    end
   end
 
   ######################################################################################################################
