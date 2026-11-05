@@ -23,12 +23,12 @@ jobs:
       RUBYLIB: ${{ github.workspace }}/lib
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       # Keep in sync with the Ruby version in vespaengine/vespa-build-almalinux-8.
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '4.0'
 
       - name: install-gems
         run: gem install --no-document test-unit ffi concurrent-ruby parallel builder rexml
