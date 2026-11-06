@@ -212,17 +212,24 @@ class FastMapSearch < IndexedOnlySearchTest
     end
   end
 
-  # The hitLimit annotation on a range over the lookup field limits the number of dictionary entries
-  # of the synthetic key-value attribute, taken from the lower end of the range (or the upper end when
-  # descending), to those needed to reach the given number of documents.
-  def test_range_hit_limit
+  def map_match_range_query(field, key, from, to)
+    yql = "select * from sources * where #{field} contains mapMatch(" +
+          "key contains '#{key}', range(value, #{from}, #{to}))"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  # fancy syntax: range(field{key}, from, to).
+  def map_range_query(field, key, from, to)
+    yql = "select * from sources * where range(#{field}{'#{key}'}, #{from}, #{to})"
+    URI.encode_www_form([['yql', yql]])
+  end
+
+  def test_range_with_hit_limit_annotation
     deploy_and_start
 
-    # Every value is in one document only, so each dictionary entry within key 'number' holds one document.
-    # Every document gets some junk "aaa" and "zzz" values, which sort just before and after the 'number'
-    # entries in the synthetic attribute, to make sure that the limit does not count entries of other keys.
     values = [-30, -20, -10, 0, 10, 20, 30]
     values.each_with_index do |value, id|
+      # Add document with some additional junk values
       vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id)
                                   .add_field("my_map_int", { "aaa" => -42, "number" => value, "zzz" => 42 })
                                   .add_field("my_map_long", { "aaa" => -42, "number" => value, "zzz" => 42 })
@@ -252,26 +259,12 @@ class FastMapSearch < IndexedOnlySearchTest
     end
   end
 
-  # Verifies that a range over the lookup field of the given field, with the given hitLimit,
-  # matches the documents with the given ids. A nil endpoint is unbounded.
   def verify_hit_limit(expected_ids, field, hit_limit, descending, from, to, bounds = nil)
     annotations = "hitLimit: #{hit_limit}, descending: #{descending}"
     annotations += ", bounds: \"#{bounds}\"" unless bounds.nil?
     range = "range(#{lookup(field)}{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})"
     search_and_verify(expected_ids,
                       { "yql" => "select * from sources * where ({#{annotations}}#{range}) order by id asc" })
-  end
-
-  def map_match_range_query(field, key, from, to)
-    yql = "select * from sources * where #{field} contains mapMatch(" +
-          "key contains '#{key}', range(value, #{from}, #{to}))"
-    URI.encode_www_form([['yql', yql]])
-  end
-
-  # fancy syntax: range(field{key}, from, to).
-  def map_range_query(field, key, from, to)
-    yql = "select * from sources * where range(#{field}{'#{key}'}, #{from}, #{to})"
-    URI.encode_www_form([['yql', yql]])
   end
 
   ######################################################################################################################
