@@ -224,6 +224,49 @@ class FastMapSearch < IndexedOnlySearchTest
     URI.encode_www_form([['yql', yql]])
   end
 
+  def test_range_with_hit_limit_annotation
+    deploy_and_start
+
+    values = [-30, -20, -10, 0, 10, 20, 30]
+    values.each_with_index do |value, id|
+      # Add document with some additional junk values
+      vespa.document_api_v1.put(Document.new("id:fast_map_search:fast_map_search::#{id}").add_field("id", id)
+                                  .add_field("my_map_int", { "aaa" => -42, "number" => value, "zzz" => 42 })
+                                  .add_field("my_map_long", { "aaa" => -42, "number" => value, "zzz" => 42 })
+                                  .add_field("my_map_float", { "aaa" => -42.0, "number" => value.to_f, "zzz" => 42.0 })
+                                  .add_field("my_map_double", { "aaa" => -42.0, "number" => value.to_f, "zzz" => 42.0 }))
+    end
+    wait_for_hitcount('query=sddocname:fast_map_search', values.size)
+
+    ["my_map_int", "my_map_long", "my_map_float", "my_map_double"].each do |field|
+      puts "Testing hitLimit on '#{field}'"
+      # Unbounded ranges: the documents with the smallest (or largest) values
+      verify_hit_limit([0], field, 1, false, nil, nil)
+      verify_hit_limit([0, 1, 2], field, 3, false, nil, nil)
+      verify_hit_limit([6], field, 1, true, nil, nil)
+      verify_hit_limit([4, 5, 6], field, 3, true, nil, nil)
+
+      # Bounded ranges: the limit is applied within the range, which covers documents 1 to 5
+      verify_hit_limit([1, 2], field, 2, false, -20, 20)
+      verify_hit_limit([4, 5], field, 2, true, -20, 20)
+      verify_hit_limit([2, 3], field, 2, false, -20, 20, "leftOpen")
+      verify_hit_limit([3, 4], field, 2, true, -20, 20, "rightOpen")
+
+      # A limit beyond the number of documents in the range gives all of them
+      verify_hit_limit([1, 2, 3, 4, 5], field, 100, false, -20, 20)
+      verify_hit_limit([1, 2, 3, 4, 5], field, 100, true, -20, 20)
+      verify_hit_limit([0, 1, 2, 3, 4, 5, 6], field, 100, false, nil, nil)
+    end
+  end
+
+  def verify_hit_limit(expected_ids, field, hit_limit, descending, from, to, bounds = nil)
+    annotations = "hitLimit: #{hit_limit}, descending: #{descending}"
+    annotations += ", bounds: \"#{bounds}\"" unless bounds.nil?
+    range = "range(#{lookup(field)}{\"number\"}, #{from.nil? ? "-Infinity" : from}, #{to.nil? ? "Infinity" : to})"
+    search_and_verify(expected_ids,
+                      { "yql" => "select * from sources * where ({#{annotations}}#{range}) order by id asc" })
+  end
+
   ######################################################################################################################
   # Cased/uncased matching
   ######################################################################################################################
