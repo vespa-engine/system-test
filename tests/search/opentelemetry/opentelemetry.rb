@@ -52,12 +52,40 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     traces
   end
 
+  def get_parent_span(span)
+    spanid_to_span = @traceid_to_spanid_to_span[span['traceId']]
+    spanid_to_span[span['parentSpanId']]
+  end
+
+  def make_spanid_to_span(traceid)
+    unless @traceid_to_spanid_to_span.key?(traceid)
+      @traceid_to_spanid_to_span[traceid] = { }
+    end
+    @traceid_to_spanid_to_span[traceid]
+  end
+
+  def add_mapping_to_span(span)
+    traceid = span['traceId']
+    spanid = span['spanId']
+    spanid_to_span = make_spanid_to_span(traceid)
+    unless spanid_to_span.key?(spanid)
+      spanid_to_span[spanid] = span
+    else
+      puts "Warning: Duplicate span id #{spanid} ignored"
+      puts "Existing span: #{spanid_to_span[spanid]}"
+      puts "Ignored span: #{span}"
+    end
+  end
+
   def process_traces(traces)
     num_resource_spans = 0
     num_scope_spans = 0
     num_spans = 0
     @proton_process_starting = 0
     @proton_process_starting_started_proton = 0
+    @traceid_to_spanid_to_span = { }
+    @proton_searches = [ ]
+    @proton_docsums = [ ]
     traces.each do |json|
       resourceSpans = json['resourceSpans']
       unless resourceSpans.nil?
@@ -70,6 +98,13 @@ class OpenTelemetryTest < IndexedOnlySearchTest
               spans = scopeSpan['spans']
               unless spans.nil?
                 spans.each do |span|
+                  add_mapping_to_span(span)
+                  if span['name'] == 'vespa.searchprotocol.search'
+                    @proton_searches.push(span)
+                  end
+                  if span['name'] == 'vespa.searchprotocol.getDocsums'
+                    @proton_docsums.push(span)
+                  end
                   if span['name'] == 'Proton process starting'
                     @proton_process_starting += 1
                     events = span['events']
@@ -91,6 +126,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     end
     puts "#{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
     puts "#{@proton_process_starting} proton_process_starting, #{@proton_process_starting_started_proton} proton_process_starting_started_proton"
+    puts "#{@proton_searches.size} search requests, #{@proton_docsums.size} docsum requests"
   end
 
   def test_basictraces
@@ -117,6 +153,16 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     process_traces(traces)
     assert_equal(1, @proton_process_starting)
     assert_equal(1, @proton_process_starting_started_proton)
+    assert_equal(1, @proton_searches.size)
+    assert_equal(1, @proton_docsums.size)
+    @proton_searches.each do |span|
+      parent_span = get_parent_span(span)
+      assert_equal('node.search', parent_span['name'])
+    end
+    @proton_docsums.each do |span|
+      parent_span = get_parent_span(span)
+      assert_equal('node.fill', parent_span['name'])
+    end
   end
 
 end
