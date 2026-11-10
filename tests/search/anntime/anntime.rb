@@ -157,8 +157,11 @@ class AnnTimeout < IndexedOnlySearchTest
     nn_operators = get_num_nn_operators(query)
     assert(nn_operators > 0)
 
+    # Timeout sent to the search node might be artificially blown up due to address sanitizer or valgrind
+    adjusted_timeout = calculateQueryTimeout(timeout)
+
     factors.each do |factor|
-      estimated_time_until_anntimeout = (factor * 0.5 * timeout * 1000.0) / nn_operators
+      estimated_time_until_anntimeout = (factor * 0.5 * adjusted_timeout * 1000.0) / nn_operators
       puts "anntimeout.factor = #{'%.3f' % factor} => #{'%.3f' % estimated_time_until_anntimeout} ms"
       query_with_params = make_anntimeout_query(query, factor)
 
