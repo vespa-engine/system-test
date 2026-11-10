@@ -8,11 +8,11 @@ schema test {
       indexing: summary | attribute | index
       index {
         hnsw {
-          # We do not care about the quality of the search results
-          # Hence, choosing the parameters so low is ok for this test case
-          # to make the construction faster
-          max-links-per-node: 8
-          neighbors-to-explore-at-insert: 20
+          # We do not care about the quality of the search results. We just want to make the search take a long time.
+          # Be careful not to choose the values too low as this might result in small isolated components in the graph,
+          # which then can make the search terminate immediately.
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 32
         }
       }
     }
