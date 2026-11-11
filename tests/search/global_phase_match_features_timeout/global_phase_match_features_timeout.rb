@@ -26,7 +26,7 @@ class GlobalPhaseMatchFeaturesTimeout < IndexedOnlySearchTest
 
     # Extracting match features for all 600 hits takes 600 * 50 ms = 30 s,
     # so the content node reaches its timeout and returns no hits.
-    result = search_base(QUERY)
+    result = search_and_print(QUERY)
     assert_no_type_errors(result)
     assert_equal(0, result.hitcount)
   end
@@ -37,7 +37,7 @@ class GlobalPhaseMatchFeaturesTimeout < IndexedOnlySearchTest
     # The slow content node gets about half of the hits. Extracting their
     # match features takes about 300 * 50 ms = 15 s, so it reaches its timeout
     # and returns no hits. The other content node returns all its hits.
-    result = search_base(QUERY)
+    result = search_and_print(QUERY)
     assert_no_type_errors(result)
     assert(result.hitcount > 0 && result.hitcount < DOCS,
            "Expected only the hits of one content node, got #{result.hitcount} of #{DOCS}")
@@ -49,6 +49,14 @@ class GlobalPhaseMatchFeaturesTimeout < IndexedOnlySearchTest
     end
   end
 
+  def search_and_print(query)
+    # Not search(): it adds its own timeout, which is scaled up for
+    # instrumented builds. This test depends on the exact timeout in QUERY.
+    result = search_base(query)
+    puts "Search reply:\n#{JSON.pretty_generate(result.json)}"
+    result
+  end
+
   def deploy_and_feed(content_nodes)
     # One thread per search, so match features are extracted one hit at a time.
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").num_parts(content_nodes).threads_per_search(1))
@@ -58,7 +66,6 @@ class GlobalPhaseMatchFeaturesTimeout < IndexedOnlySearchTest
 
   def assert_no_type_errors(result)
     errors = result.json['root']['errors'] || []
-    puts "Errors: #{errors}"
     type_errors = errors.select { |error| error['message'].to_s.include?('must be of type') }
     assert(type_errors.empty?, "Global phase got match features of the wrong type: #{type_errors}")
   end
