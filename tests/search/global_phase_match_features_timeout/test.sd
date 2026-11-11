@@ -15,10 +15,12 @@ schema test {
             expression: attribute(id)
         }
 
-        # Sleeps 50 ms each time it is calculated, so extracting the
-        # match features for many hits takes longer than the query timeout.
+        # Sleeps 50 ms each time it is calculated on the content node with
+        # distribution key 0, so extracting the match features for many hits
+        # there takes longer than the query timeout. Other content nodes do not
+        # sleep. fmod(globalSequence, 65536) is 0 only on distribution key 0.
         function slow() {
-            expression: debugWait(0.05, 0)
+            expression: if(fmod(globalSequence, 65536) == 0, debugWait(0.05, 0), 0)
         }
 
         match-features {
@@ -28,7 +30,7 @@ schema test {
 
         # Uses the tensor match feature attribute(tags) in the container.
         global-phase {
-            rerank-count: 300
+            rerank-count: 600
             expression: sum(attribute(tags))
         }
     }
