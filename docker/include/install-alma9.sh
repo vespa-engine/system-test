@@ -9,6 +9,7 @@ dnf -y --nobest upgrade
 
 dnf install -y \
     bind-utils \
+    elfutils \
     git-core \
     hostname \
     jq \
@@ -90,6 +91,10 @@ rm -rf /etc/debuginfod/*
 mkdir -p /opt/vespa/.m2
 cp /context-root/include/local-maven-repo-settings.xml /opt/vespa/.m2/settings.xml
 cp /context-root/include/populate-m2-repo.sh /opt/vespa/.m2
+
+mkdir -p /usr/local/sbin
+cp /context-root/include/deadlock_monitor.sh /usr/local/sbin/deadlock_monitor
+chmod 555 /usr/local/sbin/deadlock_monitor
 
 dnf clean all
 rm -f /etc/yum.repos.d/vespa-rpms-local.repo
