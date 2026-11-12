@@ -5,6 +5,7 @@
             "rules" : [
                 {
                     "value" : [
+                        "PROTON_RUN_DEADLOCK_MONITOR=true",
                         "VESPA_BITVECTOR_RANGE_CHECK=true"
                     ]
                 }
