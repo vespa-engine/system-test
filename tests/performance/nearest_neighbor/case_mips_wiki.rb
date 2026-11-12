@@ -41,6 +41,7 @@ class AnnMipsWiki < CommonMipsBase
   end
 
   def test_mips_with_wiki_dataset_quantized_1_bit
+    @perf_recording = 'proton'
     do_test_mips_wiki_dataset_quantized(bits: 1)
   end
 

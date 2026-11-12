@@ -17,6 +17,7 @@ class AnnSiftQuantizedPerfTest < AnnSiftBase
   end
 
   def test_sift_data_set_quantized_4_bits
+    @perf_recording = 'proton'
     do_test_sift_data_set_quantized_1_bit(bits: 4)
   end
 
