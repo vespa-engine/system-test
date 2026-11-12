@@ -6,14 +6,20 @@ if [ "$proton_pid" = "" ]; then
 	echo "Usage: $0 {proton pid}" >&2
 	exit 1
 fi
+if ps -p "$proton_pid" | grep proton >/dev/null; then
+	: ok
+else
+	printf 'warning\tNot a proton process for %s: %s\n' "$0" "$proton_pid"
+	exit 1
+fi
 
 seq 8640 | while read cnt; do
 	sleep 10
 	if ps -p "$proton_pid" | grep proton >/dev/null; then
 		: ok
 	else
-		printf 'warning\tNot a proton process for %s: %s\n' "$0" "$proton_pid"
-		exit 1
+		printf 'info\tNo longer a proton process for %s: %s\n' "$0" "$proton_pid"
+		exit 0
 	fi
 	stackdump1=$stackdump2
 	stackdump2=$stackdump3
