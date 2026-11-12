@@ -9,7 +9,7 @@ class ErrorReportingTest < IndexedOnlySearchTest
   end
 
   def test_missing_attribute_in_grouping_reported
-    add_ignorable_messages([/Could not locate attribute for grouping/])
+    add_ignorable_messages([/Could not set up grouping/])
     deploy_app(SearchApp.new.sd(selfdir+"test1.sd").sd(selfdir+"test2.sd"))
     start
 
@@ -29,7 +29,7 @@ class ErrorReportingTest < IndexedOnlySearchTest
     first_err = err_list[0]
     assert_equal('Error in search reply.', first_err['summary'])
     msg = first_err['message']
-    assert(msg =~ /^Could not locate attribute for grouping/, "Wrong message: #{msg}")
+    assert(msg =~ /^Could not set up grouping/, "Wrong message: #{msg}")
     first_line = msg.split("\n").first
     puts "Detailed error message: #{first_line} [...]"
 

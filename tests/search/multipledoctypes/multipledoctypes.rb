@@ -82,7 +82,7 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
     # Errors might cause incomplete grouping results
     assert_not_nil(res_both.errorlist)
     error = res_both.errorlist[0]['message']
-    assert_match(/Could not locate (attribute|field) for grouping number 0 : /, error)
+    assert_match(/Could not (set up|locate field for) grouping number 0 : /, error)
     output('Got expected error: ' + error)
     assert_equal(13, res_both.hitcount)
     group_one = extract_group(res_one)
