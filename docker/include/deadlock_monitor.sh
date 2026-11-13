@@ -7,7 +7,7 @@ if [ "$proton_pid" = "" ]; then
 	exit 1
 fi
 if ps -p "$proton_pid" | grep proton >/dev/null; then
-	: ok
+	printf 'info\tRunning %s for proton process %s\n' "$0" "$proton_pid"
 else
 	printf 'warning\tNot a proton process for %s: %s\n' "$0" "$proton_pid"
 	exit 1
@@ -35,7 +35,8 @@ seq 8640 | while read cnt; do
 			exit 1
 		fi
 	fi
-	if tail -n 1000 /opt/vespa/logs/vespa/vespa.log | grep 'doomOvertime=[1-9][0-9]' > /dev/null; then
+	if tail -n 1000 /opt/vespa/logs/vespa/vespa.log 2>/dev/null | grep 'doomOvertime=[1-9][0-9]' > /dev/null
+	then
 		printf "warning\tobserved too high doomOvertime, dumping stacks\n"
 		printf "info\tstack 1 ::: "
 		echo "$stackdump1"
