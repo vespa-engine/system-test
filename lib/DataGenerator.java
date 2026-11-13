@@ -1,5 +1,5 @@
 // Copyright Vespa.ai. All rights reserved.
-package util;
+package lib;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -20,11 +20,11 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static util.DataGenerator.Argument.cutoff;
-import static util.DataGenerator.Argument.count;
-import static util.DataGenerator.Argument.prefix;
-import static util.DataGenerator.Argument.suffix;
-import static util.DataGenerator.Argument.template;
+import static lib.DataGenerator.Argument.cutoff;
+import static lib.DataGenerator.Argument.count;
+import static lib.DataGenerator.Argument.prefix;
+import static lib.DataGenerator.Argument.suffix;
+import static lib.DataGenerator.Argument.template;
 import static java.lang.Math.floorMod;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.binarySearch;
