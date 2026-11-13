@@ -6,11 +6,17 @@ schema test {
         field c type string {}
         field d type string {}
     }
+    struct person {
+        field name type string {}
+        field year type int {}
+    }
+    struct entry {
+        field plain type string {}
+        field nostem type string {}
+        field nonorm type string {}
+        field exact type string {}
+    }
     document test {
-        struct person {
-            field name type string {}
-            field year type int {}
-        }
         field id type int {
             indexing: attribute | summary
         }
@@ -47,6 +53,25 @@ schema test {
                 indexing: attribute
             }
         }
+        # Struct field indexes with settings other than the defaults, for comparison with "entries.plain"
+        field entries type array<entry> {
+            indexing: summary
+            struct-field plain {
+                indexing: index
+            }
+            struct-field nostem {
+                indexing: index
+                stemming: none
+            }
+            struct-field nonorm {
+                indexing: index
+                normalizing: none
+            }
+            struct-field exact {
+                indexing: index
+                match: exact
+            }
+        }
         field metadata type array<complex> {
             indexing: summary
             struct-field a {
@@ -69,6 +94,7 @@ schema test {
     }
     # Elements matched by struct field indexes are included, like those matched by struct field attributes
     document-summary matched {
+        from-disk
         summary id {}
         summary persons_meo {
             source: persons
