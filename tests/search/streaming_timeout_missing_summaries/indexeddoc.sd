@@ -1,0 +1,30 @@
+# Copyright Vespa.ai. All rights reserved.
+schema indexeddoc {
+  document indexeddoc {
+    field id type int {
+      indexing: summary | attribute
+    }
+    field title type string {
+      indexing: summary | index
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+  # Same profile name as in the streaming schema, but cheap here.
+  rank-profile slow {
+    first-phase {
+      expression: attribute(id)
+    }
+    match-features: attribute(id)
+  }
+  # As 'slow', plus a global-phase like in the reported case.
+  rank-profile slow_global inherits slow {
+    global-phase {
+      expression: attribute(id)
+      rerank-count: 1000
+    }
+  }
+}

@@ -1,0 +1,22 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field id type int {
+      indexing: summary | attribute
+    }
+    field string_field type string {
+      indexing: summary | attribute
+    }
+    field tensor_field type tensor<float>(x[2048]) {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(field,tensor_field)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}

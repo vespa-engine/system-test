@@ -1,0 +1,31 @@
+# Copyright Vespa.ai. All rights reserved.
+schema streamdoc {
+  document streamdoc {
+    field id type int {
+      indexing: summary | attribute
+    }
+    field title type string {
+      indexing: summary | index
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+  # Deliberately expensive: generates and sums a 4M cell tensor per document.
+  # The lambda references attribute(id), so it cannot be constant folded.
+  rank-profile slow {
+    first-phase {
+      expression: sum(tensor(a[2000],b[2000])((a + b) * attribute(id)))
+    }
+    match-features: attribute(id)
+  }
+  # As 'slow', plus a global-phase like in the reported case.
+  rank-profile slow_global inherits slow {
+    global-phase {
+      expression: attribute(id)
+      rerank-count: 1000
+    }
+  }
+}
