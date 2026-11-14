@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
 
@@ -52,24 +53,28 @@ class StructFieldIndex < IndexedOnlySearchTest
             [{ 'name' => 'John Smith', 'year' => 1980 }, { 'name' => 'Jane Doe', 'year' => 1990 }],
             { 'Red Color' => 'Bright Sun', 'blue' => 'Night' },
             { 'a' => { 'name' => 'Alice Smith', 'year' => 2000 }, 'c' => { 'name' => 'Carol Jones', 'year' => 1960 } },
+            [{ 'plain' => 'Bright Day', 'nostem' => 'Smith Cafés', 'nonorm' => 'café', 'exact' => 'Red Color' }],
             [{ 'a' => 1, 'b' => 17, 'c' => 'Foo Bar Baz', 'd' => 'The quick brown Fox'}])
+
     # The second element has no name, which must not shift the element ids of the name index
     # relative to the year attribute. The years differ, so a shift would change the hits.
     put_doc(1,
             [{ 'name' => 'John Doe', 'year' => 1990 }, { 'year' => 1980 }, { 'name' => 'Jane Smith', 'year' => 1985 }],
             { 'blue' => 'Dark Sky' },
             { 'b' => { 'name' => 'Bob Doe', 'year' => 1970 } },
+            [{ 'plain' => 'Café', 'exact' => 'Red' }],
             [{ 'a' => 1, 'b' => 17, 'c' => 'Bar Baz', 'd' => 'The quick brown Fox'},
              { 'a' => 1, 'b' => 17, 'c' => 'Foo Bar Baz', 'd' => 'The quick Fox'}])
     wait_for_hitcount('?query=sddocname:test', 2)
   end
 
-  def put_doc(id, persons, tags, people, metadata = [])
+  def put_doc(id, persons, tags, people, entries, metadata = [])
     doc = Document.new("id:test:test::#{id}").
             add_field('id', id).
             add_field('persons', persons).
             add_field('tags', tags).
             add_field('people', people).
+            add_field('entries', entries).
             add_field('metadata', metadata)
     vespa.document_api_v1.put(doc)
   end
@@ -123,6 +128,30 @@ class StructFieldIndex < IndexedOnlySearchTest
 
     assert_matching_elements('persons contains sameElement(name contains "jane", year = 1990)', { '1' => 1.0 })
     assert_matched_elements_only
+    assert_index_settings
+  end
+
+  # Settings given in a struct-field block apply both when indexing and when querying the struct field index
+  def assert_index_settings
+    # stemming: none
+    assert_ids('entries.nostem contains "smith"', [0])
+    assert_ids('entries.nostem contains "smiths"', [])
+    assert_ids('entries.nostem contains "cafés"', [0])
+    assert_ids('entries.nostem contains "café"', [])
+
+    # normalizing: none keeps accents, while the default removes them
+    assert_ids('entries.nonorm contains "café"', [0])
+    assert_ids('entries.nonorm contains "cafe"', [])
+    assert_ids('entries.plain contains "cafe"', [1])
+    assert_ids('entries.plain contains "café"', [1])
+
+    # match: exact matches the whole (lowercased) value
+    assert_ids('entries.exact contains "red color"', [0])
+    assert_ids('entries.exact contains "Red Color"', [0])
+    assert_ids('entries.exact contains "red"', [1])
+    assert_ids('entries.exact contains "color"', [])
+    assert_ids('entries contains sameElement(exact contains "red color", plain contains "bright")', [0])
+    assert_ids('entries contains sameElement(exact contains "red", plain contains "bright")', [])
   end
 
   def assert_matched_elements_only
