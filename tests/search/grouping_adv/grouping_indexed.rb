@@ -28,6 +28,14 @@ class GroupingIndexed < IndexedOnlySearchTest
     querytest_common
     querytest_map_value
 
+    # Fast search maps
+    check_query('all(group(fastsearchmap.decode(mfs.lookup)) each(output(count())))',
+                'mapfastsearch-1')
+    check_query('all(group(fastsearchmap.decode(mfs.lookup, "->")) each(output(count())))',
+                'mapfastsearch-2')
+    check_query('all(group(1) filter(regex("k2->.*", fastsearchmap.decode(mfs.lookup, "->"))) each(output(count())))',
+                'mapfastsearch-3')
+
     # Test for bug http://bug.corp.yahoo.com/show_bug.cgi?id=3393155
     result = search('query=sddocname:test&ranking=default&streaming.selection=&tracelevel=2&select=all(group(a) each(output(count(),sum(n),avg(n),max(n),min(n),xor(n))))')
     exp_fill_default = "^.*fill to dispatch.*rankprofile\\[default\\].*$"

@@ -1,0 +1,75 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 28
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 28,
+      "full": true,
+      "nodes": 2,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:fastsearchmap.decode(mfs.lookup, \"->\")",
+            "relevance": 1.0,
+            "label": "fastsearchmap.decode(mfs.lookup, \"->\")",
+            "children": [
+              {
+                "id": "group:string:k2->2147483647",
+                "relevance": 7283.644818632625,
+                "value": "k2->2147483647",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:string:k1->2",
+                "relevance": 6049.133667632721,
+                "value": "k1->2",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:string:k2->-7",
+                "relevance": 6049.133667632721,
+                "value": "k2->-7",
+                "fields": {
+                  "count()": 2
+                }
+              },
+              {
+                "id": "group:string:k1->1",
+                "relevance": 4814.61700663273,
+                "value": "k1->1",
+                "fields": {
+                  "count()": 2
+                }
+              },
+              {
+                "id": "group:string:k3->0",
+                "relevance": 4814.61700663273,
+                "value": "k3->0",
+                "fields": {
+                  "count()": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

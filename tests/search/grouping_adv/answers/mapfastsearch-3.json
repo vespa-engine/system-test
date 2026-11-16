@@ -1,0 +1,43 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 28
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 28,
+      "full": true,
+      "nodes": 2,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:1",
+            "relevance": 1.0,
+            "label": "1",
+            "children": [
+              {
+                "id": "group:long:1",
+                "relevance": 7283.644818632625,
+                "value": "1",
+                "fields": {
+                  "count()": 3
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
