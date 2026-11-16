@@ -76,6 +76,9 @@ schema test {
         indexing: attribute
       }
     }
+    field mfs type map<string, int> {
+      fast-search-map-field lookup
+    }
   }
   fieldset default {
     fields: body
