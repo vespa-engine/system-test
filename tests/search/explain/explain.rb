@@ -21,22 +21,25 @@ class Explain < IndexedOnlySearchTest
 
     verify_traces(1)
     verify_traces(2)
+    verify_traces(1, true)
+    verify_traces(2, true)
   end
 
-  def verify_traces(explain_level)
-    result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=#{explain_level}&tracelevel=1&type=all").json
+  def verify_traces(explain_level, grouping = false)
+    select = grouping ? "&select=all(group(mid)each(output(count())))" : ""
+    result = search("/search/?query=sddocname:music&format=json&hits=1#{select}&explainlevel=#{explain_level}&tracelevel=1&type=all").json
     puts "verify_traces(#{explain_level}): result=#{result.to_json}"
     trace_root = result['trace']
     # need tag on "to dispatch" trace message
     children = trace_root["children"][1]["children"][0]["children"]
-    assert_equal(4, children.size)
+    assert_equal(grouping ? 7 : 4, children.size)
     verify_to_dispatch(children[0])
     qs = deep_find_tagged_child(trace_root, 'query_setup')
     verify_query_setup(qs)
     qp = deep_find_tagged_child(trace_root, 'query_execution_plan')
     verify_query_execution_plan(qp)
     qe = deep_find_tagged_child(trace_root, 'query_execution')
-    verify_query_execution(qe, (explain_level == 2))
+    verify_query_execution(qe, (explain_level == 2), grouping)
   end
 
   def verify_to_dispatch(result)
@@ -67,7 +70,7 @@ class Explain < IndexedOnlySearchTest
     assert_equal(true, estimate["allow_termwise_eval"])
   end
 
-  def verify_query_execution(trace, high_explain_level)
+  def verify_query_execution(trace, high_explain_level, grouping)
     assert_equal("query_execution", trace["tag"])
     thread_1 = trace["threads"][0]["traces"]
     assert_equal("Start MatchThread::run", thread_1[0]["event"])
@@ -80,10 +83,24 @@ class Explain < IndexedOnlySearchTest
     assert_equal("Create result set",                thread_1[base_idx + 1]["event"])
     assert_equal("Wait for result processing token", thread_1[base_idx + 2]["event"])
     assert_equal("Start result processing",          thread_1[base_idx + 3]["event"])
-    assert_equal("Start thread merge",               thread_1[base_idx + 4]["event"])
-    assert_equal("MatchThread::run Done",            thread_1[base_idx + 5]["event"])
 
-    exp_size = high_explain_level ? 8 : 7
+    # Messages from result processing
+    if grouping
+      assert_equal("Perform grouping (unordered)",       thread_1[base_idx + 4]["event"])
+      assert_equal("Sort hits",                          thread_1[base_idx + 5]["event"])
+      assert_equal("Perform grouping (relevance order)", thread_1[base_idx + 6]["event"])
+      assert_equal("Fill partial result",                thread_1[base_idx + 7]["event"])
+    else
+      assert_equal("Sort hits",                    thread_1[base_idx + 4]["event"])
+      assert_equal("Fill partial result",          thread_1[base_idx + 5]["event"])
+    end
+
+    # Messages after result processing
+    cont_idx = base_idx + (grouping ? 8 : 6)
+    assert_equal("Start thread merge",             thread_1[cont_idx]["event"])
+    assert_equal("MatchThread::run Done",          thread_1[cont_idx + 1]["event"])
+
+    exp_size = cont_idx + 2
     assert_equal(exp_size, thread_1.size)
   end
 
