@@ -80,10 +80,12 @@ class Explain < IndexedOnlySearchTest
     assert_equal("Create result set",                thread_1[base_idx + 1]["event"])
     assert_equal("Wait for result processing token", thread_1[base_idx + 2]["event"])
     assert_equal("Start result processing",          thread_1[base_idx + 3]["event"])
-    assert_equal("Start thread merge",               thread_1[base_idx + 4]["event"])
-    assert_equal("MatchThread::run Done",            thread_1[base_idx + 5]["event"])
+    assert_equal("Sort hits",                        thread_1[base_idx + 4]["event"])
+    assert_equal("Fill partial result",              thread_1[base_idx + 5]["event"])
+    assert_equal("Start thread merge",               thread_1[base_idx + 6]["event"])
+    assert_equal("MatchThread::run Done",            thread_1[base_idx + 7]["event"])
 
-    exp_size = high_explain_level ? 8 : 7
+    exp_size = high_explain_level ? 10 : 9
     assert_equal(exp_size, thread_1.size)
   end
 
