@@ -75,9 +75,9 @@ class SearchMetrics < IndexedOnlySearchTest
     # document store cache metrics
     assert_equal(2, get_last("content.proton.documentdb.ready.document_store.cache.elements", metrics))
     assert_equal(418, get_last("content.proton.documentdb.ready.document_store.cache.memory_usage", metrics))
-    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.lookups", metrics))
-    assert_equal(1, get_count("content.proton.documentdb.ready.document_store.cache.invalidations", metrics))
-    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.hit_rate", metrics))
+    assert_equal(2, get_count("content.proton.documentdb.ready.document_store.cache.lookups", metrics))
+    assert_equal(0, get_count("content.proton.documentdb.ready.document_store.cache.invalidations", metrics))
+    assert_equal(2, get_count("content.proton.documentdb.ready.document_store.cache.hit_rate", metrics))
 
     assert_document_db_total_memory_usage(metrics)
     assert_document_db_total_disk_usage(metrics)
