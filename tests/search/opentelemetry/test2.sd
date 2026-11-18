@@ -1,0 +1,14 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test2 {
+  document test2 {
+    field i2 type string {
+      indexing: index | summary
+    }
+    field a2 type int {
+      indexing: attribute | summary
+    }
+  }
+  fieldset default {
+    fields: i2
+  }
+}

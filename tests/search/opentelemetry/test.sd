@@ -4,6 +4,9 @@ schema test {
     field i1 type string {
       indexing: index | summary
     }
+    field a1 type int {
+      indexing: attribute | summary
+    }
   }
   fieldset default {
     fields: i1
