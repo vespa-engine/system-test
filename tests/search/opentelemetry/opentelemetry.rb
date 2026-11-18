@@ -35,8 +35,8 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     assert_equal(0, exitcode.to_i)
   end
 
-  def feed_doc(id, text)
-    doc = Document.new(id).add_field("i1", text)
+  def feed_doc(id, text, inum)
+    doc = Document.new(id).add_field("i1", text).add_field("a1", inum)
     vespa.document_api_v1.put(doc)
   end
 
@@ -55,6 +55,22 @@ class OpenTelemetryTest < IndexedOnlySearchTest
   def get_parent_span(span)
     spanid_to_span = @traceid_to_spanid_to_span[span['traceId']]
     spanid_to_span[span['parentSpanId']]
+  end
+
+  def get_span_attribute(span, attributename)
+    if span.key?('attributes')
+      span['attributes'].each do |attribute|
+        if attribute.key?('key')
+          if attributename == attribute['key']
+            if attribute.key?('value')
+              value = attribute['value']
+              return value['stringValue'] if value.key?('stringValue')
+            end
+          end
+        end
+      end
+    end
+    return nil
   end
 
   def make_spanid_to_span(traceid)
@@ -86,6 +102,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     @traceid_to_spanid_to_span = { }
     @proton_searches = [ ]
     @proton_docsums = [ ]
+    @proton_flush_attributes = [ ]
     traces.each do |json|
       resourceSpans = json['resourceSpans']
       unless resourceSpans.nil?
@@ -116,6 +133,9 @@ class OpenTelemetryTest < IndexedOnlySearchTest
                       end
                     end
                   end
+                  if span['name'] == 'Flush attribute'
+                    @proton_flush_attributes.push(span)
+                  end
                   num_spans += 1
                 end
               end
@@ -127,6 +147,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     puts "#{num_resource_spans} resource_spans, #{num_scope_spans} scope_spans, #{num_spans} spans"
     puts "#{@proton_process_starting} proton_process_starting, #{@proton_process_starting_started_proton} proton_process_starting_started_proton"
     puts "#{@proton_searches.size} search requests, #{@proton_docsums.size} docsum requests"
+    puts "#{@proton_flush_attributes.size} attribute flushes"
   end
 
   def test_basictraces
@@ -139,12 +160,17 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     @collector.write_host_hostname
     @collector.start
     deploy_app(SearchApp.new.
-               cluster_name("basictraces").
-               sd(selfdir + "test.sd"))
+               cluster_name('basictraces').
+               sd(selfdir + 'test.sd'))
     start
-    feed_doc('id:test:test::0', 'a a a a')
-    feed_doc('id:test:test::1', 'a b a b')
+    feed_doc('id:test:test::0', 'a a a a', 0)
+    feed_doc('id:test:test::1', 'a b a b', 1)
     assert_hitcount({ 'yql' => "select * from sources * where i1 contains 'a'"}, 2)
+    deploy_app(SearchApp.new.
+               cluster_name('basictraces').
+               sd(selfdir + 'test.sd').sd(selfdir + 'test2.sd'))
+    sleep 5
+    vespa.search['basictraces'].first.trigger_flush
     sleep 5
     vespa.stop_base
     vespa.stop_configservers
@@ -155,6 +181,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     assert_equal(1, @proton_process_starting_started_proton)
     assert_equal(1, @proton_searches.size)
     assert_equal(1, @proton_docsums.size)
+    assert_equal(2, @proton_flush_attributes.size)
     @proton_searches.each do |span|
       parent_span = get_parent_span(span)
       assert_equal('node.search', parent_span['name'])
@@ -162,6 +189,23 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     @proton_docsums.each do |span|
       parent_span = get_parent_span(span)
       assert_equal('node.fill', parent_span['name'])
+    end
+    @proton_flush_attributes.each do |span|
+      parent_span = get_parent_span(span)
+      assert_equal('Flush engine', parent_span['name'])
+      doctype = get_span_attribute(span, 'ai.vespa.document_type')
+      attribute = get_span_attribute(span, 'ai.vespa.searchlib.attribute')
+      serial = get_span_attribute(span, 'ai.vespa.searchlib.serial').to_i
+      case doctype
+      when "test"
+        assert_equal('a1', attribute)
+        assert_equal(7, serial)
+      when "test2"
+        assert_equal('a2', attribute)
+        assert_equal(2, serial)
+      else
+        fail("Unexpected doctype #{doctype} for flush attribute")
+      end
     end
   end
 
