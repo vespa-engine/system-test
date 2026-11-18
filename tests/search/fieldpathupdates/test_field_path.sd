@@ -5,23 +5,23 @@ schema test_field_path {
             indexing: attribute | summary
         }
 
-        field arr_int type array<int> {
+        field attr_int type array<int> {
             indexing: attribute | summary
         }
 
-        field summary_int type array<int> {
+        field doc_int type array<int> {
             indexing: summary
         }
 
-        field arr_str type array<string> {
+        field attr_str type array<string> {
             indexing: attribute | summary
         }
 
-        field summary_str type array<string> {
+        field doc_str type array<string> {
             indexing: summary
         }
 
-        field arr_map type map<string, int> {
+        field attr_map type map<string, int> {
             indexing: summary
             struct-field key {
                 indexing: attribute
@@ -31,8 +31,16 @@ schema test_field_path {
             }
         }
 
-        field summary_map type map<string, int> {
+        field doc_map type map<string, int> {
             indexing: summary
+        }
+
+        field idx_str type array<string> {
+            indexing: index | summary
+        }
+
+        field idx_attr_str type array<string> {
+            indexing: index | attribute | summary
         }
     }
 }
