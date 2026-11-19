@@ -172,6 +172,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
                sd(selfdir + 'test.sd').sd(selfdir + 'test2.sd'))
     sleep 5
     vespa.search['basictraces'].first.trigger_flush
+    vespa.search['basictraces'].first.trigger_flush
     sleep 5
     vespa.stop_base
     vespa.stop_configservers
