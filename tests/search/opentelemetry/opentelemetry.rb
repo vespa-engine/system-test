@@ -164,6 +164,7 @@ class OpenTelemetryTest < IndexedOnlySearchTest
                sd(selfdir + 'test.sd'))
     start
     feed_doc('id:test:test::0', 'a a a a', 0)
+    vespa.search['basictraces'].first.trigger_flush
     feed_doc('id:test:test::1', 'a b a b', 1)
     assert_hitcount({ 'yql' => "select * from sources * where i1 contains 'a'"}, 2)
     deploy_app(SearchApp.new.
@@ -181,7 +182,8 @@ class OpenTelemetryTest < IndexedOnlySearchTest
     assert_equal(1, @proton_process_starting_started_proton)
     assert_equal(1, @proton_searches.size)
     assert_equal(1, @proton_docsums.size)
-    assert_equal(2, @proton_flush_attributes.size)
+    assert_equal(3, @proton_flush_attributes.size)
+    flush_attribute_serials = { 'a1' => [], 'a2' => []}
     @proton_searches.each do |span|
       parent_span = get_parent_span(span)
       assert_equal('node.search', parent_span['name'])
@@ -199,14 +201,15 @@ class OpenTelemetryTest < IndexedOnlySearchTest
       case doctype
       when "test"
         assert_equal('a1', attribute)
-        assert_equal(7, serial)
       when "test2"
         assert_equal('a2', attribute)
-        assert_equal(2, serial)
       else
         fail("Unexpected doctype #{doctype} for flush attribute")
       end
+      flush_attribute_serials[attribute].push(serial)
     end
+    assert_equal([4, 7], flush_attribute_serials['a1'].sort)
+    assert_equal([2], flush_attribute_serials['a2'].sort)
   end
 
 end
