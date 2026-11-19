@@ -35,6 +35,8 @@ class GroupingIndexed < IndexedOnlySearchTest
                 'mapfastsearch-2')
     check_query('all(group(1) filter(regex("k2->.*", fastsearchmap.decode(mfs.lookup, "->"))) each(output(count())))',
                 'mapfastsearch-3')
+    check_query('all(group(1) filter(in(fastsearchmap.decode(mfs.lookup, "="), "k2=-7")) each(output(count())))',
+                'mapfastsearch-4')
 
     # Test for bug http://bug.corp.yahoo.com/show_bug.cgi?id=3393155
     result = search('query=sddocname:test&ranking=default&streaming.selection=&tracelevel=2&select=all(group(a) each(output(count(),sum(n),avg(n),max(n),min(n),xor(n))))')
