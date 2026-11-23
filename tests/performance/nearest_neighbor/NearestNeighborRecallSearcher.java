@@ -7,6 +7,7 @@ import com.yahoo.prelude.query.AndItem;
 import com.yahoo.prelude.query.IntItem;
 import com.yahoo.prelude.query.Item;
 import com.yahoo.prelude.query.NearestNeighborItem;
+import com.yahoo.prelude.query.NumericInItem;
 import com.yahoo.prelude.query.GeoLocationItem;
 import com.yahoo.search.Query;
 import com.yahoo.search.Result;
@@ -146,6 +147,20 @@ public class NearestNeighborRecallSearcher extends Searcher {
             AndItem andItem = new AndItem();
             andItem.addItem(nni);
             andItem.addItem(intItem);
+            root = andItem;
+        }
+
+        // Optional filter "<nnr.clusterField> in (<nnr.clusters>)", where nnr.clusters is a comma-separated list of integers.
+        String clusters = parentQuery.properties().getString("nnr.clusters", "");
+        if (!clusters.isEmpty()) {
+            var inItem = new NumericInItem(parentQuery.properties().getString("nnr.clusterField", "cluster"));
+            for (String cluster : clusters.split(",")) {
+                inItem.addToken(Long.parseLong(cluster.trim()));
+            }
+
+            AndItem andItem = new AndItem();
+            andItem.addItem(root);
+            andItem.addItem(inItem);
             root = andItem;
         }
 

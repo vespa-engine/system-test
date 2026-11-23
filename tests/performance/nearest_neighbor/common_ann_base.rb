@@ -98,7 +98,8 @@ class CommonAnnBaseTest < PerformanceTest
     fetch_file_to_localhost(@query_vectors, @local_query_vectors)
   end
 
-  QueryDatum = Struct.new(:vector, :latitude, :longitude)
+  # clusters: Optional list of clusters the query is restricted to (cluster in (...)), nil for no restriction
+  QueryDatum = Struct.new(:vector, :latitude, :longitude, :clusters)
 
   def calc_recall_for_queries(target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
@@ -117,6 +118,8 @@ class CommonAnnBaseTest < PerformanceTest
     exact_match_rank_profile = params[:exact_match_rank_profile] || 'default'
     approx_match_rank_profile = params[:approx_match_rank_profile] || 'default'
     use_exact_for_approx_match_phase = params[:use_exact_for_approx_match_phase] || false
+    query_clusters = params[:query_clusters] || nil # One list of clusters per query vector
+    extra_fillers = params[:extra_fillers] || []
 
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, " +
          "filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, " +
@@ -156,6 +159,13 @@ class CommonAnnBaseTest < PerformanceTest
       assert_equal(query_data.length, num)
     end
 
+    if not query_clusters.nil?
+      assert(query_clusters.length >= query_data.length)
+      query_data.each_with_index do |qd, i|
+        qd.clusters = query_clusters[i]
+      end
+    end
+
     batch_size = (query_data.size.to_f / num_threads.to_f).ceil
     batches = query_data.each_slice(batch_size).to_a
     puts "calc_recall_for_queries: query_data.size=#{query_data.size}, num_threads=#{num_threads}, " +
@@ -193,7 +203,7 @@ class CommonAnnBaseTest < PerformanceTest
                   parameter_filler(SLACK, slack),
                   parameter_filler(ANNOTATION, annotation),
                   metric_filler(RECALL_AVG, result.avg),
-                  metric_filler(RECALL_MEDIAN, result.median)])
+                  metric_filler(RECALL_MEDIAN, result.median)] + extra_fillers)
   end
 
   def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold,
@@ -248,7 +258,8 @@ class CommonAnnBaseTest < PerformanceTest
     "&nnr.approxMatchRankProfile=#{approx_match_rank_profile}" +
     "&nnr.exactMatchRankProfile=#{exact_match_rank_profile}" +
     "&nnr.exactMatchTensor=#{exact_match_tensor}" +
-    "&nnr.useExactForApproxMatchPhase=#{use_exact_for_approx_match_phase}"
+    "&nnr.useExactForApproxMatchPhase=#{use_exact_for_approx_match_phase}" +
+    (datum.clusters.nil? ? "" : "&nnr.clusterField=cluster&nnr.clusters=#{datum.clusters.join(',')}")
   end
 
   class RecallResult

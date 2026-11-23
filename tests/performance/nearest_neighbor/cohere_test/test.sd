@@ -1,0 +1,39 @@
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field cluster type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field vec_m16 type tensor<float>(x[1024]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(label,nns)
+    }
+    approximate-threshold: 0.05
+    filter-first-threshold: 0.0
+    filter-first-exploration: 0.3
+    exploration-slack: 0.0
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
