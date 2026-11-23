@@ -1,5 +1,6 @@
 // Copyright Vespa.ai. All rights reserved.
 
+#include <algorithm>
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -92,6 +93,48 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
 }
 
 /**
+ * Reads a cluster file with one record (int32 dimension 1, int32 cluster) per document and returns the number of documents per cluster.
+ */
+bool
+read_cluster_sizes(const std::string& doc_cluster_file, std::vector<size_t>& sizes)
+{
+    std::ifstream is(doc_cluster_file, std::ifstream::binary);
+    if (!is.good()) {
+        std::cerr << "Could not open '" << doc_cluster_file << "'" << std::endl;
+        return false;
+    }
+    int record[2];
+    while (is.read(reinterpret_cast<char*>(record), sizeof(record))) {
+        if (record[0] != 1 || record[1] < 0) {
+            std::cerr << "Invalid record in '" << doc_cluster_file << "'" << std::endl;
+            return false;
+        }
+        if (static_cast<size_t>(record[1]) >= sizes.size()) {
+            sizes.resize(record[1] + 1, 0);
+        }
+        ++sizes[record[1]];
+    }
+    return true;
+}
+
+/**
+ * Selects clusters from the ranking (ordered from closest to farthest) until they contain at least target_docs documents,
+ * starting with the closest clusters, or with the farthest clusters if farthest is true.
+ */
+IntVector
+select_clusters(const IntVector& ranking, const std::vector<size_t>& sizes, double target_docs, bool farthest, size_t& selected_docs)
+{
+    IntVector selected;
+    selected_docs = 0;
+    for (size_t i = 0; i < ranking.size() && selected_docs < target_docs; ++i) {
+        int cluster = ranking[farthest ? ranking.size() - 1 - i : i];
+        selected.push_back(cluster);
+        selected_docs += (static_cast<size_t>(cluster) < sizes.size()) ? sizes[cluster] : 0;
+    }
+    return selected;
+}
+
+/**
  * To compile:
  *   g++ make_clustered_queries.cpp -o make_clustered_queries
  *
@@ -104,27 +147,53 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_clustered_queries <vector-file> <cluster-file> <cluster-field> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
+ *   ./make_clustered_queries <vector-file> <query-cluster-file> <doc-cluster-file> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
  *
- * Works like make_queries, but additionally restricts each query to the clusters given for its query vector,
- * by adding "<cluster-field> in (c_1,...,c_n)" to the YQL. The <cluster-file> is an .ivecs file with one record
- * (int32 number of clusters n, n int32 clusters) per query vector, e.g., as written by parquetvectors/utils/assign_query_clusters.py.
+ * Works like make_queries, but additionally restricts each query to the closest (positive correlation) or farthest (negative correlation)
+ * clusters of its query vector, by adding "<cluster-field> in (c_1,...,c_n)" to the YQL. Clusters are selected until they contain
+ * at least <target-fraction> of the documents.
+ *
+ * The <query-cluster-file> is an .ivecs file with one record (int32 number of clusters n, n int32 clusters ordered from closest
+ * to farthest) per query vector, as written by parquetvectors/utils/rank_query_clusters.py. The <doc-cluster-file> is an .ivecs file
+ * with one record (int32 dimension 1, int32 cluster) per document, as written by parquetvectors/utils/assign_clusters.py,
+ * and is used for the cluster sizes.
  */ 
 int
 main(int argc, char **argv)
 {
     srand(42);
 
-    if (argc < 4) {
-        std::cerr << "Usage: " << argv[0] << " <vector-file> <cluster-file> <cluster-field> <num-dimensions> <num-queries> <doc-tensor> ..." << std::endl;
+    if (argc < 7) {
+        std::cerr << "Usage: " << argv[0] << " <vector-file> <query-cluster-file> <doc-cluster-file> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> ..." << std::endl;
         return 1;
     }
     std::string cluster_file(argv[2]);
-    std::string cluster_field(argv[3]);
+    std::string doc_cluster_file(argv[3]);
+    std::string cluster_field(argv[4]);
+    std::string selection(argv[5]);
+    double target_fraction = std::stod(argv[6]);
+    if (selection != "closest" && selection != "farthest") {
+        std::cerr << "Selection must be 'closest' or 'farthest', not '" << selection << "'" << std::endl;
+        return 1;
+    }
+    if (!(target_fraction > 0.0 && target_fraction <= 1.0)) {
+        std::cerr << "Target fraction must be in (0, 1]" << std::endl;
+        return 1;
+    }
+    bool farthest = (selection == "farthest");
+    std::vector<size_t> sizes;
+    if (!read_cluster_sizes(doc_cluster_file, sizes)) {
+        return 1;
+    }
+    size_t num_docs = 0;
+    for (auto size : sizes) {
+        num_docs += size;
+    }
+    double target_docs = target_fraction * num_docs;
 
-    // Remove cluster file and cluster field such that the remaining arguments are the same as for make_queries
+    // Remove the cluster arguments such that the remaining arguments are the same as for make_queries
     std::vector<char*> remaining_args(argv, argv + argc);
-    remaining_args.erase(remaining_args.begin() + 2, remaining_args.begin() + 4);
+    remaining_args.erase(remaining_args.begin() + 2, remaining_args.begin() + 7);
     argc = static_cast<int>(remaining_args.size());
     argv = remaining_args.data();
 
@@ -186,7 +255,11 @@ main(int argc, char **argv)
     }
     int read_dim_size = 0;
     int num_clusters = 0;
+    IntVector ranking;
     IntVector clusters;
+    size_t selected_docs = 0;
+    double min_fraction = 1.0, max_fraction = 0.0, sum_fraction = 0.0;
+    size_t min_clusters = sizes.size(), max_clusters = 0, sum_clusters = 0;
     FloatVector vector(dim_size, 0);
     for (size_t docid = 0; docid < num_queries; ++docid) {
         is.read(reinterpret_cast<char*>(&read_dim_size), 4);
@@ -195,13 +268,21 @@ main(int argc, char **argv)
         assert(is.good());
         cluster_is.read(reinterpret_cast<char*>(&num_clusters), 4);
         if (cluster_is.good() && num_clusters > 0) {
-            clusters.resize(num_clusters);
-            cluster_is.read(reinterpret_cast<char*>(clusters.data()), sizeof(int) * num_clusters);
+            ranking.resize(num_clusters);
+            cluster_is.read(reinterpret_cast<char*>(ranking.data()), sizeof(int) * num_clusters);
         }
         if (!cluster_is.good() || num_clusters <= 0) {
             std::cerr << "Could not read clusters for query " << docid << " from '" << cluster_file << "'" << std::endl;
             return 1;
         }
+        clusters = select_clusters(ranking, sizes, target_docs, farthest, selected_docs);
+        double fraction = static_cast<double>(selected_docs) / num_docs;
+        min_fraction = std::min(min_fraction, fraction);
+        max_fraction = std::max(max_fraction, fraction);
+        sum_fraction += fraction;
+        min_clusters = std::min(min_clusters, clusters.size());
+        max_clusters = std::max(max_clusters, clusters.size());
+        sum_clusters += clusters.size();
         if (only_vectors) {
             print_vector(std::cout, vector);
             std::cout << std::endl;
@@ -210,5 +291,8 @@ main(int argc, char **argv)
         }
     }
     is.close();
+    std::cerr << "Selected the " << selection << " clusters for " << num_queries << " queries: "
+              << "clusters per query min " << min_clusters << ", max " << max_clusters << ", mean " << static_cast<double>(sum_clusters) / num_queries << "; "
+              << "fraction of documents min " << min_fraction << ", max " << max_fraction << ", mean " << sum_fraction / num_queries << std::endl;
 }
 

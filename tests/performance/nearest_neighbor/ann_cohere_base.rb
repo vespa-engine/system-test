@@ -10,15 +10,17 @@ require 'performance/nearest_neighbor/common_sift_gist_base'
 #   - positively correlated with the query vector (restricted to the clusters closest to the query vector),
 #   - negatively correlated with the query vector (restricted to the clusters farthest from the query vector).
 #
-# The data files in cohere-data/ are created with the parquet-vectors tools (extract_vectors.py, assign_clusters.py)
-# from the .parquet files of the data set:
+# The data files in cohere-data/ are created with the parquet-vectors tools (extract_vectors.py, assign_clusters.py,
+# rank_query_clusters.py) from the .parquet files of the data set:
 #   uv run parquetvectors/utils/extract_vectors.py wikipedia-2023-11-embed-multilingual-v3 docs.fvecs --num 1000000
 #   uv run parquetvectors/utils/extract_vectors.py wikipedia-2023-11-embed-multilingual-v3 queries.fvecs --offset 1000000 --num 10000
 #   uv run parquetvectors/utils/assign_clusters.py docs.fvecs clusters.ivecs --clusters 1000 --spherical --centroids centroids.fvecs
+#   uv run parquetvectors/utils/rank_query_clusters.py queries.fvecs centroids.fvecs ranked.ivecs
 #
 # The test can use any number of documents up to the number of vectors in docs.fvecs (the first vectors are used).
-# The clusters selected for each query (as with assign_query_clusters.py --target-fraction) are computed by
-# make_query_clusters.cpp during the test, taking only the fed documents into account.
+# make_clustered_queries selects the closest or farthest clusters (from ranked.ivecs) of each query vector until they
+# contain the target fraction of the documents. It is given only the clusters of the fed documents, such that the
+# hit ratio is correct for any number of documents.
 # There should be enough clusters such that the smallest hit ratio is covered by several clusters, but not too many,
 # as a query restricted to its clusters contains about (hit ratio * number of clusters) terms (e.g., 100 for 10% with 1000 clusters).
 class AnnCohereBase < CommonSiftGistBase
@@ -51,7 +53,7 @@ class AnnCohereBase < CommonSiftGistBase
     @base_fvecs = @data_path + "docs.fvecs"
     @query_fvecs = @data_path + "queries.fvecs"
     @doc_clusters_ivecs = @data_path + "clusters.ivecs"
-    @centroids_fvecs = @data_path + "centroids.fvecs"
+    @ranked_query_clusters_ivecs = @data_path + "ranked.ivecs"
     @dimensions = 1024
 
     @num_queries_for_benchmark = 1000
@@ -90,7 +92,6 @@ class AnnCohereBase < CommonSiftGistBase
     super
     vespa.adminserver.execute("g++ -g -O3 -std=c++20 -o #{@adminserver_tmp_bin_dir}/make_clustered_docs #{selfdir}make_clustered_docs.cpp")
     @container.execute("g++ -g -O3 -std=c++20 -o #{@container_tmp_bin_dir}/make_clustered_queries #{selfdir}make_clustered_queries.cpp")
-    @container.execute("g++ -g -O3 -std=c++20 -o #{@container_tmp_bin_dir}/make_query_clusters #{selfdir}make_query_clusters.cpp")
   end
 
   def filter_value(hit_ratio)
@@ -106,44 +107,49 @@ class AnnCohereBase < CommonSiftGistBase
     4 + 4 * @dimensions
   end
 
-  # Computes the closest and farthest clusters for each query vector and hit ratio on the container,
-  # and keeps the clusters of the queries used for recall on localhost.
+  # Prepares the files needed by make_clustered_queries on the container, and keeps the clusters selected
+  # for the queries used for recall on localhost.
   def generate_query_clusters(num_documents, num_queries_for_recall)
     num_queries = [@num_queries_for_benchmark, num_queries_for_recall].max
     assert_enough_records(@container, @query_fvecs_container, vector_record_size, num_queries)
-    centroids = nn_download_file(@centroids_fvecs, @container)
+    @ranked_query_clusters_container = nn_download_file(@ranked_query_clusters_ivecs, @container)
     doc_clusters = nn_download_file(@doc_clusters_ivecs, @container)
     assert_enough_records(@container, doc_clusters, 8, num_documents)
 
-    @query_cluster_files = {}
+    # make_clustered_queries takes the cluster sizes from all records in the document cluster file,
+    # so only keep the records (int32 dimension 1, int32 cluster) of the fed documents.
+    @doc_clusters_container = dirs.tmpdir + "clusters.#{num_documents}.ivecs"
+    @container.execute("head -c #{8 * num_documents} #{doc_clusters} > #{@doc_clusters_container}")
+
     @query_clusters_for_recall = {}
     [POSITIVE_CORRELATION, NEGATIVE_CORRELATION].each do |correlation|
-      mode = (correlation == POSITIVE_CORRELATION) ? "closest" : "farthest"
       HIT_RATIOS.each do |hit_ratio|
-        file = dirs.tmpdir + "query_clusters.#{correlation}.hr#{hit_ratio}.ivecs"
-        @container.execute("#{@container_tmp_bin_dir}/make_query_clusters #{@query_fvecs_container} #{centroids} #{doc_clusters} " +
-                           "#{@dimensions} #{num_queries} #{num_documents} #{hit_ratio} #{mode} > #{file}")
-        @query_cluster_files[[correlation, hit_ratio]] = file
-
-        local_file = dirs.tmpdir + "local_query_clusters.#{correlation}.hr#{hit_ratio}.ivecs"
+        # Generate queries only for the clusters
+        file = dirs.tmpdir + "query_clusters.#{correlation}.hr#{hit_ratio}.txt"
+        @container.execute("#{make_clustered_queries_command(correlation, hit_ratio)} #{@dimensions} #{num_queries_for_recall} " +
+                           "vec_m16 > #{file}")
+        local_file = dirs.tmpdir + "local_query_clusters.#{correlation}.hr#{hit_ratio}.txt"
         find_and_copy_to_localhost(file, local_file)
-        @query_clusters_for_recall[[correlation, hit_ratio]] = read_ivecs(local_file, num_queries_for_recall)
+        @query_clusters_for_recall[[correlation, hit_ratio]] = parse_query_clusters(local_file, num_queries_for_recall)
       end
     end
   end
 
-  # Reads the first num_records records (int32 length n followed by n int32 values) of an .ivecs file.
-  def read_ivecs(file, num_records)
-    data = File.binread(file).unpack("l<*")
-    records = []
-    pos = 0
-    while records.size < num_records
-      assert(pos < data.size, "#{file} contains less than #{num_records} records")
-      n = data[pos]
-      records.push(data[pos + 1, n])
-      pos += n + 1
+  def make_clustered_queries_command(correlation, hit_ratio)
+    selection = (correlation == POSITIVE_CORRELATION) ? "closest" : "farthest"
+    "#{@container_tmp_bin_dir}/make_clustered_queries #{@query_fvecs_container} #{@ranked_query_clusters_container} " +
+    "#{@doc_clusters_container} cluster #{selection} #{hit_ratio}"
+  end
+
+  # Extracts the clusters from "cluster in (c_1,...,c_n)" in each query of a query file.
+  def parse_query_clusters(file, num_queries)
+    clusters = File.readlines(file).map do |query|
+      match = query.match(/%20cluster%20in%20\(([0-9,]+)\)/)
+      assert(match, "No clusters found in query '#{query[0, 200]}...'")
+      match[1].split(",").map(&:to_i)
     end
-    records
+    assert_equal(num_queries, clusters.size)
+    clusters
   end
 
   def feed_cohere(num_documents, label)
@@ -178,8 +184,7 @@ class AnnCohereBase < CommonSiftGistBase
       @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{common_args} " +
                          "#{filter_value(hit_ratio)} > #{query_file}")
     else
-      @container.execute("#{@container_tmp_bin_dir}/make_clustered_queries #{@query_fvecs_container} " +
-                         "#{@query_cluster_files[[correlation, hit_ratio]]} cluster #{common_args} > #{query_file}")
+      @container.execute("#{make_clustered_queries_command(correlation, hit_ratio)} #{common_args} > #{query_file}")
     end
     puts "Generated on container: #{query_file}"
 
