@@ -13,15 +13,6 @@ class CommonMipsBase < CommonAnnBaseTest
     @data_path = "mips-data/"
     @local_data_dir = "mips/"
     @num_queries_for_recall = 1000
-    set_recall_label_format(recall_label_format)
-  end
-
-  # Returns the format of the recall label (see set_recall_label_format).
-  # prefix is put first, e.g. "q%{quantization_bits}-" for quantized tensors.
-  # algorithm is "hnsw", or "exact" for exact search (:approximate => false).
-  def recall_label_format(prefix: "", algorithm: "hnsw")
-    "#{prefix}#{algorithm}-th%{target_hits}-eh%{explore_hits}-f%{filter_percent}" +
-      "-at%{approximate_threshold}-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-sl%{slack}"
   end
 
   def explore_hits_levels

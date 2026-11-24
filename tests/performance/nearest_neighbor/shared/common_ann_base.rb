@@ -147,8 +147,18 @@ class CommonAnnBaseTest < PerformanceTest
   #   %{target_hits}, %{explore_hits}: the calc_recall arguments
   #   %{<param>}: the value of the param (or its default, see QUERY_PARAMS_DEFAULTS), e.g. %{filter_percent},
   #   %{radius}, %{slack} or %{quantization_bits}
+  # The default is recall_label_format without arguments.
   def set_recall_label_format(format)
     @recall_label_format = format
+  end
+
+  # Returns a format for the recall label (see set_recall_label_format).
+  # prefix is put first, e.g. "q%{quantization_bits}-" for quantized tensors.
+  # algorithm is "hnsw", or "exact" for exact search.
+  # extra is inserted after the filter percent, e.g. "-r%{radius}" for geoLocation queries.
+  def recall_label_format(prefix: "", algorithm: "hnsw", extra: "")
+    "#{prefix}#{algorithm}-th%{target_hits}-eh%{explore_hits}-f%{filter_percent}#{extra}" +
+      "-at%{approximate_threshold}-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-sl%{slack}"
   end
 
   # The default parameters of the recall report: report parameter name => key of the value in calc_recall.
@@ -214,8 +224,7 @@ class CommonAnnBaseTest < PerformanceTest
   end
 
   def recall_label(values)
-    assert(@recall_label_format, "The recall label format is not set, see set_recall_label_format")
-    format(@recall_label_format, values)
+    format(@recall_label_format || recall_label_format, values)
   end
 
   def calc_recall_in_searcher(query)
