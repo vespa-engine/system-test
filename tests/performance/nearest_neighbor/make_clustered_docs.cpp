@@ -5,6 +5,7 @@
 #include <format>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -100,8 +101,20 @@ print_assign_vector_field(std::ostream& os, const std::string& field_name, const
 
 using StringVector = std::vector<std::string>;
 
+StringVector
+split(const std::string& str, char separator)
+{
+    StringVector result;
+    std::stringstream ss(str);
+    std::string part;
+    while (std::getline(ss, part, separator)) {
+        result.push_back(part);
+    }
+    return result;
+}
+
 void
-print_put(std::ostream& os, size_t docid, const IntVector &filters, size_t filter_values_denominator, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor, const std::string& cluster_field, int cluster)
+print_put(std::ostream& os, size_t docid, const IntVector &filters, size_t filter_values_denominator, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor, const StringVector& cluster_fields, const IntVector& clusters)
 {
     os << "{" << std::endl;
     os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
@@ -115,7 +128,10 @@ print_put(std::ostream& os, size_t docid, const IntVector &filters, size_t filte
            << "{ \"lat\": " << latitude.random() << ", \"lng\": " << longitude.random() << "}"
            << "," << std::endl;
     }
-    os << "    \"" << cluster_field << "\": " << cluster << (tensor_fields.empty() ? "" : ",") << std::endl;
+    for (size_t i = 0; i < cluster_fields.size(); ++i) {
+        bool last = (i + 1) == cluster_fields.size() && tensor_fields.empty();
+        os << "    \"" << cluster_fields[i] << "\": " << clusters[i] << (last ? "" : ",") << std::endl;
+    }
     for (size_t i = 0; i < tensor_fields.size(); ++i) {
         bool last = (i + 1) == tensor_fields.size();
         os << "    "; print_vector_field(os, tensor_fields[i], vector, mixed_tensor) << (last ? "" : ",") << std::endl;
@@ -125,12 +141,15 @@ print_put(std::ostream& os, size_t docid, const IntVector &filters, size_t filte
 }
 
 void
-print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor, const std::string& cluster_field, int cluster)
+print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor, const StringVector& cluster_fields, const IntVector& clusters)
 {
     os << "{" << std::endl;
     os << "  \"update\": \"id:test:test::" << docid << "\"," << std::endl;
     os << "  \"fields\": {" << std::endl;
-    os << "    \"" << cluster_field << "\": { \"assign\": " << cluster << " }" << (tensor_fields.empty() ? "" : ",") << std::endl;
+    for (size_t i = 0; i < cluster_fields.size(); ++i) {
+        bool last = (i + 1) == cluster_fields.size() && tensor_fields.empty();
+        os << "    \"" << cluster_fields[i] << "\": { \"assign\": " << clusters[i] << " }" << (last ? "" : ",") << std::endl;
+    }
     for (size_t i = 0; i < tensor_fields.size(); ++i) {
         bool last = (i + 1) == tensor_fields.size();
         os << "    "; print_assign_vector_field(os, tensor_fields[i], vector, mixed_tensor) << (last ? "" : ",") << std::endl;
@@ -158,6 +177,9 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  * Works like make_docs, but additionally writes the cluster of each vector to the int field <cluster-field>.
  * The <cluster-file> is an .ivecs file with one record (int32 dimension 1, int32 cluster) per vector in the vector file,
  * e.g., as written by parquetvectors/utils/assign_clusters.py.
+ *
+ * Several cluster files and fields can be given as comma-separated lists of the same length, e.g., for clusters at several levels:
+ *   ./make_clustered_docs docs.fvecs clusters_fine.ivecs,clusters_medium.ivecs,clusters_coarse.ivecs cluster_fine,cluster_medium,cluster_coarse ...
  */ 
 int
 main(int argc, char **argv)
@@ -168,8 +190,12 @@ main(int argc, char **argv)
         std::cerr << "Usage: " << argv[0] << " <vector-file> <cluster-file> <cluster-field> <num-dimensions> <feed-op> ..." << std::endl;
         return 1;
     }
-    std::string cluster_file(argv[2]);
-    std::string cluster_field(argv[3]);
+    StringVector cluster_files = split(argv[2], ',');
+    StringVector cluster_fields = split(argv[3], ',');
+    if (cluster_files.empty() || cluster_files.size() != cluster_fields.size()) {
+        std::cerr << "The number of cluster files (" << cluster_files.size() << ") and cluster fields (" << cluster_fields.size() << ") must be the same and positive" << std::endl;
+        return 1;
+    }
 
     // Remove cluster file and cluster field such that the remaining arguments are the same as for make_docs
     std::vector<char*> remaining_args(argv, argv + argc);
@@ -230,14 +256,17 @@ main(int argc, char **argv)
         std::cerr << "Could not open '" << vector_file << "'" << std::endl;
         return 1;
     }
-    std::ifstream cluster_is(cluster_file, std::ifstream::binary);
-    if (!cluster_is.good()) {
-        std::cerr << "Could not open '" << cluster_file << "'" << std::endl;
-        return 1;
+    std::vector<std::ifstream> cluster_streams;
+    for (const auto& cluster_file : cluster_files) {
+        cluster_streams.emplace_back(cluster_file, std::ifstream::binary);
+        if (!cluster_streams.back().good()) {
+            std::cerr << "Could not open '" << cluster_file << "'" << std::endl;
+            return 1;
+        }
+        cluster_streams.back().ignore(start_vector * 8); // skip clusters as specified by start_vector
     }
-    cluster_is.ignore(start_vector * 8); // skip clusters as specified by start_vector
     int read_dim_size = 0;
-    int cluster = 0;
+    IntVector clusters(cluster_files.size(), 0);
     FloatVector vector(dim_size, 0);
     std::cout << "[" << std::endl;
     bool make_puts = (feed_op == "put");
@@ -249,11 +278,13 @@ main(int argc, char **argv)
         assert(read_dim_size == dim_size);
         is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * dim_size);
         assert(is.good());
-        cluster_is.read(reinterpret_cast<char*>(&read_dim_size), 4);
-        cluster_is.read(reinterpret_cast<char*>(&cluster), 4);
-        if (!cluster_is.good() || read_dim_size != 1) {
-            std::cerr << "Could not read cluster for vector " << vector_num << " from '" << cluster_file << "'" << std::endl;
-            return 1;
+        for (size_t i = 0; i < cluster_streams.size(); ++i) {
+            cluster_streams[i].read(reinterpret_cast<char*>(&read_dim_size), 4);
+            cluster_streams[i].read(reinterpret_cast<char*>(&clusters[i]), 4);
+            if (!cluster_streams[i].good() || read_dim_size != 1) {
+                std::cerr << "Could not read cluster for vector " << vector_num << " from '" << cluster_files[i] << "'" << std::endl;
+                return 1;
+            }
         }
 
         if (!first) {
@@ -261,9 +292,9 @@ main(int argc, char **argv)
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, begin_doc + vector_num - start_vector, filters, filter_values_denominator, latitude, longitude, tensor_fields, vector, mixed_tensor, cluster_field, cluster);
+            print_put(std::cout, begin_doc + vector_num - start_vector, filters, filter_values_denominator, latitude, longitude, tensor_fields, vector, mixed_tensor, cluster_fields, clusters);
         } else {
-            print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor, cluster_field, cluster);
+            print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor, cluster_fields, clusters);
         }
     }
     std::cout << std::endl << "]" << std::endl;

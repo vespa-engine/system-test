@@ -93,10 +93,11 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
 }
 
 /**
- * Reads a cluster file with one record (int32 dimension 1, int32 cluster) per document and returns the number of documents per cluster.
+ * Reads a cluster file with one record (int32 dimension 1, int32 cluster) per document and returns the number of documents per cluster,
+ * counting only the first num_docs documents (all documents if num_docs is 0).
  */
 bool
-read_cluster_sizes(const std::string& doc_cluster_file, std::vector<size_t>& sizes)
+read_cluster_sizes(const std::string& doc_cluster_file, size_t num_docs, std::vector<size_t>& sizes)
 {
     std::ifstream is(doc_cluster_file, std::ifstream::binary);
     if (!is.good()) {
@@ -104,7 +105,8 @@ read_cluster_sizes(const std::string& doc_cluster_file, std::vector<size_t>& siz
         return false;
     }
     int record[2];
-    while (is.read(reinterpret_cast<char*>(record), sizeof(record))) {
+    size_t read_docs = 0;
+    while ((num_docs == 0 || read_docs < num_docs) && is.read(reinterpret_cast<char*>(record), sizeof(record))) {
         if (record[0] != 1 || record[1] < 0) {
             std::cerr << "Invalid record in '" << doc_cluster_file << "'" << std::endl;
             return false;
@@ -113,13 +115,18 @@ read_cluster_sizes(const std::string& doc_cluster_file, std::vector<size_t>& siz
             sizes.resize(record[1] + 1, 0);
         }
         ++sizes[record[1]];
+        ++read_docs;
+    }
+    if (read_docs < num_docs) {
+        std::cerr << "'" << doc_cluster_file << "' contains only " << read_docs << " documents, not " << num_docs << std::endl;
+        return false;
     }
     return true;
 }
 
 /**
  * Selects clusters from the ranking (ordered from closest to farthest) until they contain at least target_docs documents,
- * starting with the closest clusters, or with the farthest clusters if farthest is true.
+ * starting with the closest clusters, or with the farthest clusters if farthest is true. Empty clusters are skipped.
  */
 IntVector
 select_clusters(const IntVector& ranking, const std::vector<size_t>& sizes, double target_docs, bool farthest, size_t& selected_docs)
@@ -128,8 +135,12 @@ select_clusters(const IntVector& ranking, const std::vector<size_t>& sizes, doub
     selected_docs = 0;
     for (size_t i = 0; i < ranking.size() && selected_docs < target_docs; ++i) {
         int cluster = ranking[farthest ? ranking.size() - 1 - i : i];
+        size_t size = (static_cast<size_t>(cluster) < sizes.size()) ? sizes[cluster] : 0;
+        if (size == 0) {
+            continue; // Empty clusters do not change the selectivity, no need to include them in the query
+        }
         selected.push_back(cluster);
-        selected_docs += (static_cast<size_t>(cluster) < sizes.size()) ? sizes[cluster] : 0;
+        selected_docs += size;
     }
     return selected;
 }
@@ -147,7 +158,7 @@ select_clusters(const IntVector& ranking, const std::vector<size_t>& sizes, doub
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_clustered_queries <vector-file> <query-cluster-file> <doc-cluster-file> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
+ *   ./make_clustered_queries <vector-file> <query-cluster-file> <doc-cluster-file> <num-docs> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
  *
  * Works like make_queries, but additionally restricts each query to the closest (positive correlation) or farthest (negative correlation)
  * clusters of its query vector, by adding "<cluster-field> in (c_1,...,c_n)" to the YQL. Clusters are selected until they contain
@@ -156,22 +167,24 @@ select_clusters(const IntVector& ranking, const std::vector<size_t>& sizes, doub
  * The <query-cluster-file> is an .ivecs file with one record (int32 number of clusters n, n int32 clusters ordered from closest
  * to farthest) per query vector, as written by parquetvectors/utils/rank_query_clusters.py. The <doc-cluster-file> is an .ivecs file
  * with one record (int32 dimension 1, int32 cluster) per document, as written by parquetvectors/utils/assign_clusters.py,
- * and is used for the cluster sizes.
+ * and is used for the cluster sizes. Only the first <num-docs> documents are counted (all documents if <num-docs> is 0), e.g., to feed
+ * only the first 1M of 10M clustered documents.
  */ 
 int
 main(int argc, char **argv)
 {
     srand(42);
 
-    if (argc < 7) {
-        std::cerr << "Usage: " << argv[0] << " <vector-file> <query-cluster-file> <doc-cluster-file> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> ..." << std::endl;
+    if (argc < 8) {
+        std::cerr << "Usage: " << argv[0] << " <vector-file> <query-cluster-file> <doc-cluster-file> <num-docs> <cluster-field> <closest|farthest> <target-fraction> <num-dimensions> <num-queries> <doc-tensor> ..." << std::endl;
         return 1;
     }
     std::string cluster_file(argv[2]);
     std::string doc_cluster_file(argv[3]);
-    std::string cluster_field(argv[4]);
-    std::string selection(argv[5]);
-    double target_fraction = std::stod(argv[6]);
+    size_t num_docs_limit = std::stoull(argv[4]);
+    std::string cluster_field(argv[5]);
+    std::string selection(argv[6]);
+    double target_fraction = std::stod(argv[7]);
     if (selection != "closest" && selection != "farthest") {
         std::cerr << "Selection must be 'closest' or 'farthest', not '" << selection << "'" << std::endl;
         return 1;
@@ -182,18 +195,22 @@ main(int argc, char **argv)
     }
     bool farthest = (selection == "farthest");
     std::vector<size_t> sizes;
-    if (!read_cluster_sizes(doc_cluster_file, sizes)) {
+    if (!read_cluster_sizes(doc_cluster_file, num_docs_limit, sizes)) {
         return 1;
     }
     size_t num_docs = 0;
     for (auto size : sizes) {
         num_docs += size;
     }
+    if (num_docs == 0) {
+        std::cerr << "'" << doc_cluster_file << "' contains no documents" << std::endl;
+        return 1;
+    }
     double target_docs = target_fraction * num_docs;
 
     // Remove the cluster arguments such that the remaining arguments are the same as for make_queries
     std::vector<char*> remaining_args(argv, argv + argc);
-    remaining_args.erase(remaining_args.begin() + 2, remaining_args.begin() + 7);
+    remaining_args.erase(remaining_args.begin() + 2, remaining_args.begin() + 8);
     argc = static_cast<int>(remaining_args.size());
     argv = remaining_args.data();
 

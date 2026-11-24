@@ -98,8 +98,8 @@ class CommonAnnBaseTest < PerformanceTest
     fetch_file_to_localhost(@query_vectors, @local_query_vectors)
   end
 
-  # clusters: Optional list of clusters the query is restricted to (cluster in (...)), nil for no restriction
-  QueryDatum = Struct.new(:vector, :latitude, :longitude, :clusters)
+  # clusters: Optional list of clusters the query is restricted to (<cluster_field> in (...)), nil for no restriction
+  QueryDatum = Struct.new(:vector, :latitude, :longitude, :clusters, :cluster_field)
 
   def calc_recall_for_queries(target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
@@ -119,6 +119,7 @@ class CommonAnnBaseTest < PerformanceTest
     approx_match_rank_profile = params[:approx_match_rank_profile] || 'default'
     use_exact_for_approx_match_phase = params[:use_exact_for_approx_match_phase] || false
     query_clusters = params[:query_clusters] || nil # One list of clusters per query vector
+    cluster_field = params[:cluster_field] || "cluster"
     extra_fillers = params[:extra_fillers] || []
 
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, " +
@@ -163,6 +164,7 @@ class CommonAnnBaseTest < PerformanceTest
       assert(query_clusters.length >= query_data.length)
       query_data.each_with_index do |qd, i|
         qd.clusters = query_clusters[i]
+        qd.cluster_field = cluster_field
       end
     end
 
@@ -259,7 +261,7 @@ class CommonAnnBaseTest < PerformanceTest
     "&nnr.exactMatchRankProfile=#{exact_match_rank_profile}" +
     "&nnr.exactMatchTensor=#{exact_match_tensor}" +
     "&nnr.useExactForApproxMatchPhase=#{use_exact_for_approx_match_phase}" +
-    (datum.clusters.nil? ? "" : "&nnr.clusterField=cluster&nnr.clusters=#{datum.clusters.join(',')}")
+    (datum.clusters.nil? ? "" : "&nnr.clusterField=#{datum.cluster_field}&nnr.clusters=#{datum.clusters.join(',')}")
   end
 
   class RecallResult

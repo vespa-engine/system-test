@@ -7,7 +7,15 @@ search test {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field cluster type int {
+    field cluster_fine type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field cluster_medium type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field cluster_coarse type int {
       indexing: attribute | summary
       attribute: fast-search
     }
