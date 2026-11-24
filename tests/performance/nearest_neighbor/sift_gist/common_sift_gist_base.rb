@@ -61,42 +61,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
     @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}sift_gist/make_queries.cpp")
   end
 
-  def generate_vectors_for_recall(num_queries_for_recall)
+  def download_query_vectors
     @query_fvecs_container = nn_download_file(@query_fvecs, @container)
-    query_vectors_container = dirs.tmpdir + "query_vectors_container.txt" # The vectors as a .txt file
-    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{num_queries_for_recall} > #{query_vectors_container}")
-
-    # We need the files on localhost (in the recall computation)
-    @local_query_vectors = dirs.tmpdir + "query_vectors.txt"
-    find_and_copy_to_localhost(query_vectors_container, @local_query_vectors)
-  end
-
-  def generate_locations_for_recall(num_queries_for_recall, params = {})
-    latitude_lower = params[:latitude_lower] || 0.0
-    latitude_upper = params[:latitude_upper] || -1.0
-    longitude_lower = params[:longitude_lower] || 0.0
-    longitude_upper = params[:longitude_upper] || -1.0
-
-    locations_container = dirs.tmpdir + "query_locations_container.txt"
-    @container.execute("#{@container_tmp_bin_dir}/make_queries --only-locations [#{latitude_lower},#{latitude_upper}] [#{longitude_lower},#{longitude_upper}] #{num_queries_for_recall} > #{locations_container}")
-
-    # Needed in recall computations
-    @local_locations = dirs.tmpdir + "query_locations.txt"
-    find_and_copy_to_localhost(locations_container, @local_locations)
-  end
-
-  def find_and_copy_to_localhost(remote_file, local_file)
-    copied = false
-    vespa.nodeproxies.each_value do |node|
-      if node.file?(remote_file)
-        node.copy_remote_file_to_local_file(remote_file, local_file)
-        copied = true
-        break
-      end
-    end
-
-    # Make sure that we actually found the node proxy corresponding to the container and copied the file
-    assert(copied)
   end
 
   def feed_and_benchmark(num_documents, label, params = {})
@@ -138,28 +104,21 @@ class CommonSiftGistBase < CommonAnnBaseTest
     "queries.#{doc_tensor}.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}#{radius_str}.txt"
   end
 
-  def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
+  # Generates a query file with num_queries queries on the container and returns its path.
+  # The queries are deterministic, i.e., the first n queries are the same for every num_queries >= n.
+  def generate_queries(num_queries, approximate, target_hits, explore_hits, params = {}, file_prefix = "")
     filter_percent = params[:filter_percent] || 0
     radius = params[:radius] || -1.0
     latitude_lower = params[:latitude_lower] || 0.0
     latitude_upper = params[:latitude_upper] || -1.0
     longitude_lower = params[:longitude_lower] || 0.0
     longitude_upper = params[:longitude_upper] || -1.0
-    approximate_threshold = params[:approximate_threshold] || 0.05
-    filter_first_threshold = params[:filter_first_threshold] || 0.0
-    filter_first_exploration = params[:filter_first_exploration] || 0.3
-    slack = params[:slack] || 0.0
-    clients = params[:clients] || 1
-    threads_per_search = params[:threads_per_search] || 0
-    annotation = params[:annotation] || "none"
     doc_tensor = params[:doc_tensor] || "vec_m16"
-    lazy_filter = params[:lazy_filter] || false
 
-    approximate = algorithm == HNSW ? "true" : "false"
-    query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
+    query_file = dirs.tmpdir + file_prefix + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
     @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} "\
                                                               "#{@dimensions} "\
-                                                              "#{@num_queries_for_benchmark} "\
+                                                              "#{num_queries} "\
                                                               "#{doc_tensor} "\
                                                               "#{approximate} "\
                                                               "#{target_hits} "\
@@ -169,8 +128,34 @@ class CommonSiftGistBase < CommonAnnBaseTest
                                                               "[#{latitude_lower},#{latitude_upper}] "\
                                                               "[#{longitude_lower},#{longitude_upper}] "\
                                                               "> #{query_file}")
-
     puts "Generated on container: #{query_file}"
+    query_file
+  end
+
+  # Calculates the recall for the first @num_queries_for_recall queries that query_and_benchmark
+  # uses for the same parameters.
+  def calc_recall_for_queries(target_hits, explore_hits, params = {})
+    approximate = params.fetch(:approximate, true)
+    query_file = generate_queries(@num_queries_for_recall, approximate, target_hits, explore_hits, params, "recall.")
+    local_query_file = dirs.tmpdir + "recall_queries.txt"
+    find_and_copy_to_localhost(query_file, local_query_file)
+    queries = File.readlines(local_query_file).map { |query| query.strip + "&summary=minimal&hits=#{target_hits}&ranking=default" }
+    calc_recall(queries, target_hits, explore_hits, params)
+  end
+
+  def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
+    filter_percent = params[:filter_percent] || 0
+    radius = params[:radius] || -1.0
+    approximate_threshold = params[:approximate_threshold] || 0.05
+    filter_first_threshold = params[:filter_first_threshold] || 0.0
+    filter_first_exploration = params[:filter_first_exploration] || 0.3
+    slack = params[:slack] || 0.0
+    clients = params[:clients] || 1
+    threads_per_search = params[:threads_per_search] || 0
+    annotation = params[:annotation] || "none"
+    lazy_filter = params[:lazy_filter] || false
+
+    query_file = generate_queries(@num_queries_for_benchmark, algorithm == HNSW, target_hits, explore_hits, params)
 
     radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
     lazy_str = lazy_filter ? "-lazy" : ""
@@ -197,10 +182,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
                  :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}" +
-                                "&ranking.matching.approximateThreshold=#{approximate_threshold}" +
-                                "&ranking.matching.filterFirstThreshold=#{filter_first_threshold}" +
-                                "&ranking.matching.filterFirstExploration=#{filter_first_exploration}" +
-                                "&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}",
+                                matching_params_str(params),
                  :result_file => result_file},
                 fillers)
     profiler_report(label)

@@ -31,13 +31,12 @@ class AnnMipsWiki < CommonMipsBase
 
     @paragraph_docs = @data_path + "paragraph_docs.400k.json"
     @queries = @data_path + "paragraph_queries.10k.txt"
-    @query_vectors = @data_path + "paragraph_vectors.1k.txt"
   end
 
   def test_mips_with_wiki_dataset
     set_owner('boeker')
     set_description("Test performance and recall for MIPS using the Wiki simple English dataset")
-    run_mips_test(selfdir + "mips/wiki/paragraph.sd", @paragraph_docs, "paragraph", "paragraph")
+    run_mips_test(selfdir + "mips/wiki/paragraph.sd", @paragraph_docs, "paragraph")
   end
 
   def test_mips_with_wiki_dataset_quantized_1_bit
@@ -61,7 +60,7 @@ class AnnMipsWiki < CommonMipsBase
   def do_test_mips_wiki_dataset_quantized(bits:)
     set_owner('vekterli')
     set_description("Test performance and recall for #{bits}-bit quantized MIPS using the Wiki simple English dataset")
-    run_quantized_mips_test(selfdir + 'mips/wiki/quantized', 'paragraph.sd', @paragraph_docs, 'paragraph', 'paragraph', bits)
+    run_quantized_mips_test(selfdir + 'mips/wiki/quantized', 'paragraph.sd', @paragraph_docs, 'paragraph', bits)
   end
 
 end

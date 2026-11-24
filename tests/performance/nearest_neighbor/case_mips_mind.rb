@@ -55,13 +55,11 @@ class NearestNeighborMipsMind < CommonMipsBase
 
     @news_docs = @data_path + "news_docs.large.json"
     @queries = @data_path + "user_queries.large.10k.txt"
-    @query_vectors = @data_path + "user_vectors.large.1k.txt"
 
   # @news_docs = @data_path + "news_docs.small.json"
   # @queries = @data_path + "user_queries.small.txt"
-  # @query_vectors = @data_path + "user_vectors.small.txt"
 
-    run_mips_test(selfdir + "mips/mind/news.sd", @news_docs, "news", "user")
+    run_mips_test(selfdir + "mips/mind/news.sd", @news_docs, "news")
   end
 
 

@@ -12,13 +12,14 @@ class CommonMipsBase < CommonAnnBaseTest
     super(*args)
     @data_path = "mips-data/"
     @local_data_dir = "mips/"
+    @num_queries_for_recall = 1000
   end
 
   def explore_hits_levels
     [0, 90, 190, 490]
   end
 
-  def run_mips_test(sd_file, feed_file, doc_type, query_tensor)
+  def run_mips_test(sd_file, feed_file, doc_type)
     deploy_app(create_app(sd_file))
     start
     @container = vespa.container.values.first
@@ -27,12 +28,11 @@ class CommonMipsBase < CommonAnnBaseTest
     query_and_benchmark
     prepare_queries_for_recall
     explore_hits_levels.each do |explore_hits|
-      params = {:doc_type => doc_type, :doc_tensor => "embedding", :query_tensor => query_tensor}
-      calc_recall_for_queries(10, explore_hits, params)
+      calc_recall_for_queries(10, explore_hits)
     end
   end
 
-  def run_quantized_mips_test(app_dir, sd_file_name, feed_file, doc_type, query_tensor, qbits)
+  def run_quantized_mips_test(app_dir, sd_file_name, feed_file, doc_type, qbits)
     gen_app_dir = copy_app_with_templated_sd_file(app_dir, sd_file_name,
                                                   {'QUANTIZATION_BITS' => qbits})
     # For the MIPS tests we only use the app SD file itself
@@ -45,12 +45,7 @@ class CommonMipsBase < CommonAnnBaseTest
     query_and_benchmark
 
     prepare_queries_for_recall
-    params = {:doc_type => doc_type,
-              :doc_tensor => 'embedding',
-              :exact_match_tensor => 'embedding_f32',
-              :exact_match_rank_profile => 'full_precision_exact_match',
-              :approx_match_rank_profile => 'default',
-              :query_tensor => query_tensor,
+    params = {:nnr => {'exactField' => 'embedding_f32', 'exactRankProfile' => 'full_precision_exact_match'},
               :quantization_bits => qbits}
     # First, do an exact match search between the full precision and quantized tensors
     # in order to determine the inherent loss from quantization itself, and to derive
@@ -58,7 +53,7 @@ class CommonMipsBase < CommonAnnBaseTest
     puts '------'
     puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
     puts '------'
-    calc_recall_for_queries(10, 0, params.merge({:use_exact_for_approx_match_phase => true}))
+    calc_recall_for_queries(10, 0, params.merge({:approximate => false}))
     # Followed by HNSW approximate matches with varying explore-hits levels
     explore_hits_levels.each do |explore_hits|
       puts '------'
@@ -110,6 +105,25 @@ class CommonMipsBase < CommonAnnBaseTest
     proxy_file = nn_download_file(@queries, @container)
     puts "Got on container: #{proxy_file}"
     return proxy_file
+  end
+
+  # Uses the first @num_queries_for_recall queries of the benchmark query file for recall.
+  def prepare_queries_for_recall
+    query_file = fetch_query_file_to_container
+    recall_query_file = dirs.tmpdir + "recall_queries_container.txt"
+    @container.execute("head -n #{@num_queries_for_recall} #{query_file} > #{recall_query_file}")
+    local_query_file = dirs.tmpdir + "recall_queries.txt"
+    find_and_copy_to_localhost(recall_query_file, local_query_file)
+    @recall_queries = File.readlines(local_query_file).map(&:strip)
+  end
+
+  # The benchmark queries use targetHits=100 and exploreAdditionalHits=0, so these are overridden
+  # in NearestNeighborRecallSearcher to calculate the recall for the given values.
+  def calc_recall_for_queries(target_hits, explore_hits, params = {})
+    nnr_params = {'targetHits' => target_hits, 'exploreHits' => explore_hits}
+    nnr_params['approximate'] = false unless params.fetch(:approximate, true)
+    nnr_params.merge!(params[:nnr] || {})
+    calc_recall(@recall_queries, target_hits, explore_hits, params.merge({:nnr => nnr_params}))
   end
 
 end

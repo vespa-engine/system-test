@@ -19,17 +19,17 @@ class AnnSiftBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3, (test_threads_per_search ? 16 : 1)))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     num_updates = 200_000
     filter_values = [1, 10, 50, 90, 95, 99]
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #@num_documents = 20_000
     #num_updates = 10_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     feed_and_benchmark(@num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -67,11 +67,11 @@ class AnnSiftBase < CommonSiftGistBase
     deploy_app(create_app_from_dir(gen_app_dir, 0.3, 1))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     num_updates = 200_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     feed_and_benchmark(@num_documents, "1M-docs")
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -79,12 +79,12 @@ class AnnSiftBase < CommonSiftGistBase
 
     recall_params = {
       :doc_tensor => 'vec_m16',
-      :exact_match_tensor => 'vec_f32',
+      :nnr => {'exactField' => 'vec_f32'},
       :quantization_bits => bits
     }
     fancy_puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
-    calc_recall_for_queries(10, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
-    calc_recall_for_queries(100, 0, recall_params.merge({:use_exact_for_approx_match_phase => true}))
+    calc_recall_for_queries(10, 0, recall_params.merge({:approximate => false}))
+    calc_recall_for_queries(100, 0, recall_params.merge({:approximate => false}))
 
     run_target_hits_10_tests(recall_params)
     run_target_hits_100_tests(recall_params)
@@ -101,12 +101,12 @@ class AnnSiftBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3, 1))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     filter_values_denominator = 10_000 # filter_values below are per myriad
     filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     feed_and_benchmark(@num_documents, "1M-docs", {
       :filter_values => filter_values,
       :filter_values_denominator => filter_values_denominator,
@@ -135,11 +135,11 @@ class AnnSiftBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3, 1))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     radii = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 10000, 20000, 30000]
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #@num_documents = 20_000
 
     bounding_box_globe = {
@@ -150,8 +150,7 @@ class AnnSiftBase < CommonSiftGistBase
     }
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
-    generate_locations_for_recall(num_queries_for_recall, bounding_box_globe)
+    download_query_vectors
     feed_and_benchmark(@num_documents, "1M-docs", {:radii => radii}.merge(bounding_box_globe))
 
     query_and_benchmark(BRUTE_FORCE, 10, 0, {:radius => 50.0}.merge(bounding_box_globe))
@@ -163,9 +162,9 @@ class AnnSiftBase < CommonSiftGistBase
       query_and_benchmark(HNSW, 100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true}.merge(bounding_box_globe))
 
       # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3})
+      calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3}.merge(bounding_box_globe))
       # Lazy filtering
-      calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true})
+      calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true}.merge(bounding_box_globe))
     end
   end
 
@@ -173,16 +172,16 @@ class AnnSiftBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3, 1))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     documents_to_benchmark_at = 500_000
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #documents_to_benchmark_at = 5_000
     #@num_documents = 10_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     run_removal_test(documents_to_benchmark_at, @num_documents, "1M-docs")
   end
 

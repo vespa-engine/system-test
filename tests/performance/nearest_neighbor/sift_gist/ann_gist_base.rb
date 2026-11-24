@@ -20,16 +20,16 @@ class AnnGistBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     num_documents = 300_000
     filter_values = [1, 10, 50, 90, 95, 99]
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #num_documents = 1_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -48,17 +48,17 @@ class AnnGistBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     num_documents = 300_000
     filter_values_denominator = 10_000 # filter_values below are per myriad
     filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #num_documents = 1_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values, :filter_values_denominator => filter_values_denominator})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -80,17 +80,17 @@ class AnnGistBase < CommonSiftGistBase
     deploy_app(create_app(sd_dir, 0.3))
     start
 
-    num_queries_for_recall = 100
+    @num_queries_for_recall = 100
     documents_to_benchmark_at = 150_000
     documents_in_total = 300_000
 
     # Smaller values that can be used for development and testing
-    #num_queries_for_recall = 10
+    #@num_queries_for_recall = 10
     #documents_to_benchmark_at = 5_000
     #documents_in_total = 10_000
 
     compile_generators
-    generate_vectors_for_recall(num_queries_for_recall)
+    download_query_vectors
     run_removal_test(documents_to_benchmark_at, documents_in_total, "300k-docs")
   end
 
