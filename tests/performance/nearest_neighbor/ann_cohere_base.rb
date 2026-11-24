@@ -41,10 +41,8 @@ class AnnCohereBase < CommonSiftGistBase
   FILTER_VALUES_DENOMINATOR = 1000
 
   HNSW_SETTINGS = [
-    # Defaults (as in the rank profile)
-    {:approximate_threshold => 0.05, :filter_first_threshold => 0.00, :filter_first_exploration => 0.3},
-    # Always use HNSW, with the filter-first heuristic for hit ratios below 40%
-    {:approximate_threshold => 0.00, :filter_first_threshold => 0.40, :filter_first_exploration => 0.3}
+    # Always use HNSW, without the filter-first heuristic
+    {:approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.3}
   ]
 
   def initialize(*args)
@@ -69,17 +67,9 @@ class AnnCohereBase < CommonSiftGistBase
     feed_cohere(num_documents, "#{num_documents}-docs")
     assert_hitcount("query=sddocname:test", num_documents)
 
-    # Without filter
-    query_and_benchmark(BRUTE_FORCE, 10, 0)
-    run_target_hits_10_tests
-    query_and_benchmark(BRUTE_FORCE, 100, 0)
-    query_and_benchmark(HNSW, 100, 0)
-    calc_recall_for_queries(100, 0)
-
     CORRELATIONS.each do |correlation|
       HIT_RATIOS.each do |hit_ratio|
         fancy_puts "Benchmarking and checking recall for correlation=#{correlation}, hit_ratio=#{hit_ratio}"
-        query_and_benchmark_with_filter(BRUTE_FORCE, 100, correlation, hit_ratio, HNSW_SETTINGS.first)
         HNSW_SETTINGS.each do |settings|
           query_and_benchmark_with_filter(HNSW, 100, correlation, hit_ratio, settings)
           calc_recall_with_filter(100, correlation, hit_ratio, settings)

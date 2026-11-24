@@ -17,7 +17,7 @@ class AnnCoherePerfTest < AnnCohereBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    set_description("Test performance and recall using nearestNeighbor operator (hnsw vs brute force) with filters " +
+    set_description("Test performance and recall using nearestNeighbor operator (hnsw) with filters " +
                     "that are not, positively, and negatively correlated with the query vector " +
                     "over #{num_documents} Cohere Wikipedia embeddings (1024 dim)")
     run_cohere_filter_test("cohere_test", num_documents, num_queries_for_recall)
