@@ -84,15 +84,48 @@ class AnnCohereBase < CommonSiftGistBase
     feed_cohere(num_documents, "#{num_documents}-docs")
     assert_hitcount("query=sddocname:test", num_documents)
 
+    results = {} # [settings, correlation, hit_ratio] => {:recall, :qps, :avg_ms, :p95_ms}
     CORRELATIONS.each do |correlation|
       HIT_RATIOS.each do |hit_ratio|
         fancy_puts "Benchmarking and checking recall for correlation=#{correlation}, hit_ratio=#{hit_ratio}"
         HNSW_SETTINGS.each do |settings|
-          query_and_benchmark_with_filter(HNSW, 100, correlation, hit_ratio, settings)
-          calc_recall_with_filter(100, correlation, hit_ratio, settings)
+          benchmark = query_and_benchmark_with_filter(HNSW, 100, correlation, hit_ratio, settings)
+          recall = calc_recall_with_filter(100, correlation, hit_ratio, settings)
+          results[[settings, correlation, hit_ratio]] = {:recall => recall.metric(RECALL_AVG).to_f,
+                                                         :qps => benchmark.metric('qps').to_f,
+                                                         :avg_ms => benchmark.metric('avgresponsetime').to_f,
+                                                         :p95_ms => benchmark.metric('95 percentile').to_f}
         end
       end
     end
+
+    HNSW_SETTINGS.each do |settings|
+      print_results_table(results, settings, num_documents)
+    end
+  end
+
+  # Prints one row per hit ratio with the recall, throughput, and response times for each correlation.
+  def print_results_table(results, settings, num_documents)
+    columns = [["recall", :recall, 1], ["qps", :qps, 1], ["avg ms", :avg_ms, 2], ["p95 ms", :p95_ms, 2]]
+    width = 8
+    group_width = columns.size * width
+    lines = []
+    lines << "Results for #{num_documents} documents, target hits 100, approximate threshold #{settings[:approximate_threshold]}, " +
+             "filter-first threshold #{settings[:filter_first_threshold]}, filter-first exploration #{settings[:filter_first_exploration]}"
+    lines << "(recall: average recall in %, qps: queries per second with 1 client, avg/p95 ms: average/95th percentile response time)"
+    lines << "#{"".ljust(19)}" + CORRELATIONS.map { |c| " | " + "correlation #{c}".center(group_width) }.join
+    lines << "#{"hit ratio".rjust(9)} #{"level".ljust(9)}" + CORRELATIONS.map { |c| " | " + columns.map { |name, _, _| name.rjust(width) }.join }.join
+    lines << "-" * lines.last.length
+    HIT_RATIOS.each do |hit_ratio|
+      row = "#{format('%g%%', hit_ratio * 100).rjust(9)} #{HIT_RATIO_LEVELS[hit_ratio].ljust(9)}"
+      CORRELATIONS.each do |correlation|
+        result = results[[settings, correlation, hit_ratio]]
+        row += " | " + columns.map { |_, key, digits| format("%.#{digits}f", result[key]).rjust(width) }.join
+      end
+      lines << row
+    end
+    lines << "(level: cluster level used for positive and negative correlation)"
+    fancy_puts lines.join("\n")
   end
 
   def compile_generators
@@ -235,18 +268,19 @@ class AnnCohereBase < CommonSiftGistBase
                parameter_filler(FILTER_FIRST_EXPLORATION, settings[:filter_first_exploration]),
                parameter_filler(CLIENTS, 1)] + filter_fillers(correlation, hit_ratio)
     profiler_start
-    run_fbench2(@container,
-                query_file,
-                {:runtime => FBENCH_TIME,
-                 :clients => 1,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=default" +
-                                "&ranking.matching.approximateThreshold=#{settings[:approximate_threshold]}" +
-                                "&ranking.matching.filterFirstThreshold=#{settings[:filter_first_threshold]}" +
-                                "&ranking.matching.filterFirstExploration=#{settings[:filter_first_exploration]}",
-                 :result_file => result_file},
-                fillers)
+    result = run_fbench2(@container,
+                         query_file,
+                         {:runtime => FBENCH_TIME,
+                          :clients => 1,
+                          :append_str => "&summary=minimal&hits=#{target_hits}&ranking=default" +
+                                         "&ranking.matching.approximateThreshold=#{settings[:approximate_threshold]}" +
+                                         "&ranking.matching.filterFirstThreshold=#{settings[:filter_first_threshold]}" +
+                                         "&ranking.matching.filterFirstExploration=#{settings[:filter_first_exploration]}",
+                          :result_file => result_file},
+                         fillers)
     profiler_report(label)
     @container.execute("head -10 #{result_file}")
+    result
   end
 
   def calc_recall_with_filter(target_hits, correlation, hit_ratio, settings)
