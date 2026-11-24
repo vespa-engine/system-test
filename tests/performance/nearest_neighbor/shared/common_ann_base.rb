@@ -116,13 +116,39 @@ class CommonAnnBaseTest < PerformanceTest
     assert(copied)
   end
 
+  # The defaults of the query parameters used in these tests.
+  QUERY_PARAMS_DEFAULTS = {
+    :filter_percent => 0,
+    :radius => -1.0,
+    :lazy_filter => false,
+    :approximate_threshold => 0.05,
+    :filter_first_threshold => 0.0,
+    :filter_first_exploration => 0.3,
+    :slack => 0.0,
+    :annotation => "none"
+  }
+
+  # Returns the given params, with defaults for the query parameters that are not given.
+  def with_defaults(params)
+    QUERY_PARAMS_DEFAULTS.merge(params.compact)
+  end
+
   # Returns the ranking.matching.* request parameters for the given params (with the defaults used in these tests).
   def matching_params_str(params)
-    "&ranking.matching.approximateThreshold=#{params[:approximate_threshold] || 0.05}" +
-    "&ranking.matching.filterFirstThreshold=#{params[:filter_first_threshold] || 0.0}" +
-    "&ranking.matching.filterFirstExploration=#{params[:filter_first_exploration] || 0.3}" +
-    "&ranking.matching.explorationSlack=#{params[:slack] || 0.0}" +
-    "&ranking.matching.lazyFilter=#{params[:lazy_filter] || false}"
+    values = with_defaults(params)
+    "&ranking.matching.approximateThreshold=#{values[:approximate_threshold]}" +
+    "&ranking.matching.filterFirstThreshold=#{values[:filter_first_threshold]}" +
+    "&ranking.matching.filterFirstExploration=#{values[:filter_first_exploration]}" +
+    "&ranking.matching.explorationSlack=#{values[:slack]}" +
+    "&ranking.matching.lazyFilter=#{values[:lazy_filter]}"
+  end
+
+  # Sets the format of the recall report label. The placeholders are filled in by calc_recall:
+  #   %{target_hits}, %{explore_hits}: the calc_recall arguments
+  #   %{<param>}: the value of the param (or its default, see QUERY_PARAMS_DEFAULTS), e.g. %{filter_percent},
+  #   %{radius}, %{slack} or %{quantization_bits}
+  def set_recall_label_format(format)
+    @recall_label_format = format
   end
 
   # Calculates and reports the recall of the given queries using NearestNeighborRecallSearcher.
@@ -132,25 +158,13 @@ class CommonAnnBaseTest < PerformanceTest
   # target_hits: the number of hits that are compared.
   # params:
   #   :nnr - additional parameters to NearestNeighborRecallSearcher, e.g. {'exactField' => 'vec_f32'}.
-  #   :approximate => false - the queries use exact search (used to measure the recall loss from quantization).
+  #   :label - the report label, instead of the label created from the format set with set_recall_label_format.
   #   The ranking.matching.* settings (see matching_params_str) and the remaining params are used in the report.
   def calc_recall(queries, target_hits, explore_hits, params = {})
-    filter_percent = params[:filter_percent] || 0
-    radius = params[:radius] || -1.0
-    approximate_threshold = params[:approximate_threshold] || 0.05
-    filter_first_threshold = params[:filter_first_threshold] || 0.0
-    filter_first_exploration = params[:filter_first_exploration] || 0.3
-    slack = params[:slack] || 0.0
-    annotation = params[:annotation] || "none"
-    lazy_filter = params[:lazy_filter] || false
-    quantization_bits = params[:quantization_bits] || nil
-    approximate = params.fetch(:approximate, true)
-    nnr_params = params[:nnr] || {}
-
     request_params = matching_params_str(params) + "&nnr.enable=true" +
-                     nnr_params.map { |key, value| "&nnr.#{key}=#{value}" }.join
+                     (params[:nnr] || {}).map { |key, value| "&nnr.#{key}=#{value}" }.join
     puts "calc_recall: target_hits=#{target_hits}, explore_hits=#{explore_hits}, queries.size=#{queries.size}, " +
-         "approximate=#{approximate}, request_params=#{request_params}"
+         "request_params=#{request_params}"
 
     result = RecallResult.new(target_hits)
     num_threads = 5
@@ -167,27 +181,30 @@ class CommonAnnBaseTest < PerformanceTest
     threads.each(&:join)
 
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
-    radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
-    lazy_str = lazy_filter ? "-lazy" : ""
-    label = params[:label] || "#{approximate ? 'hnsw' : 'exact'}-th#{target_hits}" +
-            "-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}" +
-            "-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
-    # Put quantization level first, if present, since we consider it an Important Detail(tm)
-    label = "q#{quantization_bits}-#{label}" unless quantization_bits.nil?
-    write_report([parameter_filler(TYPE, "recall"),
-                  parameter_filler(LABEL, label),
-                  parameter_filler(TARGET_HITS, target_hits),
-                  parameter_filler(EXPLORE_HITS, explore_hits),
-                  parameter_filler(FILTER_PERCENT, filter_percent),
-                  parameter_filler(RADIUS, radius),
-                  parameter_filler(LAZY_FILTER, lazy_filter),
-                  parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
-                  parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
-                  parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
-                  parameter_filler(SLACK, slack),
-                  parameter_filler(ANNOTATION, annotation),
-                  metric_filler(RECALL_AVG, result.avg),
-                  metric_filler(RECALL_MEDIAN, result.median)])
+    values = with_defaults(params).merge({:target_hits => target_hits, :explore_hits => explore_hits})
+    label = params[:label] || recall_label(values)
+    write_report([parameter_filler(TYPE, "recall"), parameter_filler(LABEL, label)] +
+                 RECALL_REPORT_PARAMETERS.map { |name, key| parameter_filler(name, values[key]) } +
+                 [metric_filler(RECALL_AVG, result.avg), metric_filler(RECALL_MEDIAN, result.median)])
+  end
+
+  # The parameters of the recall report, and the keys of their values in calc_recall.
+  RECALL_REPORT_PARAMETERS = {
+    TARGET_HITS => :target_hits,
+    EXPLORE_HITS => :explore_hits,
+    FILTER_PERCENT => :filter_percent,
+    RADIUS => :radius,
+    LAZY_FILTER => :lazy_filter,
+    APPROXIMATE_THRESHOLD => :approximate_threshold,
+    FILTER_FIRST_THRESHOLD => :filter_first_threshold,
+    FILTER_FIRST_EXPLORATION => :filter_first_exploration,
+    SLACK => :slack,
+    ANNOTATION => :annotation
+  }
+
+  def recall_label(values)
+    assert(@recall_label_format, "The recall label format is not set, see set_recall_label_format")
+    format(@recall_label_format, values)
   end
 
   def calc_recall_in_searcher(query)

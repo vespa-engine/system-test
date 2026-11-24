@@ -8,6 +8,20 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
   FBENCH_TIME = 10
 
+  def initialize(*args)
+    super(*args)
+    set_recall_label_format(recall_label_format)
+  end
+
+  # Returns the format of the recall label (see set_recall_label_format).
+  # prefix is put first, e.g. "q%{quantization_bits}-" for quantized tensors.
+  # algorithm is "hnsw", or "exact" for exact search (:approximate => false).
+  # extra is inserted after the filter percent, e.g. "-r%{radius}" for geoLocation queries.
+  def recall_label_format(prefix: "", algorithm: "hnsw", extra: "")
+    "#{prefix}#{algorithm}-th%{target_hits}-eh%{explore_hits}-f%{filter_percent}#{extra}" +
+      "-at%{approximate_threshold}-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-sl%{slack}"
+  end
+
   def create_app_from_dir(app_dir, concurrency = nil, threads_per_search = 1)
     add_bundle(selfdir + "shared/NearestNeighborRecallSearcher.java")
     searching = Searching.new

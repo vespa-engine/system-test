@@ -83,9 +83,12 @@ class AnnSiftBase < CommonSiftGistBase
       :quantization_bits => bits
     }
     fancy_puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
+    # Put quantization level first since we consider it an Important Detail(tm)
+    set_recall_label_format(recall_label_format(prefix: "q%{quantization_bits}-", algorithm: "exact"))
     calc_recall_for_queries(10, 0, recall_params.merge({:approximate => false}))
     calc_recall_for_queries(100, 0, recall_params.merge({:approximate => false}))
 
+    set_recall_label_format(recall_label_format(prefix: "q%{quantization_bits}-"))
     run_target_hits_10_tests(recall_params)
     run_target_hits_100_tests(recall_params)
 
@@ -162,8 +165,10 @@ class AnnSiftBase < CommonSiftGistBase
       query_and_benchmark(HNSW, 100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true}.merge(bounding_box_globe))
 
       # Recall for filter-first heuristic
+      set_recall_label_format(recall_label_format(extra: "-r%{radius}"))
       calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3}.merge(bounding_box_globe))
       # Lazy filtering
+      set_recall_label_format(recall_label_format(extra: "-r%{radius}-lazy"))
       calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true}.merge(bounding_box_globe))
     end
   end

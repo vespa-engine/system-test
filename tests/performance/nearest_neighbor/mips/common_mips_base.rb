@@ -13,6 +13,15 @@ class CommonMipsBase < CommonAnnBaseTest
     @data_path = "mips-data/"
     @local_data_dir = "mips/"
     @num_queries_for_recall = 1000
+    set_recall_label_format(recall_label_format)
+  end
+
+  # Returns the format of the recall label (see set_recall_label_format).
+  # prefix is put first, e.g. "q%{quantization_bits}-" for quantized tensors.
+  # algorithm is "hnsw", or "exact" for exact search (:approximate => false).
+  def recall_label_format(prefix: "", algorithm: "hnsw")
+    "#{prefix}#{algorithm}-th%{target_hits}-eh%{explore_hits}-f%{filter_percent}" +
+      "-at%{approximate_threshold}-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-sl%{slack}"
   end
 
   def explore_hits_levels
@@ -53,8 +62,11 @@ class CommonMipsBase < CommonAnnBaseTest
     puts '------'
     puts "Calculating max theoretical recall by comparing full precision vs. quantized exact search hits"
     puts '------'
+    # Put quantization level first since we consider it an Important Detail(tm)
+    set_recall_label_format(recall_label_format(prefix: "q%{quantization_bits}-", algorithm: "exact"))
     calc_recall_for_queries(10, 0, params.merge({:approximate => false}))
     # Followed by HNSW approximate matches with varying explore-hits levels
+    set_recall_label_format(recall_label_format(prefix: "q%{quantization_bits}-"))
     explore_hits_levels.each do |explore_hits|
       puts '------'
       puts "Computing HNSW recall for varying explore-hits=#{explore_hits}"
