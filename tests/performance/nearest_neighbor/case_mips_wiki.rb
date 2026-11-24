@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/common_mips_base'
+require 'performance/nearest_neighbor/mips/common_mips_base'
 
 class AnnMipsWiki < CommonMipsBase
 

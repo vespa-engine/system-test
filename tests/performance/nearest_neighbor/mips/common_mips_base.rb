@@ -11,6 +11,7 @@ class CommonMipsBase < CommonAnnBaseTest
   def initialize(*args)
     super(*args)
     @data_path = "mips-data/"
+    @local_data_dir = "mips/"
   end
 
   def explore_hits_levels
