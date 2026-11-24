@@ -56,8 +56,8 @@ class AnnCohereBase < CommonSiftGistBase
   FILTER_VALUES_DENOMINATOR = 1000
 
   HNSW_SETTINGS = [
-    # Always use HNSW, with the filter-first heuristic for hit ratios below 30%
-    {:approximate_threshold => 0.00, :filter_first_threshold => 0.30, :filter_first_exploration => 0.3}
+    # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
+    {:approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.01}
   ]
 
   def initialize(*args)
