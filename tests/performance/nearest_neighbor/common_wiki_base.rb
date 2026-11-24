@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'performance/fbench'
-require 'performance/nearest_neighbor/common_ann_base'
+require 'performance/nearest_neighbor/shared/common_ann_base'
 
 class CommonWikiBase < CommonAnnBaseTest
 

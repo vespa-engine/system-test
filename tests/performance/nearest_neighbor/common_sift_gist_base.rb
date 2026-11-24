@@ -2,14 +2,14 @@
 
 require 'app_generator/search_app'
 require 'performance/fbench'
-require 'performance/nearest_neighbor/common_ann_base'
+require 'performance/nearest_neighbor/shared/common_ann_base'
 
 class CommonSiftGistBase < CommonAnnBaseTest
 
   FBENCH_TIME = 10
 
   def create_app_from_dir(app_dir, concurrency = nil, threads_per_search = 1)
-    add_bundle(selfdir + "NearestNeighborRecallSearcher.java")
+    add_bundle(selfdir + "shared/NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
     app = SearchApp.new.sd(app_dir + "/test.sd").

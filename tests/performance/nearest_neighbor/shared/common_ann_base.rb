@@ -60,7 +60,15 @@ class CommonAnnBaseTest < PerformanceTest
     gen_dir
   end
 
+  # Uses a local copy of the file if it exists at selfdir + @local_data_dir + file_name,
+  # where @local_data_dir is an optional sub-directory set by the test (e.g. "sift_gist/").
   def nn_download_file(file_name, vespa_node)
+    local_file = selfdir + (@local_data_dir || "") + file_name
+    if File.exist?(local_file)
+      # Place the file in the test directory to avoid downloading during manual testing.
+      puts "Using local file #{local_file}"
+      return local_file
+    end
     puts "Trying to download from NN s3: #{file_name}"
     download_file_from_s3(file_name, vespa_node, 'nearest-neighbor')
   end

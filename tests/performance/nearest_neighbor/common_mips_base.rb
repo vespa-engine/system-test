@@ -2,7 +2,7 @@
 
 require 'app_generator/search_app'
 require 'performance/fbench'
-require 'performance/nearest_neighbor/common_ann_base'
+require 'performance/nearest_neighbor/shared/common_ann_base'
 
 class CommonMipsBase < CommonAnnBaseTest
 
@@ -69,7 +69,7 @@ class CommonMipsBase < CommonAnnBaseTest
   end
 
   def create_app(sd_file)
-    add_bundle(selfdir + "NearestNeighborRecallSearcher.java")
+    add_bundle(selfdir + "shared/NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
     SearchApp.new.sd(sd_file).
