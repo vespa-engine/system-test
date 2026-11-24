@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/common_wiki_base'
+require 'performance/nearest_neighbor/wiki/common_wiki_base'
 
 class NearestNeighborWikiMultivec < CommonWikiBase
 
