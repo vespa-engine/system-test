@@ -72,8 +72,8 @@ class NearestNeighborPerformanceTest < PerformanceTest
 
   def test_nearest_neighbor
     app = SearchApp.new.monitoring("vespa", 60).
-          sd(selfdir+"foobar.sd").
-          search_dir(selfdir+"search").
+          sd(selfdir+"simple/foobar.sd").
+          search_dir(selfdir+"simple/search").
           container(Container.new("combinedcontainer").
                     search(Searching.new).
                     docproc(DocumentProcessing.new).
@@ -105,7 +105,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
     # feed
     puts "FEEDING DOCUMENTS"
     node = vespa.adminserver
-    node.copy(selfdir + "gendata.c", dirs.tmpdir)
+    node.copy(selfdir + "simple/gendata.c", dirs.tmpdir)
     tmp_bin_dir = node.create_tmp_bin_dir
     (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out")
     assert_equal(0, exitcode)
