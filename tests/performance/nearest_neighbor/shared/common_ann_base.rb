@@ -151,6 +151,27 @@ class CommonAnnBaseTest < PerformanceTest
     @recall_label_format = format
   end
 
+  # The default parameters of the recall report: report parameter name => key of the value in calc_recall.
+  DEFAULT_RECALL_REPORT_PARAMETERS = {
+    TARGET_HITS => :target_hits,
+    EXPLORE_HITS => :explore_hits,
+    FILTER_PERCENT => :filter_percent,
+    RADIUS => :radius,
+    LAZY_FILTER => :lazy_filter,
+    APPROXIMATE_THRESHOLD => :approximate_threshold,
+    FILTER_FIRST_THRESHOLD => :filter_first_threshold,
+    FILTER_FIRST_EXPLORATION => :filter_first_exploration,
+    SLACK => :slack,
+    ANNOTATION => :annotation
+  }
+
+  # Sets the parameters of the recall report: report parameter name => key of the value in calc_recall,
+  # with the same keys as the label format placeholders (see set_recall_label_format).
+  # The default is DEFAULT_RECALL_REPORT_PARAMETERS.
+  def set_recall_report_parameters(parameters)
+    @recall_report_parameters = parameters
+  end
+
   # Calculates and reports the recall of the given queries using NearestNeighborRecallSearcher.
   # The searcher runs each query as it is and with approximate=false (the exact ground truth), and compares the hits.
   #
@@ -184,23 +205,13 @@ class CommonAnnBaseTest < PerformanceTest
     values = with_defaults(params).merge({:target_hits => target_hits, :explore_hits => explore_hits})
     label = params[:label] || recall_label(values)
     write_report([parameter_filler(TYPE, "recall"), parameter_filler(LABEL, label)] +
-                 RECALL_REPORT_PARAMETERS.map { |name, key| parameter_filler(name, values[key]) } +
+                 recall_report_parameters.map { |name, key| parameter_filler(name, values.fetch(key)) } +
                  [metric_filler(RECALL_AVG, result.avg), metric_filler(RECALL_MEDIAN, result.median)])
   end
 
-  # The parameters of the recall report, and the keys of their values in calc_recall.
-  RECALL_REPORT_PARAMETERS = {
-    TARGET_HITS => :target_hits,
-    EXPLORE_HITS => :explore_hits,
-    FILTER_PERCENT => :filter_percent,
-    RADIUS => :radius,
-    LAZY_FILTER => :lazy_filter,
-    APPROXIMATE_THRESHOLD => :approximate_threshold,
-    FILTER_FIRST_THRESHOLD => :filter_first_threshold,
-    FILTER_FIRST_EXPLORATION => :filter_first_exploration,
-    SLACK => :slack,
-    ANNOTATION => :annotation
-  }
+  def recall_report_parameters
+    @recall_report_parameters || DEFAULT_RECALL_REPORT_PARAMETERS
+  end
 
   def recall_label(values)
     assert(@recall_label_format, "The recall label format is not set, see set_recall_label_format")
