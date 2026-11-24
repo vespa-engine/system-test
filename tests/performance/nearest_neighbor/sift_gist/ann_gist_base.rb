@@ -1,12 +1,13 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/common_sift_gist_base'
+require 'performance/nearest_neighbor/sift_gist/common_sift_gist_base'
 
 class AnnGistBase < CommonSiftGistBase
 
   def initialize(*args)
     super(*args)
     @data_path = "gist-data/"
+    @local_data_dir = "sift_gist/"
     #@base_fvecs = @data_path + "gist_base.fvecs" # Original file with 1M vectors
     @base_fvecs = @data_path + "gist_base_300k.fvecs" # Smaller file that only contains the first 300k vectors
     @query_fvecs = @data_path + "gist_query.fvecs"

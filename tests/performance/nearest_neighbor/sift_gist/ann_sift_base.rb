@@ -1,12 +1,13 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/common_sift_gist_base'
+require 'performance/nearest_neighbor/sift_gist/common_sift_gist_base'
 
 class AnnSiftBase < CommonSiftGistBase
 
   def initialize(*args)
     super(*args)
     @data_path = "sift-data/"
+    @local_data_dir = "sift_gist/"
     @base_fvecs = @data_path + "sift_base.fvecs"
     @query_fvecs = @data_path + "sift_query.fvecs"
     @dimensions = 128

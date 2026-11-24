@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/ann_sift_base'
+require 'performance/nearest_neighbor/sift_gist/ann_sift_base'
 
 class AnnSiftBFloat16PerfTest < AnnSiftBase
 
@@ -11,7 +11,7 @@ class AnnSiftBFloat16PerfTest < AnnSiftBase
 
   def test_sift_data_set_bfloat16
     set_description("Test performance and recall using nearestNeighbor operator (hnsw vs brute force) over the 1M SIFT (128 dim) dataset using bfloat16")
-    run_sift_test("sift_test_bfloat16")
+    run_sift_test("sift_gist/sift_test_bfloat16")
   end
 
 

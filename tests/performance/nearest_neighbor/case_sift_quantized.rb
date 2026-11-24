@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/ann_sift_base'
+require 'performance/nearest_neighbor/sift_gist/ann_sift_base'
 
 class AnnSiftQuantizedPerfTest < AnnSiftBase
 
@@ -25,7 +25,7 @@ class AnnSiftQuantizedPerfTest < AnnSiftBase
     set_owner('vekterli')
     set_description("Test performance and recall (exact+HNSW) over the 1M SIFT (128 dim) "+
                     "dataset using #{bits}-bit quantization")
-    run_quantized_sift_test(selfdir + 'sift_test_quantized', bits: bits)
+    run_quantized_sift_test(selfdir + 'sift_gist/sift_test_quantized', bits: bits)
   end
 
 end

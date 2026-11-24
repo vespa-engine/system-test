@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/ann_gist_base'
+require 'performance/nearest_neighbor/sift_gist/ann_gist_base'
 
 class AnnGistPerfTest < AnnGistBase
 
@@ -11,17 +11,17 @@ class AnnGistPerfTest < AnnGistBase
 
   def test_gist_data_set
     set_description("Test performance and recall using nearestNeighbor operator (hnsw vs brute force) over the 1M (300k fed) GIST (960 dim) dataset")
-    run_gist_test("gist_test")
+    run_gist_test("sift_gist/gist_test")
   end
 
   def test_filter_first_gist_data_set
     set_description("Test performance and recall using nearestNeighbor operator (filter-first heuristic) over the 1M (300k fed) GIST (960 dim) dataset")
-    run_gist_filter_first_test("gist_test")
+    run_gist_filter_first_test("sift_gist/gist_test")
   end
 
   def test_removal_gist_data_set
     set_description("Test recall using nearestNeighbor operator (hnsw) over the 1M (300k fed) GIST (960 dim) dataset before and after removal of many documents")
-    run_gist_removal_test("gist_test")
+    run_gist_removal_test("sift_gist/gist_test")
   end
 
 end
