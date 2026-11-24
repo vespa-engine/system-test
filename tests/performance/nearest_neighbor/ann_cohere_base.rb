@@ -11,7 +11,7 @@ require 'performance/nearest_neighbor/common_sift_gist_base'
 #   - negatively correlated with the query vector (restricted to the clusters farthest from the query vector).
 #
 # The test uses the following files in cohere-data/ (all values little-endian):
-#   docs.fvecs             1M document vectors                                   [per vector: int32 1024, 1024 float32]
+#   docs.fvecs             10M document vectors                                  [per vector: int32 1024, 1024 float32]
 #   queries.fvecs          10k query vectors (not among the document vectors)     [per vector: int32 1024, 1024 float32]
 #   clusters_<level>.ivecs the cluster of each document at the level              [per document: int32 1, int32 cluster]
 #   ranked_<level>.ivecs   all clusters of the level for each query vector,       [per query: int32 n, n int32 clusters]
@@ -56,8 +56,8 @@ class AnnCohereBase < CommonSiftGistBase
   FILTER_VALUES_DENOMINATOR = 1000
 
   HNSW_SETTINGS = [
-    # Always use HNSW, without the filter-first heuristic
-    {:approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.3}
+    # Always use HNSW, with the filter-first heuristic for hit ratios below 30%
+    {:approximate_threshold => 0.00, :filter_first_threshold => 0.30, :filter_first_exploration => 0.3}
   ]
 
   def initialize(*args)
