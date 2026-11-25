@@ -1,0 +1,34 @@
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    # Random location in the contiguous United States (see generators/make_geo_docs.cpp)
+    field latlng type position {
+      indexing: attribute
+    }
+    field embedding type tensor<float>(x[1024]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(q_vec) tensor<float>(x[1024])
+    }
+    first-phase {
+      expression: closeness(label, nns)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}

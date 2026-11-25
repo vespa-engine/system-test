@@ -1,12 +1,14 @@
-search test {
+schema test {
   document test {
     field id type int {
       indexing: attribute | summary
     }
+    # Filter values uncorrelated with the vectors (see generators/make_filtered_docs.cpp)
     field filter type array<int> {
       indexing: attribute | summary
       attribute: fast-search
     }
+    # The cluster of the document at each cluster level
     field cluster_fine type int {
       indexing: attribute | summary
       attribute: fast-search
@@ -19,7 +21,7 @@ search test {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field vec_m16 type tensor<float>(x[1024]) {
+    field embedding type tensor<float>(x[1024]) {
       indexing: attribute | index | summary
       attribute {
         distance-metric: dotproduct
@@ -33,13 +35,12 @@ search test {
     }
   }
   rank-profile default {
-    first-phase {
-      expression: closeness(label,nns)
+    inputs {
+      query(q_vec) tensor<float>(x[1024])
     }
-    approximate-threshold: 0.05
-    filter-first-threshold: 0.0
-    filter-first-exploration: 0.3
-    exploration-slack: 0.0
+    first-phase {
+      expression: closeness(label, nns)
+    }
   }
   document-summary minimal {
     summary id {}

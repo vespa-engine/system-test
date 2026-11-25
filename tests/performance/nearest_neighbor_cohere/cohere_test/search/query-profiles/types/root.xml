@@ -1,3 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(q_vec)" type="tensor&lt;float&gt;(x[1024])" />
-</query-profile-type>
