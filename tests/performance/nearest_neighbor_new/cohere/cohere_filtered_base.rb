@@ -20,10 +20,9 @@ class CohereFilteredBase < CohereBase
   NEGATIVE = "negative"
   CORRELATIONS = [UNCORRELATED, POSITIVE, NEGATIVE]
 
-  # The uncorrelated filters support hit ratios that are multiples of 0.001: for hit ratio r, document i contains r * 1000 in
-  # the field 'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see common/generators/shared.h).
-  HIT_RATIOS = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
-
+  # hit_ratios: the hit ratios benchmarked for every correlation, e.g., [0.5, 0.1, 0.01]. They must be multiples of 0.001,
+  #   as the uncorrelated filters are defined per 1000 documents: for hit ratio r, document i contains r * 1000 in the field
+  #   'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see common/generators/shared.h).
   # settings: list of settings, each benchmarked for every correlation and hit ratio, e.g.,
   #   [{:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2,
   #     :filter_first_exploration => 0.01}]
@@ -35,12 +34,12 @@ class CohereFilteredBase < CohereBase
   # nnr: additional parameters for NearestNeighborRecallSearcher when calculating the recall, e.g., {"exactField" => "embedding_f32"}
   #   for the exact search over a full-precision copy of a quantized field
   def run_filtered_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:,
-                        settings:, nnr: {})
+                        hit_ratios:, settings:, nnr: {})
     setup_cohere_test(schema: schema, num_documents: num_documents, num_queries_for_benchmark: num_queries_for_benchmark,
                       num_queries_for_recall: num_queries_for_recall)
     clusters_fine, clusters_medium, clusters_coarse = download_cluster_files(vespa.adminserver)
     feed_documents("make_filtered_docs",
-                   "--hit-ratios #{HIT_RATIOS.join(',')} " +
+                   "--hit-ratios #{hit_ratios.join(',')} " +
                    "--cluster-files #{clusters_fine},#{clusters_medium},#{clusters_coarse} " +
                    "--cluster-fields cluster_fine,cluster_medium,cluster_coarse")
 
@@ -48,7 +47,7 @@ class CohereFilteredBase < CohereBase
     settings.each do |setting|
       results[setting] = {}
       CORRELATIONS.each do |correlation|
-        HIT_RATIOS.each do |hit_ratio|
+        hit_ratios.each do |hit_ratio|
           values = {:approximate => true, :explore_hits => 0}.merge(setting).merge(
             {:correlation => correlation, :hit_ratio => hit_ratio})
           query_file = generate_queries(correlation, hit_ratio, values)
@@ -59,17 +58,17 @@ class CohereFilteredBase < CohereBase
     end
 
     settings.each do |setting|
-      print_results(results[setting], num_documents, setting)
+      print_results(results[setting], num_documents, hit_ratios, setting)
     end
   end
 
   # Prints a table of the results of one setting: one row per hit ratio, with the results for each correlation side by side
   # (recall, qps, avg ms, p95 ms). The title contains the number of documents and the setting.
-  def print_results(results, num_documents, setting)
+  def print_results(results, num_documents, hit_ratios, setting)
     title = "Results for #{num_documents} documents: " + setting.map { |key, value| "#{key} #{value}" }.join(", ")
     headers = [["", ""] + CORRELATIONS.flat_map { |correlation| [correlation, "", "", ""] },
                ["hit ratio", "level"] + CORRELATIONS.flat_map { ["recall", "qps", "avg ms", "p95 ms"] }]
-    rows = HIT_RATIOS.map do |hit_ratio|
+    rows = hit_ratios.map do |hit_ratio|
       result_cells = CORRELATIONS.flat_map do |correlation|
         result = results[[correlation, hit_ratio]]
         [format('%.1f', result[:recall]), format('%.1f', result[:qps]), format('%.2f', result[:avg_ms]), format('%.2f', result[:p95_ms])]
