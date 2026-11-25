@@ -2,101 +2,137 @@
 
 #include "shared.h"
 
-const std::set<std::string> FILTER_DOC_OPTIONS = {"filter-values", "filter-denominator", "cluster-files", "cluster-fields"};
-
-const std::string FILTER_DOC_OPTIONS_USAGE =
-    "  --filter-values <values>   Comma-separated values v for the array<int> field 'filter' (default: no field 'filter').\n"
-    "                             Document i gets value v if (i % denominator) >= v, i.e., the fraction 1 - v / denominator\n"
-    "                             of the documents passes the filter 'filter=v', uncorrelated with the vectors.\n"
-    "  --filter-denominator <n>   Denominator for the filter values (default: 100)\n"
-    "  --cluster-files <files>    Comma-separated .ivecs files with the cluster of each document (int32 1, int32 cluster),\n"
-    "                             as written by assign_clusters.py, e.g., clusters_fine.ivecs,clusters_coarse.ivecs\n"
-    "  --cluster-fields <names>   Comma-separated names of the int fields for the clusters, one per cluster file\n";
+#include <iostream>
+#include <optional>
 
 const std::string USAGE =
-    "Usage: {program} --vectors <files> --tensor-field <name> [options] > docs.json\n"
+    "Usage: make_filtered_docs --vectors <files> --tensor-field <name> [options] > docs.json\n"
     "\n"
     "Prints a feed (JSON array of puts) of documents with a vector, a filter field uncorrelated with the vectors,\n"
-    "and the clusters of the documents (e.g., for filters correlated with the query vectors, see make_filtered_queries).\n"
+    "and the clusters of the documents (e.g., for filters correlated with the query vectors, see make_correlated_filtered_queries).\n"
     "Each document has the int field 'id' (its number).\n"
     "\n"
-    "Options:\n" + DOC_OPTIONS_USAGE + FILTER_DOC_OPTIONS_USAGE +
+    "Options:\n"
+    "  --vectors <files>          .fvecs file, or a comma-separated list of .fvecs files read in order as one sequence\n"
+    "                             (e.g., docs_0000.fvecs,docs_0001.fvecs), the i-th vector is used for document i\n"
+    "  --num-docs <n>             Number of documents (default: all vectors)\n"
+    "  --tensor-field <name>      Name of the tensor field\n"
+    "  --hit-ratios <ratios>      Comma-separated hit ratios for the array<int> field 'filter' (default: no field 'filter').\n"
+    "                             For each hit ratio r, document i contains r * 1000 if (i % 1000) < r * 1000, e.g., 10 for 0.01,\n"
+    "                             such that the filter 'filter=10' has hit ratio 0.01, uncorrelated with the vectors\n"
+    "  --cluster-files <files>    Comma-separated .ivecs files with the cluster of each document (int32 1, int32 cluster),\n"
+    "                             as written by assign_clusters.py, e.g., clusters_fine.ivecs,clusters_coarse.ivecs\n"
+    "  --cluster-fields <names>   Comma-separated names of the int fields for the clusters, one per cluster file\n"
     "\n"
     "Example:\n"
-    "  {program} --vectors docs_0000.fvecs,docs_0001.fvecs --tensor-field embedding --filter-values 1,10,50,90,99 \\\n"
+    "  make_filtered_docs --vectors docs_0000.fvecs,docs_0001.fvecs --tensor-field embedding --hit-ratios 0.01,0.1,0.5,0.9,0.99 \\\n"
     "    --cluster-files clusters_fine.ivecs,clusters_coarse.ivecs --cluster-fields cluster_fine,cluster_coarse > docs.json\n";
 
 /**
- * Writes the field 'filter' with values uncorrelated with the vectors, and the cluster of each document from cluster files.
+ * Returns the filter values of document docid: value v if (docid % 1000) < v.
  */
-class FilterClusterFields {
-    IntVector _filter_values;
-    size_t _filter_denominator;
-    StringVector _cluster_fields;
-    std::vector<IntRecordReader> _cluster_readers;
-
-public:
-    FilterClusterFields(const Args& args, size_t num_docs)
-        : _filter_values(args.get_list<int>("filter-values")),
-          _filter_denominator(args.get_number<size_t>("filter-denominator", 100)),
-          _cluster_fields(split(args.get("cluster-fields", ""), ',')),
-          _cluster_readers()
-    {
-        if (_filter_denominator == 0) {
-            args.fail("--filter-denominator must be positive");
-        }
-        StringVector cluster_files = split(args.get("cluster-files", ""), ',');
-        if (cluster_files.size() != _cluster_fields.size()) {
-            args.fail("The number of cluster files (" + std::to_string(cluster_files.size()) + ") and cluster fields ("
-                      + std::to_string(_cluster_fields.size()) + ") must be the same");
-        }
-        for (const auto& file : cluster_files) {
-            std::error_code ec;
-            auto size = std::filesystem::file_size(file, ec);
-            if (!ec && size < 8 * num_docs) {
-                throw std::runtime_error("'" + file + "' contains the clusters of at most " + std::to_string(size / 8) + " documents, not "
-                                         + std::to_string(num_docs));
-            }
-            _cluster_readers.emplace_back(file);
+IntVector
+doc_filter_values(size_t docid, const IntVector& filter_values)
+{
+    IntVector result;
+    for (int value : filter_values) {
+        if (docid % 1000 < static_cast<size_t>(value)) {
+            result.push_back(value);
         }
     }
+    return result;
+}
 
-    void print(FeedPrinter& printer, size_t docid) {
-        if (!_filter_values.empty()) {
-            IntVector values;
-            for (int value : _filter_values) {
-                if (static_cast<int64_t>(docid % _filter_denominator) >= value) {
-                    values.push_back(value);
-                }
-            }
-            print_vector(printer.field("filter"), values);
-        }
-        for (size_t i = 0; i < _cluster_fields.size(); ++i) {
-            printer.field(_cluster_fields[i]) << _cluster_readers[i].read_single();
-        }
+void
+print_put(std::ostream& os, size_t docid, const IntVector& filter_values, const StringVector& cluster_fields, const IntVector& clusters,
+          const std::string& tensor_field, const FloatVector& vector)
+{
+    os << "{\n";
+    os << "  \"put\": \"id:test:test::" << docid << "\",\n";
+    os << "  \"fields\": {\n";
+    os << "    \"id\": " << docid << ",\n";
+    if (!filter_values.empty()) {
+        os << "    \"filter\": ";
+        print_vector(os, doc_filter_values(docid, filter_values)) << ",\n";
     }
-};
+    for (size_t i = 0; i < cluster_fields.size(); ++i) {
+        os << "    \"" << cluster_fields[i] << "\": " << clusters[i] << ",\n";
+    }
+    os << "    \"" << tensor_field << "\": { \"values\": ";
+    print_vector(os, vector) << " }\n";
+    os << "  }\n";
+    os << "}";
+}
 
 int
 main(int argc, char** argv)
 {
-    Args args(argc, argv, USAGE, DOC_OPTIONS + FILTER_DOC_OPTIONS);
-    std::string tensor_field = args.get("tensor-field");
     try {
-        VectorFileReader vectors(args.get("vectors"));
-        size_t num_docs = vectors.check_num(args, "num-docs");
-        FilterClusterFields filter_cluster_fields(args, num_docs);
-        FeedPrinter printer(std::cout);
-        FloatVector vector;
-        for (size_t docid = 0; docid < num_docs; ++docid) {
-            vectors.read(vector);
-            printer.begin_put(docid);
-            printer.field("id") << docid;
-            filter_cluster_fields.print(printer, docid);
-            printer.tensor_field(tensor_field, vector);
-            printer.end_put();
+        std::string vector_files;
+        std::optional<size_t> num_docs;
+        std::string tensor_field;
+        std::vector<double> hit_ratios;
+        StringVector cluster_files;
+        StringVector cluster_fields;
+        if (argc % 2 == 0) { // --help, or an option without a value
+            std::cerr << USAGE;
+            return 1;
         }
-        printer.finish();
+        for (int i = 1; i < argc; i += 2) {
+            std::string option = argv[i];
+            std::string value = argv[i + 1];
+            if (option == "--vectors") {
+                vector_files = value;
+            } else if (option == "--num-docs") {
+                num_docs = parse_number<size_t>(value);
+            } else if (option == "--tensor-field") {
+                tensor_field = value;
+            } else if (option == "--hit-ratios") {
+                hit_ratios = parse_numbers<double>(value);
+            } else if (option == "--cluster-files") {
+                cluster_files = split(value, ',');
+            } else if (option == "--cluster-fields") {
+                cluster_fields = split(value, ',');
+            } else {
+                throw std::runtime_error("Unknown option " + option);
+            }
+        }
+        if (vector_files.empty() || tensor_field.empty()) {
+            std::cerr << USAGE;
+            return 1;
+        }
+        if (cluster_files.size() != cluster_fields.size()) {
+            throw std::runtime_error("The number of cluster files and cluster fields must be the same");
+        }
+
+        VectorFileReader<float> vectors(vector_files);
+        size_t num = num_docs.value_or(vectors.num_vectors());
+        vectors.require(num);
+        IntVector filter_values;
+        for (double hit_ratio : hit_ratios) {
+            filter_values.push_back(filter_value(hit_ratio));
+        }
+        std::vector<VectorFileReader<int32_t>> cluster_readers;
+        for (const auto& file : cluster_files) {
+            cluster_readers.emplace_back(file);
+            cluster_readers.back().require_dim(1);
+            cluster_readers.back().require(num);
+        }
+
+        FloatVector vector;
+        IntVector cluster;
+        IntVector clusters(cluster_readers.size());
+        std::cout << "[\n";
+        for (size_t docid = 0; docid < num; ++docid) {
+            vectors.read(vector);
+            for (size_t i = 0; i < cluster_readers.size(); ++i) {
+                cluster_readers[i].read(cluster);
+                clusters[i] = cluster[0];
+            }
+            std::cout << (docid == 0 ? "" : ",\n");
+            print_put(std::cout, docid, filter_values, cluster_fields, clusters, tensor_field, vector);
+        }
+        std::cout << "\n]" << std::endl;
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
         return 1;

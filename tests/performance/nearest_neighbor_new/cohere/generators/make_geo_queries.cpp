@@ -2,6 +2,9 @@
 
 #include "shared.h"
 
+#include <iostream>
+#include <optional>
+
 /**
  * Radii (--radius, in km) used for the queries, and what the searched circle around the location of a query roughly corresponds to.
  * The fraction of the documents in the circle is the mean over the queries for the default locations of the documents and queries
@@ -28,63 +31,98 @@
  */
 
 const std::string USAGE =
-    "Usage: {program} --vectors <file> --tensor-field <name> --radius <km> [options] > queries.txt\n"
-    "       {program} --locations-only --num-queries <n> [options] > locations.txt\n"
+    "Usage: make_geo_queries --vectors <file> --tensor-field <name> --radius <km> [options] > queries.txt\n"
     "\n"
     "Prints one nearestNeighbor query (URL) per query vector for the documents of make_geo_docs, restricted with geoLocation\n"
     "to the documents within the radius around a random location, by default in the contiguous United States (uniformly distributed\n"
-    "in latitude and longitude in its bounding box). The locations are the same for every run, --locations-only prints them as\n"
-    "'latitude,longitude', one per line, e.g., for computing the recall.\n"
+    "in latitude and longitude in its bounding box). The locations are the same for every run.\n"
     "\n"
-    "Options:\n" + QUERY_OPTIONS_USAGE +
+    "Options:\n"
+    "  --vectors <file>           .fvecs file with the query vectors\n"
+    "  --num-queries <n>          Number of queries (default: all vectors)\n"
+    "  --tensor-field <name>      Name of the document tensor field searched by nearestNeighbor\n"
+    "  --approximate <bool>       Whether to use approximate search (HNSW), true or false (default: true)\n"
+    "  --target-hits <n>          targetNumHits of nearestNeighbor (default: 100)\n"
+    "  --explore-hits <n>         hnsw.exploreAdditionalHits of nearestNeighbor (default: 0)\n"
     "  --radius <km>              Radius around the location of the query in kilometers, e.g., 15 for a city or 200 for a state\n"
     "                             (see the comment in make_geo_queries.cpp for the radii used and what they correspond to)\n"
     + LOCATION_OPTIONS_USAGE +
-    "  --locations-only           Print only the locations of the queries\n"
     "\n"
     "Example:\n"
-    "  {program} --vectors queries.fvecs --tensor-field embedding --radius 15 > queries_15km.txt\n";
+    "  make_geo_queries --vectors queries.fvecs --tensor-field embedding --radius 15 > queries_15km.txt\n";
+
+void
+print_query(std::ostream& os, const std::string& tensor_field, bool approximate, int target_hits, int explore_hits,
+            float lat, float lng, float radius, const FloatVector& vector)
+{
+    os << "/search/?yql=select%20*%20from%20sources%20*%20where%20";
+    print_nns(os, tensor_field, approximate, target_hits, explore_hits);
+    os << "%20and%20geoLocation(latlng," << lat << "," << lng << "," << QUOT << radius << "+km" << QUOT << ")";
+    os << ";&ranking.features.query(q_vec)=";
+    print_vector(os, vector) << "\n";
+}
 
 int
 main(int argc, char** argv)
 {
-    srand(QUERY_LOCATION_SEED);
-    Args args(argc, argv, USAGE, QUERY_OPTIONS + LOCATION_OPTIONS + std::set<std::string>{"radius"},
-              QUERY_FLAGS + std::set<std::string>{"locations-only"});
-    Interval latitude = get_interval(args, "latitude", US_LATITUDE);
-    Interval longitude = get_interval(args, "longitude", US_LONGITUDE);
-    if (args.flag("locations-only")) {
-        if (args.flag("vectors-only")) {
-            args.fail("--locations-only and --vectors-only cannot be combined");
-        }
-        size_t num_queries = args.get_number<size_t>("num-queries");
-        for (size_t i = 0; i < num_queries; ++i) {
-            float lat = latitude.random();
-            float lng = longitude.random();
-            std::cout << lat << "," << lng << "\n";
-        }
-        return 0;
-    }
     try {
-        VectorFileReader vectors(args.get("vectors"));
-        size_t num_queries = vectors.check_num(args, "num-queries");
-        if (args.flag("vectors-only")) {
-            print_vectors(std::cout, vectors, num_queries);
-            return 0;
+        std::string vector_file;
+        std::optional<size_t> num_queries;
+        std::string tensor_field;
+        bool approximate = true;
+        int target_hits = 100;
+        int explore_hits = 0;
+        float radius = 0.0f;
+        Interval latitude = US_LATITUDE;
+        Interval longitude = US_LONGITUDE;
+        if (argc % 2 == 0) { // --help, or an option without a value
+            std::cerr << USAGE;
+            return 1;
         }
-        NearestNeighbor nns = get_nearest_neighbor(args);
-        float radius = args.get_number<float>("radius");
+        for (int i = 1; i < argc; i += 2) {
+            std::string option = argv[i];
+            std::string value = argv[i + 1];
+            if (option == "--vectors") {
+                vector_file = value;
+            } else if (option == "--num-queries") {
+                num_queries = parse_number<size_t>(value);
+            } else if (option == "--tensor-field") {
+                tensor_field = value;
+            } else if (option == "--approximate") {
+                approximate = parse_bool(value);
+            } else if (option == "--target-hits") {
+                target_hits = parse_number<int>(value);
+            } else if (option == "--explore-hits") {
+                explore_hits = parse_number<int>(value);
+            } else if (option == "--radius") {
+                radius = parse_number<float>(value);
+            } else if (option == "--latitude") {
+                latitude = parse_interval(value);
+            } else if (option == "--longitude") {
+                longitude = parse_interval(value);
+            } else {
+                throw std::runtime_error("Unknown option " + option);
+            }
+        }
+        if (vector_file.empty() || tensor_field.empty()) {
+            std::cerr << USAGE;
+            return 1;
+        }
         if (!(radius > 0.0f)) {
-            args.fail("--radius must be positive");
+            throw std::runtime_error("--radius must be given and positive");
         }
+
+        VectorFileReader<float> vectors(vector_file);
+        size_t num = num_queries.value_or(vectors.num_vectors());
+        vectors.require(num);
+
+        srand(QUERY_LOCATION_SEED);
         FloatVector vector;
-        for (size_t i = 0; i < num_queries; ++i) {
+        for (size_t i = 0; i < num; ++i) {
             vectors.read(vector);
             float lat = latitude.random();
             float lng = longitude.random();
-            print_query_begin(std::cout, nns);
-            std::cout << SPACE << "and" << SPACE << "geoLocation(latlng," << lat << "," << lng << "," << QUOT << radius << "+km" << QUOT << ")";
-            print_query_end(std::cout, vector);
+            print_query(std::cout, tensor_field, approximate, target_hits, explore_hits, lat, lng, radius, vector);
         }
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;

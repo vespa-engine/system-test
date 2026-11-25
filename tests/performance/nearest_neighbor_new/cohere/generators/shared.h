@@ -1,32 +1,28 @@
 // Copyright Vespa.ai. All rights reserved.
 
-// Functionality shared by the document and query generators:
-// command line options, reading vector and cluster files, and printing feed documents and queries.
+// Functionality shared by the document and query generators.
 
 #pragma once
 
-#include <algorithm>
 #include <charconv>
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <filesystem>
 #include <format>
 #include <fstream>
-#include <iostream>
-#include <map>
-#include <optional>
-#include <set>
+#include <ostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+using StringVector = std::vector<std::string>;
 using FloatVector = std::vector<float>;
 using IntVector = std::vector<int>;
-using StringVector = std::vector<std::string>;
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Parsing
+// Parsing options
 
 StringVector
 split(const std::string& str, char separator)
@@ -40,162 +36,64 @@ split(const std::string& str, char separator)
     return result;
 }
 
+std::string
+join(const StringVector& parts)
+{
+    std::string result;
+    for (const auto& part : parts) {
+        result += (result.empty() ? "" : ",") + part;
+    }
+    return result;
+}
+
 template <typename T>
 T
-parse_number(const std::string& str, const std::string& what)
+parse_number(const std::string& str)
 {
     T value{};
     auto [end, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
     if (ec != std::errc() || end != str.data() + str.size()) {
-        throw std::invalid_argument("Invalid " + what + " '" + str + "'");
+        throw std::runtime_error("Invalid number '" + str + "'");
     }
     return value;
 }
 
 /**
- * Parses a comma-separated list of numbers, optionally enclosed in brackets, e.g., "1,10,50" or "[1,10,50]".
+ * Parses a comma-separated list of numbers, e.g., "1,10,50".
  */
 template <typename T>
 std::vector<T>
-parse_list(std::string str, const std::string& what)
+parse_numbers(const std::string& str)
 {
-    if (!str.empty() && (str.front() == '[' || str.front() == '{')) {
-        str = str.substr(1);
-    }
-    if (!str.empty() && (str.back() == ']' || str.back() == '}')) {
-        str.pop_back();
-    }
     std::vector<T> result;
     for (const auto& part : split(str, ',')) {
-        result.push_back(parse_number<T>(part, what));
+        result.push_back(parse_number<T>(part));
     }
     return result;
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Command line options
-
-/**
- * Command line options of the form "--name value" and flags of the form "--name".
- * On invalid input, fail() prints the message and the usage and exits.
- */
-class Args {
-    // In the usage, "{program}" is replaced by the name of the program.
-    std::string _usage;
-    std::map<std::string, std::string> _values;
-    std::set<std::string> _flags;
-
-public:
-    Args(int argc, char** argv, const std::string& usage, const std::set<std::string>& options, const std::set<std::string>& flags = {})
-        : _usage(usage), _values(), _flags()
-    {
-        for (size_t pos; (pos = _usage.find("{program}")) != std::string::npos;) {
-            _usage.replace(pos, 9, std::filesystem::path(argv[0]).filename().string());
-        }
-        for (int i = 1; i < argc; ++i) {
-            std::string arg(argv[i]);
-            if (arg == "--help" || arg == "-h") {
-                std::cout << _usage;
-                std::exit(0);
-            }
-            if (!arg.starts_with("--")) {
-                fail("Unexpected argument '" + arg + "'");
-            }
-            std::string name = arg.substr(2);
-            if (flags.contains(name)) {
-                _flags.insert(name);
-            } else if (options.contains(name)) {
-                if (i + 1 >= argc) {
-                    fail("Missing value for option " + arg);
-                }
-                _values[name] = argv[++i];
-            } else {
-                fail("Unknown option " + arg);
-            }
-        }
-    }
-
-    [[noreturn]] void fail(const std::string& message) const {
-        std::cerr << message << std::endl << std::endl << _usage;
-        std::exit(1);
-    }
-
-    bool has(const std::string& name) const { return _values.contains(name); }
-    bool flag(const std::string& name) const { return _flags.contains(name); }
-
-    std::string get(const std::string& name) const {
-        auto it = _values.find(name);
-        if (it == _values.end()) {
-            fail("Missing option --" + name);
-        }
-        return it->second;
-    }
-
-    std::string get(const std::string& name, const std::string& fallback) const {
-        return has(name) ? get(name) : fallback;
-    }
-
-    template <typename T>
-    T get_number(const std::string& name) const {
-        try {
-            return parse_number<T>(get(name), "value for --" + name);
-        } catch (const std::invalid_argument& e) {
-            fail(e.what());
-        }
-    }
-
-    template <typename T>
-    T get_number(const std::string& name, T fallback) const {
-        return has(name) ? get_number<T>(name) : fallback;
-    }
-
-    template <typename T>
-    std::vector<T> get_list(const std::string& name) const {
-        try {
-            return has(name) ? parse_list<T>(get(name), "value for --" + name) : std::vector<T>();
-        } catch (const std::invalid_argument& e) {
-            fail(e.what());
-        }
-    }
-
-    bool get_bool(const std::string& name, bool fallback) const {
-        std::string value = get(name, fallback ? "true" : "false");
-        if (value != "true" && value != "false") {
-            fail("Value for --" + name + " must be 'true' or 'false', not '" + value + "'");
-        }
-        return value == "true";
-    }
-
-    /**
-     * Fails unless either all or none of the options are given.
-     */
-    void require_all_or_none(const StringVector& names) const {
-        size_t given = std::count_if(names.begin(), names.end(), [this](const auto& name) { return has(name); });
-        if (given != 0 && given != names.size()) {
-            std::string list;
-            for (const auto& name : names) {
-                list += (list.empty() ? "--" : ", --") + name;
-            }
-            fail("The options " + list + " must be given together");
-        }
-    }
-};
-
-std::set<std::string>
-operator+(std::set<std::string> a, const std::set<std::string>& b)
+bool
+parse_bool(const std::string& str)
 {
-    a.insert(b.begin(), b.end());
-    return a;
+    if (str != "true" && str != "false") {
+        throw std::runtime_error("Invalid boolean '" + str + "', expected 'true' or 'false'");
+    }
+    return str == "true";
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Reading vector and cluster files
 
 /**
- * Reads the vectors of one or several .fvecs files (int32 dimension followed by the float32 entries per vector)
- * in order as one sequence, e.g., a large file split into chunks of 1M vectors. The dimension is taken from the first vector.
+ * Reads the vectors of one or several files in order as one sequence, e.g., a large file split into chunks of 1M vectors.
+ * Each vector is its int32 dimension followed by its entries of type T: float for .fvecs files (e.g., the document vectors),
+ * int32_t for .ivecs files (e.g., the cluster of each document with dimension 1, or all clusters ranked for each query vector).
+ * The dimension is taken from the first vector, all vectors must have the same dimension.
  */
+template <typename T>
 class VectorFileReader {
+    static_assert(sizeof(T) == 4);
+
     StringVector _files;
     size_t _dim = 0;
     size_t _num_vectors = 0;
@@ -203,7 +101,7 @@ class VectorFileReader {
     size_t _vector_num = 0; // Number of the next vector in the whole sequence
     std::ifstream _is;
 
-    size_t record_size() const { return 4 + sizeof(float) * _dim; }
+    size_t record_size() const { return 4 + sizeof(T) * _dim; }
 
     void open_file(size_t file_index) {
         _file_index = file_index;
@@ -219,7 +117,7 @@ class VectorFileReader {
 
 public:
     /**
-     * Opens a comma-separated list of .fvecs files.
+     * Opens a comma-separated list of files.
      */
     explicit VectorFileReader(const std::string& files)
         : _files(split(files, ','))
@@ -254,23 +152,32 @@ public:
     }
 
     size_t dim() const { return _dim; }
+
+    /**
+     * Fails unless the vectors have the given dimension, e.g., 1 for the cluster of each document.
+     */
+    void require_dim(size_t dim) const {
+        if (_dim != dim) {
+            throw std::runtime_error("The vectors in '" + join(_files) + "' have dimension " + std::to_string(_dim) + ", expected " + std::to_string(dim));
+        }
+    }
     size_t num_vectors() const { return _num_vectors; }
 
     /**
      * Reads the next vector, resizing the given vector to the dimension.
      */
-    void read(FloatVector& vector) {
+    void read(std::vector<T>& vector) {
         while (_file_index < _files.size() && _is.peek() == std::ifstream::traits_type::eof()) {
             open_file(_file_index + 1);
         }
         if (_file_index >= _files.size()) {
             throw std::runtime_error("Could not read vector " + std::to_string(_vector_num) + ", there are only "
-                                     + std::to_string(_num_vectors) + " vectors in the vector files");
+                                     + std::to_string(_num_vectors) + " vectors in '" + join(_files) + "'");
         }
         int read_dim = 0;
         vector.resize(_dim);
         _is.read(reinterpret_cast<char*>(&read_dim), 4);
-        _is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * _dim);
+        _is.read(reinterpret_cast<char*>(vector.data()), sizeof(T) * _dim);
         if (!_is.good() || read_dim != static_cast<int>(_dim)) {
             throw std::runtime_error("Could not read vector " + std::to_string(_vector_num) + " with " + std::to_string(_dim) + " dimensions from '"
                                      + _files[_file_index] + "' (dimension in file: " + std::to_string(read_dim) + ")");
@@ -279,73 +186,69 @@ public:
     }
 
     /**
-     * Returns the number of vectors to use: num if given (failing if there are fewer vectors), otherwise all vectors.
+     * Fails unless there are at least num vectors.
      */
-    size_t check_num(const Args& args, const std::string& option) const {
-        size_t num = args.get_number<size_t>(option, _num_vectors);
+    void require(size_t num) const {
         if (num > _num_vectors) {
-            args.fail("--" + option + " is " + std::to_string(num) + ", but there are only " + std::to_string(_num_vectors) + " vectors");
+            throw std::runtime_error("Requested " + std::to_string(num) + " vectors, but there are only " + std::to_string(_num_vectors) + " in '" + join(_files) + "'");
         }
-        return num;
-    }
-};
-
-/**
- * Reads an .ivecs file with records of varying length (int32 number of entries n followed by n int32 entries).
- * Records of length 1 are, e.g., the cluster of each document (as written by assign_clusters.py),
- * longer records, e.g., all clusters ranked for each query vector (as written by rank_query_clusters.py).
- */
-class IntRecordReader {
-    std::string _file;
-    std::ifstream _is;
-    size_t _record_num = 0;
-
-public:
-    explicit IntRecordReader(const std::string& file)
-        : _file(file), _is(file, std::ifstream::binary)
-    {
-        if (!_is.good()) {
-            throw std::runtime_error("Could not open '" + file + "'");
-        }
-    }
-
-    /**
-     * Reads the next record into entries. Returns false at the end of the file.
-     */
-    bool read(IntVector& entries) {
-        int size = 0;
-        if (!_is.read(reinterpret_cast<char*>(&size), 4)) {
-            return false;
-        }
-        if (size <= 0) {
-            throw std::runtime_error("Invalid size " + std::to_string(size) + " of record " + std::to_string(_record_num) + " in '" + _file + "'");
-        }
-        entries.resize(size);
-        if (!_is.read(reinterpret_cast<char*>(entries.data()), sizeof(int) * size)) {
-            throw std::runtime_error("Truncated record " + std::to_string(_record_num) + " in '" + _file + "'");
-        }
-        ++_record_num;
-        return true;
-    }
-
-    /**
-     * Reads the next record, which must exist and have exactly one entry, and returns the entry.
-     */
-    int read_single() {
-        IntVector entries;
-        if (!read(entries)) {
-            throw std::runtime_error("Could not read record " + std::to_string(_record_num) + " from '" + _file + "', the file is too short");
-        }
-        if (entries.size() != 1) {
-            throw std::runtime_error("Record " + std::to_string(_record_num - 1) + " in '" + _file + "' has " + std::to_string(entries.size())
-                                     + " entries, expected 1");
-        }
-        return entries[0];
     }
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Random locations
+// Printing vectors
+
+template <typename T>
+std::ostream&
+print_vector(std::ostream& os, const std::vector<T>& vector)
+{
+    os << "[";
+    for (size_t i = 0; i < vector.size(); ++i) {
+        os << (i == 0 ? "" : ",") << std::format("{}", vector[i]);
+    }
+    return os << "]";
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Printing queries
+
+// URL-encoded characters used in queries
+const std::string L_BRACE = "%7B";
+const std::string R_BRACE = "%7D";
+const std::string QUOT = "%22";
+const std::string EQ = "%3D";
+
+void
+print_nns(std::ostream& os, const std::string& tensor_field, bool approximate, int target_hits, int explore_hits)
+{
+    os << "[" << L_BRACE
+       << QUOT << "targetNumHits" << QUOT << ":" << target_hits << ","
+       << QUOT << "hnsw.exploreAdditionalHits" << QUOT << ":" << explore_hits << ","
+       << QUOT << "approximate" << QUOT << ":" << (approximate ? "true" : "false") << ","
+       << QUOT << "label" << QUOT << ":" << QUOT << "nns" << QUOT
+       << R_BRACE << "]" << "nearestNeighbor(" << tensor_field << ",q_vec)";
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Filters with a given hit ratio, uncorrelated with the vectors (make_filtered_docs and make_filtered_queries)
+//
+// For each hit ratio r, document i contains the filter value r * 1000 in the array<int> field 'filter' if (i % 1000) < r * 1000,
+// such that the filter 'filter=<r * 1000>' of the queries has hit ratio r.
+
+/**
+ * Returns the filter value of a hit ratio, which is the hit ratio per 1000, e.g., 10 for 0.01.
+ */
+int
+filter_value(double hit_ratio)
+{
+    if (!(hit_ratio >= 0.001 && hit_ratio <= 1.0)) {
+        throw std::runtime_error("Invalid hit ratio " + std::to_string(hit_ratio) + ", must be in [0.001, 1]");
+    }
+    return std::lround(hit_ratio * 1000);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Random locations (make_geo_docs and make_geo_queries)
 
 struct Interval {
     float lower = 0.0f;
@@ -371,161 +274,19 @@ const Interval US_LONGITUDE{-124.8f, -66.9f};
 const unsigned int DOC_LOCATION_SEED = 42;
 const unsigned int QUERY_LOCATION_SEED = 43;
 
-const std::set<std::string> LOCATION_OPTIONS = {"latitude", "longitude"};
-
 const std::string LOCATION_OPTIONS_USAGE =
     "  --latitude <lower,upper>   Interval of the latitudes in degrees (default: 24.5,49.4, the contiguous United States)\n"
     "  --longitude <lower,upper>  Interval of the longitudes in degrees (default: -124.8,-66.9, the contiguous United States)\n";
 
 /**
- * Returns the interval given by the option "lower,upper", or the fallback if the option is not given.
+ * Parses an interval "lower,upper".
  */
 Interval
-get_interval(const Args& args, const std::string& name, const Interval& fallback)
+parse_interval(const std::string& str)
 {
-    if (!args.has(name)) {
-        return fallback;
-    }
-    std::vector<float> values;
-    try {
-        values = parse_list<float>(args.get(name), "value for --" + name);
-    } catch (const std::invalid_argument& e) {
-        args.fail(e.what());
-    }
+    std::vector<float> values = parse_numbers<float>(str);
     if (values.size() != 2 || values[0] > values[1]) {
-        args.fail("--" + name + " must be an interval 'lower,upper' with lower <= upper, not '" + args.get(name) + "'");
+        throw std::runtime_error("Invalid interval '" + str + "', expected 'lower,upper' with lower <= upper");
     }
     return Interval{values[0], values[1]};
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-// Printing
-
-template <typename T>
-std::ostream&
-print_vector(std::ostream& os, const std::vector<T>& vector)
-{
-    os << "[";
-    for (size_t i = 0; i < vector.size(); ++i) {
-        os << (i == 0 ? "" : ",") << std::format("{}", vector[i]);
-    }
-    return os << "]";
-}
-
-/**
- * Prints a JSON array of put operations with the document ids "id:test:test::<id>".
- */
-class FeedPrinter {
-    std::ostream& _os;
-    bool _first_doc = true;
-    bool _first_field = true;
-
-public:
-    explicit FeedPrinter(std::ostream& os) : _os(os) { _os << "[" << std::endl; }
-
-    void begin_put(size_t id) {
-        _os << (_first_doc ? "" : ",\n") << "{\n  \"put\": \"id:test:test::" << id << "\",\n  \"fields\": {\n";
-        _first_doc = false;
-        _first_field = true;
-    }
-
-    /**
-     * Starts a field, the value is printed to the returned stream.
-     */
-    std::ostream& field(const std::string& name) {
-        _os << (_first_field ? "" : ",\n") << "    \"" << name << "\": ";
-        _first_field = false;
-        return _os;
-    }
-
-    void tensor_field(const std::string& name, const FloatVector& vector) {
-        print_vector(field(name) << "{ \"values\": ", vector) << " }";
-    }
-
-    void end_put() { _os << "\n  }\n}"; }
-
-    void finish() { _os << "\n]" << std::endl; }
-};
-
-// URL-encoded characters used in queries
-const std::string L_BRACE = "%7B";
-const std::string R_BRACE = "%7D";
-const std::string QUOT = "%22";
-const std::string EQ = "%3D";
-const std::string SPACE = "%20";
-
-/**
- * Settings of the nearestNeighbor operator of the queries.
- */
-struct NearestNeighbor {
-    std::string doc_tensor;
-    bool approximate = true;
-    int target_hits = 100;
-    int explore_hits = 0;
-};
-
-/**
- * Prints the beginning of a query up to and including the nearestNeighbor operator. Further conditions can be added
- * with SPACE + "and" + SPACE + ..., and print_query_end() completes the query with the query vector.
- */
-void
-print_query_begin(std::ostream& os, const NearestNeighbor& nns)
-{
-    os << "/search/?yql=select" << SPACE << "*" << SPACE << "from" << SPACE << "sources" << SPACE << "*" << SPACE << "where" << SPACE
-       << "[" << L_BRACE
-       << QUOT << "targetNumHits" << QUOT << ":" << nns.target_hits << ","
-       << QUOT << "hnsw.exploreAdditionalHits" << QUOT << ":" << nns.explore_hits << ","
-       << QUOT << "approximate" << QUOT << ":" << (nns.approximate ? "true" : "false") << ","
-       << QUOT << "label" << QUOT << ":" << QUOT << "nns" << QUOT
-       << R_BRACE << "]" << "nearestNeighbor(" << nns.doc_tensor << ",q_vec)";
-}
-
-void
-print_query_end(std::ostream& os, const FloatVector& vector)
-{
-    os << ";&ranking.features.query(q_vec)=";
-    print_vector(os, vector) << "\n";
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-// Options shared by all document generators and all query generators
-
-const std::set<std::string> DOC_OPTIONS = {"vectors", "num-docs", "tensor-field"};
-
-const std::string DOC_OPTIONS_USAGE =
-    "  --vectors <files>          .fvecs file, or a comma-separated list of .fvecs files read in order as one sequence\n"
-    "                             (e.g., docs_0000.fvecs,docs_0001.fvecs), the i-th vector is used for document i\n"
-    "  --num-docs <n>             Number of documents (default: all vectors)\n"
-    "  --tensor-field <name>      Name of the tensor field\n";
-
-const std::set<std::string> QUERY_OPTIONS = {"vectors", "num-queries", "tensor-field", "approximate", "target-hits", "explore-hits"};
-const std::set<std::string> QUERY_FLAGS = {"vectors-only"};
-
-const std::string QUERY_OPTIONS_USAGE =
-    "  --vectors <file>           .fvecs file with the query vectors\n"
-    "  --num-queries <n>          Number of queries (default: all vectors)\n"
-    "  --tensor-field <name>      Name of the document tensor field searched by nearestNeighbor\n"
-    "  --approximate <bool>       Whether to use approximate search (HNSW), true or false (default: true)\n"
-    "  --target-hits <n>          targetNumHits of nearestNeighbor (default: 100)\n"
-    "  --explore-hits <n>         hnsw.exploreAdditionalHits of nearestNeighbor (default: 0)\n"
-    "  --vectors-only             Print only the query vectors, one per line, e.g., for computing the recall\n";
-
-/**
- * Prints the vectors, one per line, e.g., for computing the recall (--vectors-only of the query generators).
- */
-void
-print_vectors(std::ostream& os, VectorFileReader& vectors, size_t num)
-{
-    FloatVector vector;
-    for (size_t i = 0; i < num; ++i) {
-        vectors.read(vector);
-        print_vector(os, vector) << "\n";
-    }
-}
-
-NearestNeighbor
-get_nearest_neighbor(const Args& args)
-{
-    return NearestNeighbor{args.get("tensor-field"), args.get_bool("approximate", true),
-                           args.get_number<int>("target-hits", 100), args.get_number<int>("explore-hits", 0)};
 }

@@ -9,7 +9,7 @@ require 'performance/nearest_neighbor_new/cohere/cohere_base'
 # for different hit ratios (fraction of the documents passing the filter). The schema needs the array<int> field 'filter'
 # and the int fields cluster_<level> (see schemas/filtered/).
 #
-# make_filtered_queries selects the closest or farthest clusters (from ranked_<level>.ivecs) of each query vector until they
+# make_correlated_filtered_queries selects the closest or farthest clusters (from ranked_<level>.ivecs) of each query vector until they
 # contain the target fraction of the fed documents, such that the hit ratio is correct for any number of documents.
 # A query restricted to its clusters contains about (hit ratio * number of clusters) terms, so each hit ratio uses the
 # cluster level that gives about 5 to 25 clusters per query (see CohereBase.cluster_level).
@@ -20,6 +20,8 @@ class CohereFilteredBase < CohereBase
   NEGATIVE = "negative"
   CORRELATIONS = [UNCORRELATED, POSITIVE, NEGATIVE]
 
+  # The uncorrelated filters support hit ratios that are multiples of 0.001: for hit ratio r, document i contains r * 1000 in
+  # the field 'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see generators/shared.h).
   HIT_RATIOS = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
 
   # settings: list of settings, each benchmarked for every correlation and hit ratio, e.g.,
@@ -38,8 +40,7 @@ class CohereFilteredBase < CohereBase
                       num_queries_for_recall: num_queries_for_recall)
     clusters_fine, clusters_medium, clusters_coarse = download_cluster_files(vespa.adminserver)
     feed_documents("make_filtered_docs",
-                   "--filter-values #{HIT_RATIOS.map { |hit_ratio| uncorrelated_filter_value(hit_ratio) }.join(',')} " +
-                   "--filter-denominator #{UNCORRELATED_FILTER_DENOMINATOR} " +
+                   "--hit-ratios #{HIT_RATIOS.join(',')} " +
                    "--cluster-files #{clusters_fine},#{clusters_medium},#{clusters_coarse} " +
                    "--cluster-fields cluster_fine,cluster_medium,cluster_coarse")
 
@@ -84,28 +85,17 @@ class CohereFilteredBase < CohereBase
   # on the container.
   def generate_queries(correlation, hit_ratio, values)
     if correlation == UNCORRELATED
-      return write_queries("make_filtered_queries", "--filter-value #{uncorrelated_filter_value(hit_ratio)}", values)
+      return write_queries("make_filtered_queries", "--hit-ratio #{hit_ratio}", values)
     end
 
     level = cluster_level(hit_ratio)
     ranked_clusters = find_or_download_compressed_file(RANKED_CLUSTERS_FILES[level], container, local_dir: LOCAL_DIR, s3_dir: S3_DIR)
     doc_clusters = find_or_download_compressed_file(CLUSTERS_FILES[level], container, local_dir: LOCAL_DIR, s3_dir: S3_DIR)
     selection = (correlation == POSITIVE) ? "closest" : "farthest"
-    write_queries("make_filtered_queries",
+    write_queries("make_correlated_filtered_queries",
                   "--ranked-clusters #{ranked_clusters} --doc-clusters #{doc_clusters} --num-docs #{@num_documents} " +
                   "--cluster-field cluster_#{level} --selection #{selection} --target-fraction #{hit_ratio}",
                   values)
-  end
-
-  # The generators define the uncorrelated filter by filter values instead of hit ratios: a document gets value v in the
-  # field 'filter' if (id % denominator) >= v, so 'filter=v' has hit ratio 1 - v / denominator. This method converts a
-  # hit ratio to its filter value for the generators, the test uses hit ratios everywhere else.
-  UNCORRELATED_FILTER_DENOMINATOR = 1000 # Supports hit ratios that are multiples of 0.001
-
-  def uncorrelated_filter_value(hit_ratio)
-    value = (1 - hit_ratio) * UNCORRELATED_FILTER_DENOMINATOR
-    assert((value - value.round).abs < 1e-9, "Hit ratio #{hit_ratio} is not a multiple of 1 / #{UNCORRELATED_FILTER_DENOMINATOR}")
-    value.round
   end
 
 end
