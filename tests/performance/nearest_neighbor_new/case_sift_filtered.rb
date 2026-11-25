@@ -32,18 +32,13 @@ class AnnSiftFilteredPerfTest < SiftFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests, and in the labels and parameters of the reports
+    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
+    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
                             "ranking.matching.filterFirstThreshold" => :filter_first_threshold})
     set_label_format("%{name}-th%{target_hits}-eh%{explore_hits}-hr%{hit_ratio}-at%{approximate_threshold}-fft%{filter_first_threshold}")
-    set_report_parameters({"name" => :name,
-                           "target_hits" => :target_hits,
-                           "explore_hits" => :explore_hits,
-                           "hit_ratio" => :hit_ratio,
-                           "approximate_threshold" => :approximate_threshold,
-                           "filter_first_threshold" => :filter_first_threshold})
 
     set_description("Test performance and recall of nearestNeighbor (hnsw vs brute force) without and with filters " +
                     "over #{num_documents} SIFT vectors (128 dim)")

@@ -25,7 +25,8 @@ class AnnCohereGeoPerfTest < CohereGeoBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests, and in the labels and parameters of the reports
+    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
+    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
@@ -34,13 +35,6 @@ class AnnCohereGeoPerfTest < CohereGeoBase
                             "ranking.matching.lazyFilter" => :lazy_filter})
     set_label_format("%{name}-th%{target_hits}-geo-r%{radius_km}km-at%{approximate_threshold}" +
                      "-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-lf%{lazy_filter}")
-    set_report_parameters({"name" => :name,
-                           "target_hits" => :target_hits,
-                           "radius_km" => :radius_km,
-                           "approximate_threshold" => :approximate_threshold,
-                           "filter_first_threshold" => :filter_first_threshold,
-                           "filter_first_exploration" => :filter_first_exploration,
-                           "lazy_filter" => :lazy_filter})
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) with geoLocation filters " +
                     "over #{num_documents} Cohere Wikipedia embeddings (1024 dim)")

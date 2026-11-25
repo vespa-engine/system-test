@@ -28,7 +28,8 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests, and in the labels and parameters of the reports
+    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
+    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
@@ -36,13 +37,6 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
                             "ranking.matching.filterFirstExploration" => :filter_first_exploration})
     set_label_format("%{name}-th%{target_hits}-%{correlation}-hr%{hit_ratio}-at%{approximate_threshold}" +
                      "-fft%{filter_first_threshold}-ffe%{filter_first_exploration}")
-    set_report_parameters({"name" => :name,
-                           "target_hits" => :target_hits,
-                           "correlation" => :correlation,
-                           "hit_ratio" => :hit_ratio,
-                           "approximate_threshold" => :approximate_threshold,
-                           "filter_first_threshold" => :filter_first_threshold,
-                           "filter_first_exploration" => :filter_first_exploration})
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) with filters that are not, positively, and negatively correlated with the query vector " +
                     "over #{num_documents} Cohere Wikipedia embeddings (1024 dim)")
@@ -73,19 +67,13 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests, and in the labels and parameters of the reports
+    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
+    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
                             "ranking.matching.filterFirstThreshold" => :filter_first_threshold})
     set_label_format("%{name}-q%{quantization_bits}-th%{target_hits}-%{correlation}-hr%{hit_ratio}-at%{approximate_threshold}")
-    set_report_parameters({"name" => :name,
-                           "quantization_bits" => :quantization_bits,
-                           "target_hits" => :target_hits,
-                           "correlation" => :correlation,
-                           "hit_ratio" => :hit_ratio,
-                           "approximate_threshold" => :approximate_threshold,
-                           "filter_first_threshold" => :filter_first_threshold})
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) over 4-bit quantized vectors with filters that are not, positively, and negatively correlated with the query vector " +
                     "over #{num_documents} Cohere Wikipedia embeddings (1024 dim)")

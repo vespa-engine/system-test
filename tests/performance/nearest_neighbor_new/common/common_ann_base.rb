@@ -10,8 +10,8 @@ require 'performance/fbench'
 #
 # A query case is described by a hash of values, e.g.,
 #   {:target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2, :filter => "positive", ...}
-# The tests configure how the values are used with set_request_parameters (the request parameters appended to the queries),
-# set_label_format (the label of the reports), and set_report_parameters (the parameters of the reports).
+# The tests configure how the values are used with set_request_parameters (the request parameters appended to the queries)
+# and set_label_format (the label of the reports). All values are parameters of the reports, named by their keys.
 # The values must contain :target_hits, the number of hits compared when calculating the recall.
 # The generated queries are the same for benchmarking and for calculating the recall: the recall is calculated for the
 # first queries of the benchmarked query file, with NearestNeighborRecallSearcher running each query as it is and with
@@ -49,22 +49,16 @@ class CommonAnnBase < PerformanceTest
     @label_format = format
   end
 
-  # Sets the parameters of the benchmark and recall reports (in addition to 'type' and 'label'):
-  # report parameter name => key of the value in the query case, e.g., {"hit_ratio" => :hit_ratio}.
-  def set_report_parameters(parameters)
-    @report_parameters = parameters
-  end
-
   def label(values)
     assert(@label_format, "The label format is not set, see set_label_format")
     format(@label_format, values)
   end
 
-  # The parameters of the benchmark and recall reports for the query case
+  # The parameters of the benchmark and recall reports for the query case: the label and all values of the query case,
+  # named by their keys, e.g., 'hit_ratio' for :hit_ratio.
   def report_fillers(values)
-    assert(@report_parameters, "The report parameters are not set, see set_report_parameters")
     [parameter_filler("label", label(values))] +
-      @report_parameters.map { |name, key| parameter_filler(name, values.fetch(key)) }
+      values.map { |key, value| parameter_filler(key.to_s, value) }
   end
 
   # The request parameters appended to the queries of the query case (see set_request_parameters)
