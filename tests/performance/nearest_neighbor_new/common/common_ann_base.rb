@@ -24,7 +24,7 @@ require 'performance/fbench'
 #   common/                                                  independent of the data set: this class,
 #                                                            NearestNeighborRecallSearcher.java, and the document and
 #                                                            query generators in generators/ (from parquet-vectors)
-#   case_<data set>_<test>.rb                                the tests (the files with test_ methods)
+#   <data set>_<test>.rb                                     the tests (the files with test_ methods)
 #   <data set>/                                              everything specific to the data set: the base classes for
 #                                                            the data set and the kinds of test, the data, and the
 #                                                            schemas, e.g., cohere/ and sift/
