@@ -13,11 +13,7 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs are used
     num_queries_for_benchmark = 1000
     num_queries_for_recall = 100 # The first queries used for benchmarking
-    # Fractions of the documents passing the filter (multiples of 0.001), each benchmarked with filters that are not,
-    # positively, and negatively correlated with the query vector
     hit_ratios = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
-    # Each setting is benchmarked for every query case. :name names the setting in labels and reports. Optionally,
-    # :approximate => false uses exact search, and :explore_hits sets hnsw.exploreAdditionalHits (default 0).
     settings = [
       # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
       {:name => "hnsw", :target_hits => 100,
@@ -28,8 +24,6 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
-    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
@@ -52,11 +46,7 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs are used
     num_queries_for_benchmark = 1000
     num_queries_for_recall = 100 # The first queries used for benchmarking
-    # Fractions of the documents passing the filter (multiples of 0.001), each benchmarked with filters that are not,
-    # positively, and negatively correlated with the query vector
     hit_ratios = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
-    # Each setting is benchmarked for every query case. :name names the setting in labels and reports. Optionally,
-    # :approximate => false uses exact search, and :explore_hits sets hnsw.exploreAdditionalHits (default 0).
     settings = [
       # Always use HNSW, without the filter-first heuristic
       {:name => "hnsw", :quantization_bits => 4, :target_hits => 100, # The quantization bits as in the schema
@@ -67,8 +57,6 @@ class AnnCohereFilteredPerfTest < CohereFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
-    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,

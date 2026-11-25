@@ -13,8 +13,6 @@ class AnnCohereGeoPerfTest < CohereGeoBase
     num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs are used
     num_queries_for_benchmark = 1000
     num_queries_for_recall = 100 # The first queries used for benchmarking
-    # Each setting is benchmarked for every query case. :name names the setting in labels and reports. Optionally,
-    # :approximate => false uses exact search, and :explore_hits sets hnsw.exploreAdditionalHits (default 0).
     settings = [
       # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
       {:name => "hnsw", :target_hits => 100,
@@ -25,8 +23,6 @@ class AnnCohereGeoPerfTest < CohereGeoBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
-    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,

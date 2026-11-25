@@ -20,19 +20,13 @@ class CohereFilteredBase < CohereBase
   NEGATIVE = "negative"
   CORRELATIONS = [UNCORRELATED, POSITIVE, NEGATIVE]
 
-  # hit_ratios: the hit ratios benchmarked for every correlation, e.g., [0.5, 0.1, 0.01]. They must be multiples of 0.001,
-  #   as the uncorrelated filters are defined per 1000 documents: for hit ratio r, document i contains r * 1000 in the field
-  #   'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see common/generators/shared.h).
-  # settings: list of settings, each benchmarked for every correlation and hit ratio, e.g.,
-  #   [{:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2,
-  #     :filter_first_exploration => 0.01}]
-  #   :name names the setting in labels and reports, e.g., "hnsw" or "brute_force", :target_hits is targetHits of the
-  #   queries and the number of hits compared when calculating the recall, :approximate (optional, default true) is false
-  #   for exact search, and :explore_hits (optional, default 0) is hnsw.exploreAdditionalHits of the queries.
-  #   The other values are used by the request parameters, label, and report parameters set by the test, e.g.,
-  #   :quantization_bits for quantized vectors.
-  # nnr: additional parameters for NearestNeighborRecallSearcher when calculating the recall, e.g., {"exactField" => "embedding_f32"}
-  #   for the exact search over a full-precision copy of a quantized field
+  # schema: the schema in schemas/<schema>/test.sd
+  # num_documents: the number of documents fed, the first vectors of the data set
+  # num_queries_for_benchmark: the number of queries in the query file of each benchmark
+  # num_queries_for_recall: the number of queries (the first benchmarked ones) used to calculate the recall
+  # hit_ratios: the hit ratios benchmarked for every correlation
+  # settings: the HNSW settings to benchmark, e.g., target hits, exploration, and filter-first threshold
+  # nnr: additional NearestNeighborRecallSearcher parameters without the prefix 'nnr.', e.g., {"exactField" => "embedding_f32"}
   def run_filtered_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:,
                         hit_ratios:, settings:, nnr: {})
     setup_cohere_test(schema: schema, num_documents: num_documents, num_queries_for_benchmark: num_queries_for_benchmark,
@@ -80,7 +74,7 @@ class CohereFilteredBase < CohereBase
     print_table(title, headers, rows, notes)
   end
 
-  # Generates the queries with a filter with the correlation and hit ratio for the query case, and returns the query file
+  # Generates the queries with a filter with the correlation and hit ratio for the benchmark, and returns the query file
   # on the container.
   def generate_queries(correlation, hit_ratio, values)
     if correlation == UNCORRELATED

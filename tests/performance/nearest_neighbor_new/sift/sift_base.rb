@@ -42,7 +42,7 @@ class SiftBase < CommonAnnBase
   end
 
   # Writes the queries printed by the query generator common/generators/<generator>.cpp with the given options for the
-  # query case to a file (on the container), and returns the file. The values of the query case set the nearestNeighbor
+  # benchmark to a file (on the container), and returns the file. The values of the benchmark set the nearestNeighbor
   # operator: :approximate (true for approximate search with HNSW, false for exact search), :target_hits, and :explore_hits.
   def write_queries(generator, options, values)
     node = container

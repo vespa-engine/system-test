@@ -8,14 +8,17 @@ require 'performance/fbench'
 # deploying an application with NearestNeighborRecallSearcher, feeding (a feed file or the output of a command),
 # benchmarking query files with fbench, and calculating the recall.
 #
-# A query case is described by a hash of values, e.g.,
-#   {:target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2, :filter => "positive", ...}
-# The tests configure how the values are used with set_request_parameters (the request parameters appended to the queries)
-# and set_label_format (the label of the reports). All values are parameters of the reports, named by their keys.
-# The values must contain :target_hits, the number of hits compared when calculating the recall.
-# The generated queries are the same for benchmarking and for calculating the recall: the recall is calculated for the
-# first queries of the benchmarked query file, with NearestNeighborRecallSearcher running each query as it is and with
-# approximate=false (the exact ground truth). The schema needs a document summary 'minimal' with the field 'id'.
+# Usage:
+#   1. Deploy a schema (with a document summary 'minimal' containing 'id') and start Vespa:
+#        deploy_app(create_app("test.sd")); start
+#   2. Feed the documents:
+#        feed_from_command("#{compile_generator("make_filtered_docs", vespa.adminserver)} --vectors docs.fvecs ...", fillers)
+#   3. Map the values of a benchmark to request parameters and labels:
+#        set_request_parameters({"hits" => :target_hits, "ranking.matching.approximateThreshold" => :approximate_threshold})
+#        set_label_format("%{name}-th%{target_hits}-hr%{hit_ratio}")
+#   4. For each benchmark, write a query file and benchmark it with its values (reported as parameters):
+#        values = {:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.05, :hit_ratio => 0.01}
+#        benchmark_and_calc_recall(query_file, values, num_queries_for_recall)
 #
 # Files in nearest_neighbor_new/:
 #   common/                                                  independent of the data set: this class,
@@ -35,8 +38,8 @@ class CommonAnnBase < PerformanceTest
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5
 
-  # Sets the request parameters appended to the queries of a query case, both when benchmarking and when calculating
-  # the recall: request parameter name => key of the value in the query case (a Symbol) or a fixed value, e.g.,
+  # Sets the request parameters appended to the queries of a benchmark, both when benchmarking and when calculating
+  # the recall: request parameter name => key of a value of the benchmark (a Symbol) or a fixed value, e.g.,
   #   {"hits" => :target_hits, "summary" => "minimal", "ranking.matching.approximateThreshold" => :approximate_threshold}
   # NearestNeighborRecallSearcher compares the first 'hits' hits, using the summary field 'id'.
   def set_request_parameters(parameters)
@@ -44,7 +47,7 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Sets the format of the label of the benchmark and recall reports, with placeholders %{<key>} for the values of
-  # the query case, e.g., "%{name}-%{filter}-hr%{hit_ratio}-at%{approximate_threshold}".
+  # the benchmark, e.g., "%{name}-%{filter}-hr%{hit_ratio}-at%{approximate_threshold}".
   def set_label_format(format)
     @label_format = format
   end
@@ -54,14 +57,14 @@ class CommonAnnBase < PerformanceTest
     format(@label_format, values)
   end
 
-  # The parameters of the benchmark and recall reports for the query case: the label and all values of the query case,
-  # named by their keys, e.g., 'hit_ratio' for :hit_ratio.
+  # The parameters of the benchmark and recall reports: the label and all values of the benchmark, named by their keys,
+  # e.g., 'hit_ratio' for :hit_ratio.
   def report_fillers(values)
     [parameter_filler("label", label(values))] +
       values.map { |key, value| parameter_filler(key.to_s, value) }
   end
 
-  # The request parameters appended to the queries of the query case (see set_request_parameters)
+  # The request parameters appended to the queries of the benchmark (see set_request_parameters)
   def request_params(values)
     assert(@request_parameters, "The request parameters are not set, see set_request_parameters")
     @request_parameters.map { |name, value| "&#{name}=#{value.is_a?(Symbol) ? values.fetch(value) : value}" }.join

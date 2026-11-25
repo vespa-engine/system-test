@@ -7,15 +7,12 @@ require 'performance/nearest_neighbor_new/sift/sift_base'
 # The schema needs the array<int> field 'filter' (see schemas/filtered/).
 class SiftFilteredBase < SiftBase
 
-  # hit_ratios: the hit ratios benchmarked, e.g., [1.0, 0.1, 0.01], where 1.0 means no filter. The other hit ratios must be
-  #   multiples of 0.001, as the filters are defined per 1000 documents: for hit ratio r, document i contains r * 1000 in the
-  #   field 'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see common/generators/shared.h).
-  # settings: list of settings, each benchmarked for every hit ratio, e.g.,
-  #   [{:name => "hnsw", :target_hits => 100, :explore_hits => 100, :approximate_threshold => 0.05}]
-  #   :name names the setting in labels and reports, e.g., "hnsw" or "brute_force", :target_hits is targetHits of the
-  #   queries and the number of hits compared when calculating the recall, :approximate (optional, default true) is false
-  #   for exact search, and :explore_hits (optional, default 0) is hnsw.exploreAdditionalHits of the queries.
-  #   The other values are used by the request parameters, label, and report parameters set by the test.
+  # schema: the schema in schemas/<schema>/test.sd
+  # num_documents: the number of documents fed, the first vectors of the data set
+  # num_queries_for_benchmark: the number of queries in the query file of each benchmark
+  # num_queries_for_recall: the number of queries (the first benchmarked ones) used to calculate the recall
+  # hit_ratios: the hit ratios benchmarked, 1.0 means no filter
+  # settings: the HNSW settings to benchmark, e.g., target hits, exploration, and filter-first threshold
   def run_filtered_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:, hit_ratios:, settings:)
     setup_sift_test(schema: schema, num_documents: num_documents, num_queries_for_benchmark: num_queries_for_benchmark,
                     num_queries_for_recall: num_queries_for_recall)
@@ -36,7 +33,7 @@ class SiftFilteredBase < SiftBase
     end
   end
 
-  # Generates the queries with a filter with the hit ratio (no filter for 1.0) for the query case, and returns the query file
+  # Generates the queries with a filter with the hit ratio (no filter for 1.0) for the benchmark, and returns the query file
   # on the container.
   def generate_queries(hit_ratio, values)
     if hit_ratio == 1.0

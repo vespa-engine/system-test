@@ -13,9 +13,7 @@ class AnnSiftFilteredPerfTest < SiftFilteredBase
     num_documents = 1_000_000 # All vectors of sift/sift-data/sift_base.fvecs
     num_queries_for_benchmark = 1000
     num_queries_for_recall = 100 # The first queries used for benchmarking
-    hit_ratios = [1.0, 0.5, 0.1, 0.05, 0.01, 0.005, 0.001] # Fractions of the documents passing the filter (1.0: no filter), multiples of 0.001
-    # Each setting is benchmarked for every query case. :name names the setting in labels and reports. Optionally,
-    # :approximate => false uses exact search, and :explore_hits sets hnsw.exploreAdditionalHits (default 0).
+    hit_ratios = [1.0, 0.5, 0.1, 0.05, 0.01, 0.005, 0.001] # 1.0: no filter
     settings = [
       # Exact search as the baseline for the performance
       {:name => "brute_force", :approximate => false, :target_hits => 100,
@@ -32,8 +30,6 @@ class AnnSiftFilteredPerfTest < SiftFilteredBase
     #num_documents = 10_000
     #num_queries_for_recall = 10
 
-    # How the values of each query case (see run_*_test) are used in the requests and in the labels of the reports
-    # (all values are parameters of the reports)
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,

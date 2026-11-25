@@ -19,13 +19,11 @@ class CohereGeoBase < CohereBase
            15,   # a city such as Chicago or Los Angeles
            2]    # part of a city (with 2M documents, 20% of the queries have no document within the radius)
 
-  # settings: list of settings, each benchmarked for every radius, e.g.,
-  #   [{:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2,
-  #     :filter_first_exploration => 0.01}]
-  #   :name names the setting in labels and reports, e.g., "hnsw" or "brute_force", :target_hits is targetHits of the
-  #   queries and the number of hits compared when calculating the recall, :approximate (optional, default true) is false
-  #   for exact search, and :explore_hits (optional, default 0) is hnsw.exploreAdditionalHits of the queries.
-  #   The other values are used by the request parameters, label, and report parameters set by the test.
+  # schema: the schema in schemas/<schema>/test.sd
+  # num_documents: the number of documents fed, the first vectors of the data set
+  # num_queries_for_benchmark: the number of queries in the query file of each benchmark
+  # num_queries_for_recall: the number of queries (the first benchmarked ones) used to calculate the recall
+  # settings: the HNSW settings to benchmark, e.g., target hits, exploration, and filter-first threshold
   def run_geo_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:,
                    settings:)
     setup_cohere_test(schema: schema, num_documents: num_documents, num_queries_for_benchmark: num_queries_for_benchmark,
