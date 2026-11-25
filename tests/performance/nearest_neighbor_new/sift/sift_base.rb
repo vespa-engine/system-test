@@ -3,9 +3,9 @@
 require 'performance/nearest_neighbor_new/common/common_ann_base'
 
 # Base class for tests over the SIFT data set (http://corpus-texmex.irisa.fr/, 1M document vectors and 10k query vectors
-# with 128 dimensions, euclidean distance), independent of the kind of test (see the subclass SiftFilteredBase).
+# with 128 dimensions, euclidean distance), independent of the kind of test (see sift_filtered.rb).
 #
-# sift/ contains everything specific to the data set: the base classes, the data in sift-data/, and the schemas in
+# sift/ contains everything specific to the data set: this base class, the data in sift-data/, and the schemas in
 # schemas/<name>/test.sd. The document and query generators are in common/generators/.
 #
 # The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
@@ -20,11 +20,11 @@ class SiftBase < CommonAnnBase
   DOCS_FILE = "sift_base.fvecs"     # 1M document vectors
   QUERIES_FILE = "sift_query.fvecs" # 10k query vectors (not among the documents)
 
-  # Deploys the schema sift/schemas/<schema>/test.sd and starts Vespa.
-  def setup_sift_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:)
-    assert(num_queries_for_recall <= num_queries_for_benchmark)
-    @num_documents = num_documents
-    @num_queries_for_benchmark = num_queries_for_benchmark
+  # Deploys the schema sift/schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
+  # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
+  # queries of each query file used to calculate the recall).
+  def setup_sift_test(schema)
+    assert(@num_queries_for_recall <= @num_queries_for_benchmark)
     deploy_app(create_app(SIFT_DIR + "schemas/#{schema}/test.sd"))
     start
     print_hardware_details

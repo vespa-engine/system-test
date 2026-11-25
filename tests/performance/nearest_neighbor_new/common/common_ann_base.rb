@@ -24,10 +24,9 @@ require 'performance/fbench'
 #   common/                                                  independent of the data set: this class,
 #                                                            NearestNeighborRecallSearcher.java, and the document and
 #                                                            query generators in generators/ (from parquet-vectors)
-#   <data set>_<test>.rb                                     the tests (the files with test_ methods)
-#   <data set>/                                              everything specific to the data set: the base classes for
-#                                                            the data set and the kinds of test, the data, and the
-#                                                            schemas, e.g., cohere/ and sift/
+#   <data set>_<test>.rb                                     the tests, each a subclass of the base class of the data set
+#   <data set>/                                              everything specific to the data set: its base class, the
+#                                                            data, and the schemas, e.g., cohere/ and sift/
 class CommonAnnBase < PerformanceTest
 
   COMMON_DIR = File.expand_path(File.dirname(__FILE__)) + "/"

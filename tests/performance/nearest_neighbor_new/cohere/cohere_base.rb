@@ -4,9 +4,9 @@ require 'performance/nearest_neighbor_new/common/common_ann_base'
 
 # Base class for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
 # (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), independent of the kind of test
-# (see the subclasses CohereFilteredBase and CohereGeoBase).
+# (see cohere_filtered.rb and cohere_geo.rb).
 #
-# cohere/ contains everything specific to the data set: the base classes, the data in cohere-data/, and the schemas in
+# cohere/ contains everything specific to the data set: this base class, the data in cohere-data/, and the schemas in
 # schemas/<name>/test.sd. The document and query generators are in common/generators/.
 #
 # The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
@@ -51,11 +51,11 @@ class CohereBase < CommonAnnBase
     end
   end
 
-  # Deploys the schema cohere/schemas/<schema>/test.sd and starts Vespa.
-  def setup_cohere_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:)
-    assert(num_queries_for_recall <= num_queries_for_benchmark)
-    @num_documents = num_documents
-    @num_queries_for_benchmark = num_queries_for_benchmark
+  # Deploys the schema cohere/schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
+  # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
+  # queries of each query file used to calculate the recall).
+  def setup_cohere_test(schema)
+    assert(@num_queries_for_recall <= @num_queries_for_benchmark)
     deploy_app(create_app(COHERE_DIR + "schemas/#{schema}/test.sd"))
     start
     print_hardware_details
