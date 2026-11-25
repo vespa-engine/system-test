@@ -28,10 +28,6 @@ class CommonAnnBase < PerformanceTest
 
   COMMON_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
 
-  # Algorithms of the queries, see benchmark_queries and calc_recall
-  HNSW = "hnsw"               # approximate search with the HNSW index
-  BRUTE_FORCE = "brute_force" # exact search
-
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5
 
@@ -44,8 +40,7 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Sets the format of the label of the benchmark and recall reports, with placeholders %{<key>} for the values of
-  # the query case and %{algorithm} for the algorithm given to benchmark_queries and calc_recall,
-  # e.g., "%{algorithm}-%{filter}-hr%{hit_ratio}-at%{approximate_threshold}".
+  # the query case, e.g., "%{name}-%{filter}-hr%{hit_ratio}-at%{approximate_threshold}".
   def set_label_format(format)
     @label_format = format
   end
@@ -178,13 +173,12 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Benchmarks the query file (on the container) and calculates the recall of its first num_queries_for_recall queries.
-  # algorithm: the algorithm of the queries in the query file, e.g., HNSW or BRUTE_FORCE (used in the label and the reports)
   # nnr: additional parameters for NearestNeighborRecallSearcher, e.g., {"exactField" => "embedding_f32"}.
   # Returns {:recall, :qps, :avg_ms, :p95_ms}.
-  def benchmark_and_calc_recall(query_file, values, num_queries_for_recall, algorithm:, nnr: {})
-    fancy_puts "Benchmarking and checking recall for #{label(values.merge({:algorithm => algorithm}))}"
-    benchmark = benchmark_queries(query_file, values, algorithm: algorithm)
-    recall = calc_recall(query_file, values, num_queries_for_recall, algorithm: algorithm, nnr: nnr)
+  def benchmark_and_calc_recall(query_file, values, num_queries_for_recall, nnr: {})
+    fancy_puts "Benchmarking and checking recall for #{label(values)}"
+    benchmark = benchmark_queries(query_file, values)
+    recall = calc_recall(query_file, values, num_queries_for_recall, nnr: nnr)
     {:recall => recall,
      :qps => benchmark.metric('qps').to_f,
      :avg_ms => benchmark.metric('avgresponsetime').to_f,
@@ -192,9 +186,7 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Runs fbench with the query file (on the container) and returns the result (with the metrics 'qps', 'avgresponsetime', ...).
-  # algorithm: the algorithm of the queries in the query file, e.g., HNSW or BRUTE_FORCE (used in the label and the report)
-  def benchmark_queries(query_file, values, algorithm:, clients: 1)
-    values = values.merge({:algorithm => algorithm})
+  def benchmark_queries(query_file, values, clients: 1)
     result_file = dirs.tmpdir + "fbench_result.#{label(values)}.txt"
     profiler_start
     result = run_fbench2(container,
@@ -210,9 +202,7 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Calculates and reports the recall (in %) of the first num_queries queries of the query file (on the container).
-  # algorithm: the algorithm of the queries in the query file, e.g., HNSW or BRUTE_FORCE (used in the label and the report)
-  def calc_recall(query_file, values, num_queries, algorithm:, nnr: {})
-    values = values.merge({:algorithm => algorithm})
+  def calc_recall(query_file, values, num_queries, nnr: {})
     recall_file = dirs.tmpdir + "recall_queries.#{label(values)}.txt"
     container.execute("head -n #{num_queries} #{query_file} > #{recall_file}")
     local_recall_file = dirs.tmpdir + "local_recall_queries.#{label(values)}.txt"

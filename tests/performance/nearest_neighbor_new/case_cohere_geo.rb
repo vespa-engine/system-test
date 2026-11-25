@@ -13,10 +13,12 @@ class AnnCohereGeoPerfTest < CohereGeoBase
     num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs are used
     num_queries_for_benchmark = 1000
     num_queries_for_recall = 100 # The first queries used for benchmarking
-    target_hits = 100
-    hnsw_settings = [
+    # Each setting is benchmarked for every query case. :name names the setting in labels and reports. Optionally,
+    # :approximate => false uses exact search, and :explore_hits sets hnsw.exploreAdditionalHits (default 0).
+    settings = [
       # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
-      {:approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.01}
+      {:name => "hnsw", :target_hits => 100,
+       :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.01, :lazy_filter => false}
     ]
 
     # Smaller values that can be used for development and testing
@@ -28,15 +30,17 @@ class AnnCohereGeoPerfTest < CohereGeoBase
                             "hits" => :target_hits,
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
                             "ranking.matching.filterFirstThreshold" => :filter_first_threshold,
-                            "ranking.matching.filterFirstExploration" => :filter_first_exploration})
-    set_label_format("%{algorithm}-th%{target_hits}-geo-r%{radius_km}km-at%{approximate_threshold}" +
-                     "-fft%{filter_first_threshold}-ffe%{filter_first_exploration}")
-    set_report_parameters({"algorithm" => :algorithm,
+                            "ranking.matching.filterFirstExploration" => :filter_first_exploration,
+                            "ranking.matching.lazyFilter" => :lazy_filter})
+    set_label_format("%{name}-th%{target_hits}-geo-r%{radius_km}km-at%{approximate_threshold}" +
+                     "-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-lf%{lazy_filter}")
+    set_report_parameters({"name" => :name,
                            "target_hits" => :target_hits,
                            "radius_km" => :radius_km,
                            "approximate_threshold" => :approximate_threshold,
                            "filter_first_threshold" => :filter_first_threshold,
-                           "filter_first_exploration" => :filter_first_exploration})
+                           "filter_first_exploration" => :filter_first_exploration,
+                           "lazy_filter" => :lazy_filter})
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) with geoLocation filters " +
                     "over #{num_documents} Cohere Wikipedia embeddings (1024 dim)")
@@ -44,8 +48,7 @@ class AnnCohereGeoPerfTest < CohereGeoBase
                  num_documents: num_documents,
                  num_queries_for_benchmark: num_queries_for_benchmark,
                  num_queries_for_recall: num_queries_for_recall,
-                 target_hits: target_hits,
-                 hnsw_settings: hnsw_settings)
+                 settings: settings)
   end
 
 end

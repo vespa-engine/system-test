@@ -19,40 +19,38 @@ class CohereGeoBase < CohereBase
            15,   # a city such as Chicago or Los Angeles
            2]    # part of a city (with 2M documents, 20% of the queries have no document within the radius)
 
-  # target_hits: targetHits of the queries, and the number of hits compared when calculating the recall
-  # hnsw_settings: list of settings, each benchmarked for every radius, e.g.,
-  #   [{:approximate_threshold => 0.0, :filter_first_threshold => 0.2, :filter_first_exploration => 0.01}]
-  # extra_values: values of the test that are added to the values of every query case (for the label and reports set by
-  #   the test)
+  # settings: list of settings, each benchmarked for every radius, e.g.,
+  #   [{:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.0, :filter_first_threshold => 0.2,
+  #     :filter_first_exploration => 0.01}]
+  #   :name names the setting in labels and reports, e.g., "hnsw" or "brute_force", :target_hits is targetHits of the
+  #   queries and the number of hits compared when calculating the recall, :approximate (optional, default true) is false
+  #   for exact search, and :explore_hits (optional, default 0) is hnsw.exploreAdditionalHits of the queries.
+  #   The other values are used by the request parameters, label, and report parameters set by the test.
   def run_geo_test(schema:, num_documents:, num_queries_for_benchmark:, num_queries_for_recall:,
-                   target_hits:, hnsw_settings:, extra_values: {})
+                   settings:)
     setup_cohere_test(schema: schema, num_documents: num_documents, num_queries_for_benchmark: num_queries_for_benchmark,
-                      num_queries_for_recall: num_queries_for_recall, extra_values: extra_values)
+                      num_queries_for_recall: num_queries_for_recall)
     feed_documents("make_geo_docs", "")
 
-    query_files = {} # radius => query file on the container, the same for all settings
-    RADII.each do |radius|
-      query_files[radius] = write_queries("make_geo_queries", target_hits, "--radius #{radius}", "queries.geo.#{radius}km.txt")
-    end
-
-    results = {} # settings => {radius => {:recall, :qps, :avg_ms, :p95_ms}}
-    hnsw_settings.each do |settings|
-      results[settings] = {}
+    results = {} # setting => {radius => {:recall, :qps, :avg_ms, :p95_ms}}
+    settings.each do |setting|
+      results[setting] = {}
       RADII.each do |radius|
-        values = settings.merge(extra_values).merge({:target_hits => target_hits, :radius_km => radius})
-        results[settings][radius] = benchmark_and_calc_recall(query_files[radius], values, num_queries_for_recall, algorithm: HNSW)
+        values = {:approximate => true, :explore_hits => 0}.merge(setting).merge({:radius_km => radius})
+        query_file = write_queries("make_geo_queries", "--radius #{radius}", values)
+        results[setting][radius] = benchmark_and_calc_recall(query_file, values, num_queries_for_recall)
       end
     end
 
-    hnsw_settings.each do |settings|
-      print_results(results[settings], num_documents, extra_values.merge({:target_hits => target_hits}).merge(settings))
+    settings.each do |setting|
+      print_results(results[setting], num_documents, setting)
     end
   end
 
-  # Prints a table of the results of one settings: one row per radius (recall, qps, avg ms, p95 ms).
-  # The title contains the number of documents and the values of the table.
-  def print_results(results, num_documents, table_values)
-    title = "Results for #{num_documents} documents: " + table_values.map { |key, value| "#{key} #{value}" }.join(", ")
+  # Prints a table of the results of one setting: one row per radius (recall, qps, avg ms, p95 ms).
+  # The title contains the number of documents and the setting.
+  def print_results(results, num_documents, setting)
+    title = "Results for #{num_documents} documents: " + setting.map { |key, value| "#{key} #{value}" }.join(", ")
     headers = [["radius", "recall", "qps", "avg ms", "p95 ms"]]
     rows = RADII.map do |radius|
       result = results[radius]
