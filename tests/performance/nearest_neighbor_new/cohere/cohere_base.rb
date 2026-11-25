@@ -6,8 +6,8 @@ require 'performance/nearest_neighbor_new/common/common_ann_base'
 # (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), independent of the kind of test
 # (see the subclasses CohereFilteredBase and CohereGeoBase).
 #
-# cohere/ contains everything specific to the data set: the base classes, the document and query generators in generators/
-# (from parquet-vectors), the data in cohere-data/, and the schemas in schemas/<name>/test.sd.
+# cohere/ contains everything specific to the data set: the base classes, the data in cohere-data/, and the schemas in
+# schemas/<name>/test.sd. The document and query generators are in common/generators/.
 #
 # The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
 class CohereBase < CommonAnnBase
@@ -61,14 +61,14 @@ class CohereBase < CommonAnnBase
     print_hardware_details
   end
 
-  # Feeds the documents printed by the document generator cohere/generators/<generator>.cpp with the given options.
+  # Feeds the documents printed by the document generator common/generators/<generator>.cpp with the given options.
   def feed_documents(generator, options)
     node = vespa.adminserver
     num_files = (@num_documents.to_f / DOCS_PER_FILE).ceil
     doc_vectors = (0...num_files).map do |i|
       find_or_download_compressed_file(format(DOCS_FILE_FORMAT, i), node, local_dir: LOCAL_DIR, s3_dir: S3_DIR)
     end
-    feed_from_command("#{compile_cpp(COHERE_DIR + "generators/#{generator}.cpp", node)} --vectors #{doc_vectors.join(',')} " +
+    feed_from_command("#{compile_generator(generator, node)} --vectors #{doc_vectors.join(',')} " +
                       "--num-docs #{@num_documents} --tensor-field embedding #{options}",
                       [parameter_filler("label", "#{@num_documents}-docs")])
     assert_hitcount("query=sddocname:test", @num_documents)
@@ -81,13 +81,13 @@ class CohereBase < CommonAnnBase
     CLUSTERS_FILES.values.map { |name| find_or_download_compressed_file(name, node, local_dir: LOCAL_DIR, s3_dir: S3_DIR) }
   end
 
-  # Writes the queries printed by the query generator cohere/generators/<generator>.cpp with the given options for the
+  # Writes the queries printed by the query generator common/generators/<generator>.cpp with the given options for the
   # query case to a file (on the container), and returns the file. The values of the query case set the nearestNeighbor
   # operator: :approximate (true for approximate search with HNSW, false for exact search), :target_hits, and :explore_hits.
   def write_queries(generator, options, values)
     node = container
     query_file = dirs.tmpdir + "queries.#{label(values)}.txt"
-    node.execute("#{compile_cpp(COHERE_DIR + "generators/#{generator}.cpp", node)} " +
+    node.execute("#{compile_generator(generator, node)} " +
                  "--vectors #{find_or_download_compressed_file(QUERIES_FILE, node, local_dir: LOCAL_DIR, s3_dir: S3_DIR)} " +
                  "--num-queries #{@num_queries_for_benchmark} --tensor-field embedding " +
                  "--approximate #{values.fetch(:approximate)} --target-hits #{values.fetch(:target_hits)} " +

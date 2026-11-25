@@ -3,7 +3,7 @@ schema test {
     field id type int {
       indexing: attribute | summary
     }
-    # Random location in the contiguous United States (see generators/make_geo_docs.cpp)
+    # Random location in the contiguous United States (see common/generators/make_geo_docs.cpp)
     field latlng type position {
       indexing: attribute
     }

@@ -7,10 +7,10 @@ require 'performance/nearest_neighbor_new/cohere/cohere_base'
 #
 # The documents and queries are at random locations in the bounding box of the contiguous United States (the default of
 # the geo generators, the queries use a different random seed than the documents). The radii range from part of a city to
-# half of the country (see generators/make_geo_queries.cpp).
+# half of the country (see common/generators/make_geo_queries.cpp).
 class CohereGeoBase < CohereBase
 
-  # Radii in km (see generators/make_geo_queries.cpp for the fraction of the documents within each radius)
+  # Radii in km (see common/generators/make_geo_queries.cpp for the fraction of the documents within each radius)
   RADII = [2000, # half of the country
            1100, # a large region, e.g., around Kansas City reaching Denver, Chicago, and Dallas
            500,  # multiple states, e.g., the Pacific Northwest

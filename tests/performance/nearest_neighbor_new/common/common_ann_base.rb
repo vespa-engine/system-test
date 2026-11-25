@@ -18,15 +18,19 @@ require 'performance/fbench'
 # approximate=false (the exact ground truth). The schema needs a document summary 'minimal' with the field 'id'.
 #
 # Files in nearest_neighbor_new/:
-#   common/                                                  independent of the data set: this class and
-#                                                            NearestNeighborRecallSearcher.java
+#   common/                                                  independent of the data set: this class,
+#                                                            NearestNeighborRecallSearcher.java, and the document and
+#                                                            query generators in generators/ (from parquet-vectors)
 #   case_<data set>_<test>.rb                                the tests (the files with test_ methods)
-#   <data set>/                                              everything specific to the data set: a subclass for the
-#                                                            data set and one per kind of test, the document and query
-#                                                            generators, the data, and the schemas, e.g., cohere/
+#   <data set>/                                              everything specific to the data set: the base classes for
+#                                                            the data set and the kinds of test, the data, and the
+#                                                            schemas, e.g., cohere/ and sift/
 class CommonAnnBase < PerformanceTest
 
   COMMON_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
+  # The document and query generators (C++ programs from parquet-vectors, see the readme there). They read the vectors
+  # from .fvecs files of any dimension, and take the name of the tensor field as an option (see --help of each program).
+  GENERATORS_DIR = COMMON_DIR + "generators/"
 
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5
@@ -146,6 +150,11 @@ class CommonAnnBase < PerformanceTest
       node.execute("g++ -g -O3 -std=c++20 -o #{binary} #{source_file}")
       binary
     end
+  end
+
+  # Compiles the generator common/generators/<name>.cpp on the node (once per node) and returns the path of the binary.
+  def compile_generator(name, node)
+    compile_cpp(GENERATORS_DIR + "#{name}.cpp", node)
   end
 
   # Feeds the JSON feed file (on the admin server) and reports the feed performance.

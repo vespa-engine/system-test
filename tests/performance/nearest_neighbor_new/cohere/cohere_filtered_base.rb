@@ -21,7 +21,7 @@ class CohereFilteredBase < CohereBase
   CORRELATIONS = [UNCORRELATED, POSITIVE, NEGATIVE]
 
   # The uncorrelated filters support hit ratios that are multiples of 0.001: for hit ratio r, document i contains r * 1000 in
-  # the field 'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see generators/shared.h).
+  # the field 'filter' if (i % 1000) < r * 1000, and the queries add 'filter=<r * 1000>' (see common/generators/shared.h).
   HIT_RATIOS = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
 
   # settings: list of settings, each benchmarked for every correlation and hit ratio, e.g.,

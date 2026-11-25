@@ -3,7 +3,7 @@ schema test {
     field id type int {
       indexing: attribute | summary
     }
-    # Filter values uncorrelated with the vectors (see generators/make_filtered_docs.cpp)
+    # Filter values uncorrelated with the vectors (see common/generators/make_filtered_docs.cpp)
     field filter type array<int> {
       indexing: attribute | summary
       attribute: fast-search
