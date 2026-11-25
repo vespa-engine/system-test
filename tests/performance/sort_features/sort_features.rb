@@ -46,20 +46,15 @@ class SortFeaturesPerfTest < PerformanceTest
     compile_create_docs
     start
 
-    start_memory_sampler
-    begin
-      memory_phase('feed')
-      feed_docs
-      memory_phase('validate')
-      validate_hitcounts
-      validate_sorting
-      run_query_and_profile
-      run_limiter_queueing
-      run_limiter_contention
-    ensure
-      stop_memory_sampler
-    end
-    report_memory_summary
+    proton_memory_phase('feed')
+    feed_docs
+    proton_memory_phase('validate')
+    validate_hitcounts
+    validate_sorting
+    run_query_and_profile
+    run_limiter_queueing
+    run_limiter_contention
+    write_report([parameter_filler('label', 'memory_summary'), proton_memory_summary_filler])
   end
 
   def create_app(result_processing_threads)
@@ -70,103 +65,6 @@ class SortFeaturesPerfTest < PerformanceTest
     app
   end
 
-  # Proton memory usage is sampled once per second by a background thread during the
-  # whole test. Samples are grouped into phases (feeding, validation and each fbench run),
-  # and each report written gets the RSS stats of the current phase.
-  MEMORY_SAMPLE_INTERVAL = 1.0
-
-  def start_memory_sampler
-    @proton = vespa.search['search'].first
-    @proton_pid = @proton.get_pid
-    @memory_lock = Mutex.new
-    @memory_phases = []
-    @memory_stop = false
-    memory_phase('startup')
-    @memory_sampler = Thread.new do
-      Thread.current.report_on_exception = false
-      until @memory_stop
-        sample_proton_memory
-        sleep MEMORY_SAMPLE_INTERVAL
-      end
-    end
-  end
-
-  def stop_memory_sampler
-    return unless @memory_sampler
-    @memory_stop = true
-    @memory_sampler.join
-    sample_proton_memory
-  end
-
-  # Returns { 'VmRSS' => bytes, 'VmHWM' => bytes } for proton, or nil if unavailable
-  def read_proton_memory
-    out = @proton.execute("grep -E '^(VmRSS|VmHWM):' /proc/#{@proton_pid}/status",
-                          :noecho => true, :exceptiononfailure => false)
-    values = {}
-    out.to_s.each_line do |line|
-      if line =~ /^(VmRSS|VmHWM):\s+(\d+)\s+kB/
-        values[$1] = $2.to_i * 1024
-      end
-    end
-    values.empty? ? nil : values
-  rescue StandardError => e
-    puts "Failed sampling proton memory: #{e.message}"
-    nil
-  end
-
-  def sample_proton_memory
-    values = read_proton_memory
-    return unless values && values['VmRSS']
-    @memory_lock.synchronize do
-      @memory_phases.last[:samples] << values['VmRSS']
-      @memory_hwm = values['VmHWM'] if values['VmHWM']
-    end
-  end
-
-  def memory_phase(label)
-    @memory_lock.synchronize do
-      @memory_phases << { :label => label, :samples => [] }
-    end
-    sample_proton_memory
-  end
-
-  # A filler computing RSS stats of the current phase when the report is written
-  def memory_filler
-    Proc.new do |result|
-      sample_proton_memory
-      samples = @memory_lock.synchronize { @memory_phases.last[:samples].dup }
-      unless samples.empty?
-        result.add_metric('memory.proton.rss.max', samples.max)
-        result.add_metric('memory.proton.rss.avg', samples.sum / samples.size)
-        result.add_metric('memory.proton.rss.last', samples.last)
-      end
-    end
-  end
-
-  def mb(bytes)
-    format('%.1f', bytes.to_f / (1024 * 1024))
-  end
-
-  def report_memory_summary
-    phases = @memory_lock.synchronize { @memory_phases.reject { |p| p[:samples].empty? } }
-    return if phases.empty?
-    puts 'Proton memory usage (RSS MB) per phase:'
-    puts format('  %-28s %8s %10s %10s %10s', 'phase', 'samples', 'min', 'avg', 'max')
-    phases.each do |p|
-      s = p[:samples]
-      puts format('  %-28s %8d %10s %10s %10s', p[:label], s.size, mb(s.min), mb(s.sum / s.size), mb(s.max))
-    end
-    all = phases.flat_map { |p| p[:samples] }
-    after_feed = phases.find { |p| p[:label] == 'validate' }
-    puts "Proton RSS max sampled: #{mb(all.max)} MB, peak (VmHWM): #{mb(@memory_hwm || 0)} MB"
-    write_report([parameter_filler('label', 'memory_summary'),
-                  metric_filler('memory.proton.rss.max', all.max),
-                  metric_filler('memory.proton.rss.avg', all.sum / all.size),
-                  metric_filler('memory.proton.rss.after_feed', after_feed ? after_feed[:samples].first : 0),
-                  metric_filler('memory.proton.rss.end', all.last),
-                  metric_filler('memory.proton.rss.peak', @memory_hwm || 0)])
-  end
-
   def compile_create_docs
     tmp_bin_dir = @container.create_tmp_bin_dir
     @create_docs = "#{tmp_bin_dir}/create_docs"
@@ -174,7 +72,7 @@ class SortFeaturesPerfTest < PerformanceTest
   end
 
   def feed_docs
-    run_stream_feeder("#{@create_docs} -d #{@num_docs}", [parameter_filler('label', 'feed'), memory_filler])
+    run_stream_feeder("#{@create_docs} -d #{@num_docs}", [parameter_filler('label', 'feed')])
   end
 
   def yql(hit_percentage)
@@ -318,9 +216,8 @@ class SortFeaturesPerfTest < PerformanceTest
     fillers = [parameter_filler('label', label),
                parameter_filler('variant', variant[0]),
                parameter_filler('hit_percentage', hit_percentage),
-               parameter_filler('sortspec', variant[2] || 'none'),
-               memory_filler]
-    memory_phase(label)
+               parameter_filler('sortspec', variant[2] || 'none')]
+    proton_memory_phase(label)
     profiler_start
     run_fbench2(@container,
                 container_query_file,
