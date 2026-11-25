@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/ann_cohere_base'
+require 'performance/nearest_neighbor_cohere/ann_cohere_base'
 
 class AnnCoherePerfTest < AnnCohereBase
 

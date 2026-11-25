@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor/common_sift_gist_base'
+require 'performance/nearest_neighbor_cohere/common_sift_gist_base'
 
 # Tests nearest neighbor search with filters over Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
 # (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3).
