@@ -23,6 +23,17 @@ class AnnFiltered < AnnCommon
   POSITIVE = "positive"
   NEGATIVE = "negative"
 
+  # The request parameters of all filtered tests, so each benchmark needs the values :target_hits, :approximate_threshold,
+  # :filter_first_threshold, and :filter_first_exploration
+  def setup
+    super
+    set_request_parameters({"summary" => "minimal",
+                            "hits" => :target_hits,
+                            "ranking.matching.approximateThreshold" => :approximate_threshold,
+                            "ranking.matching.filterFirstThreshold" => :filter_first_threshold,
+                            "ranking.matching.filterFirstExploration" => :filter_first_exploration})
+  end
+
   # Deploys the schema in schemas/<schema>/test.sd, starts Vespa, and feeds the documents.
   # nnr: additional NearestNeighborRecallSearcher parameters without the prefix 'nnr.', e.g., {"exactField" => "embedding_f32"}
   # substitutions: placeholders in the schema to replace (see AnnCommon#setup_test)

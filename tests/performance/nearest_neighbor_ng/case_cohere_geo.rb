@@ -22,12 +22,6 @@ class AnnCohereGeoPerfTest < AnnGeo
               75,   # multiple cities, e.g., the San Francisco Bay Area
               15,   # a city such as Chicago or Los Angeles
               2]    # part of a city (with 2M documents, 20% of the queries have no document within the radius)
-    set_request_parameters({"summary" => "minimal",
-                            "hits" => :target_hits,
-                            "ranking.matching.approximateThreshold" => :approximate_threshold,
-                            "ranking.matching.filterFirstThreshold" => :filter_first_threshold,
-                            "ranking.matching.filterFirstExploration" => :filter_first_exploration,
-                            "ranking.matching.lazyFilter" => :lazy_filter})
   end
 
   def test_cohere_geo

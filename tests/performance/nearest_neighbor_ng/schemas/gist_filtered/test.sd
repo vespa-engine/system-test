@@ -1,0 +1,35 @@
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    # Filter values uncorrelated with the vectors (see common/generators/make_filtered_docs.cpp)
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field embedding type tensor<float>(x[960]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: euclidean
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(q_vec) tensor<float>(x[960])
+    }
+    first-phase {
+      expression: closeness(label, nns)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}

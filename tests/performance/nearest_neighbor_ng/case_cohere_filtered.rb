@@ -16,11 +16,6 @@ class AnnCohereFilteredPerfTest < AnnFiltered
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
     @hit_ratios = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
-    set_request_parameters({"summary" => "minimal",
-                            "hits" => :target_hits,
-                            "ranking.matching.approximateThreshold" => :approximate_threshold,
-                            "ranking.matching.filterFirstThreshold" => :filter_first_threshold,
-                            "ranking.matching.filterFirstExploration" => :filter_first_exploration})
   end
 
   def test_cohere_filtered
