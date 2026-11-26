@@ -35,8 +35,8 @@ class AnnGistFilteredPerfTest < AnnFiltered
     set_description("Test performance and recall of nearestNeighbor (hnsw vs brute force) without and with filters " +
                     "over GIST vectors (960 dim, 300k of 1M fed)")
     setup_filtered_test("gist_filtered")
-    run_unfiltered_test(test_parameters)
-    run_uncorrelated_test(test_parameters)
+    run_benchmarks_unfiltered(test_parameters)
+    run_benchmarks_uncorrelated(test_parameters)
     print_results
   end
 

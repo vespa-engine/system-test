@@ -5,9 +5,9 @@ require 'performance/nearest_neighbor_ng/ann_base'
 # Base class for tests of nearest neighbor search with filters, for different hit ratios (fraction of the documents passing
 # the filter). The test sets @hit_ratios and runs
 #   setup_filtered_test(schema)
-#   run_unfiltered_test(test_parameters)    no filter, without calculating the recall (e.g., as a warm-up)
-#   run_uncorrelated_test(test_parameters)  filters on the array<int> field 'filter' (by document id), not correlated with the query vector
-#   run_correlated_test(test_parameters)    filters restricted to the clusters closest (positive) or farthest (negative) from the query vector
+#   run_benchmarks_unfiltered(test_parameters)    no filter, without calculating the recall (e.g., as a warm-up)
+#   run_benchmarks_uncorrelated(test_parameters)  filters on the array<int> field 'filter' (by document id), not correlated with the query vector
+#   run_benchmarks_correlated(test_parameters)    filters restricted to the clusters closest (positive) or farthest (negative) from the query vector
 #   print_results
 #
 # The data set module provides:
@@ -48,7 +48,7 @@ class AnnFiltered < AnnBase
 
   # test_parameters: the parameters to benchmark (one hash each), with :approximate, :target_hits, and :explore_hits for the
   # nearestNeighbor operator, and, e.g., the approximate and filter-first thresholds
-  def run_unfiltered_test(test_parameters)
+  def run_benchmarks_unfiltered(test_parameters)
     test_parameters.each do |parameters|
       values = parameters.merge({:filter_type => UNFILTERED, :hit_ratio => 1.0})
       query_file = write_unfiltered_queries(values)
@@ -56,13 +56,13 @@ class AnnFiltered < AnnBase
     end
   end
 
-  def run_uncorrelated_test(test_parameters)
+  def run_benchmarks_uncorrelated(test_parameters)
     run_benchmarks(test_parameters, [UNCORRELATED], @hit_ratios) do |filter_type, hit_ratio, values|
       write_uncorrelated_queries(hit_ratio, values)
     end
   end
 
-  def run_correlated_test(test_parameters)
+  def run_benchmarks_correlated(test_parameters)
     @hit_ratios.each { |hit_ratio| @cluster_levels[hit_ratio] = cluster_level(hit_ratio) }
     run_benchmarks(test_parameters, [POSITIVE, NEGATIVE], @hit_ratios) do |filter_type, hit_ratio, values|
       write_correlated_queries(filter_type, hit_ratio, values)

@@ -37,7 +37,7 @@ class AnnCohereGeoPerfTest < AnnGeo
     set_description("Test performance and recall of nearestNeighbor (hnsw) with geoLocation filters " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
     setup_geo_test("cohere_geo")
-    run_geo_test(test_parameters)
+    run_benchmarks_geo(test_parameters)
     print_results
   end
 

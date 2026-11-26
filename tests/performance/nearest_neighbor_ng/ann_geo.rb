@@ -5,7 +5,7 @@ require 'performance/nearest_neighbor_ng/ann_base'
 # Base class for tests of nearest neighbor search with geoLocation filters: the documents within a radius around the
 # location of the query. The test sets @radii (in km) and runs
 #   setup_geo_test(schema)
-#   run_geo_test(test_parameters)
+#   run_benchmarks_geo(test_parameters)
 #   print_results
 #
 # The data set module provides:
@@ -39,7 +39,7 @@ class AnnGeo < AnnBase
 
   # test_parameters: the parameters to benchmark (one hash each), with :approximate, :target_hits, and :explore_hits for the
   # nearestNeighbor operator, and, e.g., the approximate and filter-first thresholds
-  def run_geo_test(test_parameters)
+  def run_benchmarks_geo(test_parameters)
     test_parameters.each do |parameters|
       @radii.each do |radius|
         values = parameters.merge({:radius_km => radius})

@@ -31,9 +31,9 @@ class AnnCohereFilteredPerfTest < AnnFiltered
     set_description("Test performance and recall of nearestNeighbor (hnsw) with filters that are not, positively, and negatively correlated with the query vector " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
     setup_filtered_test("cohere_filtered")
-    run_unfiltered_test(test_parameters)
-    run_uncorrelated_test(test_parameters)
-    run_correlated_test(test_parameters)
+    run_benchmarks_unfiltered(test_parameters)
+    run_benchmarks_uncorrelated(test_parameters)
+    run_benchmarks_correlated(test_parameters)
     print_results
   end
 
@@ -56,9 +56,9 @@ class AnnCohereFilteredPerfTest < AnnFiltered
     setup_filtered_test("cohere_filtered_quantized",
                         substitutions: {"QUANTIZATION_BITS" => bits},
                         nnr: {"exactField" => "embedding_f32"}) # Full-precision vectors as the exact ground truth
-    run_unfiltered_test(test_parameters)
-    run_uncorrelated_test(test_parameters)
-    run_correlated_test(test_parameters)
+    run_benchmarks_unfiltered(test_parameters)
+    run_benchmarks_uncorrelated(test_parameters)
+    run_benchmarks_correlated(test_parameters)
     print_results
   end
 

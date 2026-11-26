@@ -35,8 +35,8 @@ class AnnSiftFilteredPerfTest < AnnFiltered
     set_description("Test performance and recall of nearestNeighbor (hnsw vs brute force) without and with filters " +
                     "over SIFT vectors (128 dim)")
     setup_filtered_test("sift_filtered")
-    run_unfiltered_test(test_parameters)
-    run_uncorrelated_test(test_parameters)
+    run_benchmarks_unfiltered(test_parameters)
+    run_benchmarks_uncorrelated(test_parameters)
     print_results
   end
 
