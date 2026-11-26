@@ -1,16 +1,17 @@
 # Copyright Vespa.ai. All rights reserved.
 
-# Data set module (see AnnCommon) for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
+require 'performance/nearest_neighbor_ng/dataset_base'
+
+# Data set module (see DatasetBase) for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
 # (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), for AnnFiltered (with correlated
 # filters) and AnnGeo.
 #
 # The data is downloaded from cohere-data/ in the S3 folder (a local copy in cohere-data/ is used if present).
 # The schemas are in schemas/cohere_<name>/test.sd.
-#
-# The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
 module DatasetCohere
+  include DatasetBase
 
-  # The data files, derived from the Cohere data set and downloaded as <file>.gz (see AnnCommon.find_or_download_compressed_file).
+  # The data files, derived from the Cohere data set and downloaded as <file>.gz (see AnnBase.find_or_download_compressed_file).
   # Each file is a sequence of little-endian records [int32 number of entries, entries].
   #                                                 Contents                                      Record
   DOCS_FILE_FORMAT     = "docs_%04d.fvecs"        # document vectors, DOCS_PER_FILE per file      [int32 1024, 1024 float32]
@@ -35,6 +36,19 @@ module DatasetCohere
     find_or_download_compressed_file("cohere-data/" + name, node)
   end
 
+  def max_num_documents
+    NUM_DOCUMENTS
+  end
+
+  def doc_vector_files(node)
+    num_files = (@num_documents.to_f / DOCS_PER_FILE).ceil
+    (0...num_files).map { |i| find_data_file(format(DOCS_FILE_FORMAT, i), node) }
+  end
+
+  def query_vector_file(node)
+    find_data_file(QUERIES_FILE, node)
+  end
+
   # Returns the cluster level (the field cluster_<level>) used for the correlated filters with the hit ratio.
   # The level is chosen such that the queries contain about 5 to 25 clusters (hit ratio * number of clusters of the level),
   # which keeps the queries small while the selected clusters contain close to the target fraction of the documents.
@@ -52,21 +66,6 @@ module DatasetCohere
 
   # ---- Document generation ----
 
-  # Feeds the documents printed by the document generator generators/<generator>.cpp with the given options.
-  def feed_documents(generator, options)
-    assert(@num_documents <= NUM_DOCUMENTS, "The data set has only #{NUM_DOCUMENTS} documents")
-    node = vespa.adminserver
-    num_files = (@num_documents.to_f / DOCS_PER_FILE).ceil
-    doc_vectors = (0...num_files).map do |i|
-      find_data_file(format(DOCS_FILE_FORMAT, i), node)
-    end
-    feed_from_command("#{compile_generator(generator, node)} --vectors #{doc_vectors.join(',')} " +
-                      "--num-docs #{@num_documents} --tensor-field embedding #{options}",
-                      [parameter_filler("label", "#{@num_documents}-docs")])
-    assert_hitcount("query=sddocname:test", @num_documents)
-    report_nni_stats("test", "embedding")
-  end
-
   # Feeds the documents with the field 'filter' for the hit ratios and the fields cluster_<level> (see AnnFiltered).
   def feed_filtered_documents(hit_ratios)
     cluster_files = CLUSTERS_FILES.values.map { |name| find_data_file(name, vespa.adminserver) }
@@ -76,33 +75,7 @@ module DatasetCohere
                    "--cluster-files #{cluster_files.join(',')} --cluster-fields #{cluster_fields.join(',')}")
   end
 
-  def feed_geo_documents
-    feed_documents("make_geo_docs", "")
-  end
-
   # ---- Query generation ----
-
-  # Writes the queries printed by the query generator generators/<generator>.cpp with the given options for the
-  # benchmark to a file (on the container), and returns the file. The values of the benchmark set the nearestNeighbor
-  # operator: :approximate (true for approximate search with HNSW, false for exact search), :target_hits, and :explore_hits.
-  def write_queries(generator, options, values)
-    node = container
-    query_file = dirs.tmpdir + "queries.#{label(values)}.txt"
-    node.execute("#{compile_generator(generator, node)} " +
-                 "--vectors #{find_data_file(QUERIES_FILE, node)} " +
-                 "--num-queries #{@num_queries_for_benchmark} --tensor-field embedding " +
-                 "--approximate #{values.fetch(:approximate)} --target-hits #{values.fetch(:target_hits)} " +
-                 "--explore-hits #{values.fetch(:explore_hits)} #{options} > #{query_file}")
-    query_file
-  end
-
-  def write_unfiltered_queries(values)
-    write_queries("make_filtered_queries", "", values)
-  end
-
-  def write_uncorrelated_queries(hit_ratio, values)
-    write_queries("make_filtered_queries", "--hit-ratio #{hit_ratio}", values)
-  end
 
   # Writes the queries with a filter on the clusters (of the level of the hit ratio) closest to the query vector for
   # AnnFiltered::POSITIVE or farthest from it for AnnFiltered::NEGATIVE, which contain the hit ratio of the fed documents.
@@ -114,10 +87,6 @@ module DatasetCohere
                   "--doc-clusters #{find_data_file(CLUSTERS_FILES[level], container)} --cluster-field cluster_#{level} " +
                   "--num-docs #{@num_documents} --selection #{selection} --target-fraction #{hit_ratio}",
                   values)
-  end
-
-  def write_geo_queries(radius, values)
-    write_queries("make_geo_queries", "--radius #{radius}", values)
   end
 
 end

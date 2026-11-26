@@ -22,7 +22,7 @@ require 'performance/fbench'
 #
 # A data set module feeds the documents and writes the queries (with the generators) for each kind of test it supports,
 # see AnnFiltered and AnnGeo.
-class AnnCommon < PerformanceTest
+class AnnBase < PerformanceTest
 
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5

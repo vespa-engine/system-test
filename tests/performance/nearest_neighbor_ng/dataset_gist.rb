@@ -1,65 +1,34 @@
 # Copyright Vespa.ai. All rights reserved.
 
-# Data set module (see AnnCommon) for tests over the GIST data set (http://corpus-texmex.irisa.fr/, 1M document vectors and 1k query vectors
+require 'performance/nearest_neighbor_ng/dataset_base'
+
+# Data set module (see DatasetBase) for tests over the GIST data set (http://corpus-texmex.irisa.fr/, 1M document vectors and 1k query vectors
 # with 960 dimensions, euclidean distance), for AnnFiltered (without correlated filters).
 #
 # The data is downloaded from gist-data/ in the S3 folder (a local copy in gist-data/ is used if present).
 # The schemas are in schemas/gist_<name>/test.sd.
-#
-# The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
 module DatasetGist
+  include DatasetBase
 
-  # The data files in the .fvecs format (little-endian records [int32 960, 960 float32], see AnnCommon.find_or_download_file).
+  # The data files in the .fvecs format (little-endian records [int32 960, 960 float32], see AnnBase.find_or_download_file).
   DOCS_FILE = "gist_base_300k.fvecs" # The first 300k of the 1M document vectors
-  QUERIES_FILE = "gist_query.fvecs"   # 1k query vectors (not among the documents)
+  QUERIES_FILE = "gist_query.fvecs" # 1k query vectors (not among the documents)
   NUM_DOCUMENTS = 300_000
-
-  # ---- Helpers ----
 
   def find_data_file(name, node)
     find_or_download_file("gist-data/" + name, node)
   end
 
-  # ---- Document generation ----
-
-  # Feeds the documents printed by the document generator generators/<generator>.cpp with the given options.
-  def feed_documents(generator, options)
-    assert(@num_documents <= NUM_DOCUMENTS, "The data set has only #{NUM_DOCUMENTS} documents")
-    node = vespa.adminserver
-    doc_vectors = find_data_file(DOCS_FILE, node)
-    feed_from_command("#{compile_generator(generator, node)} --vectors #{doc_vectors} " +
-                      "--num-docs #{@num_documents} --tensor-field embedding #{options}",
-                      [parameter_filler("label", "#{@num_documents}-docs")])
-    assert_hitcount("query=sddocname:test", @num_documents)
-    report_nni_stats("test", "embedding")
+  def max_num_documents
+    NUM_DOCUMENTS
   end
 
-  def feed_filtered_documents(hit_ratios)
-    feed_documents("make_filtered_docs", "--hit-ratios #{hit_ratios.join(',')}")
+  def doc_vector_files(node)
+    [find_data_file(DOCS_FILE, node)]
   end
 
-  # ---- Query generation ----
-
-  # Writes the queries printed by the query generator generators/<generator>.cpp with the given options for the
-  # benchmark to a file (on the container), and returns the file. The values of the benchmark set the nearestNeighbor
-  # operator: :approximate (true for approximate search with HNSW, false for exact search), :target_hits, and :explore_hits.
-  def write_queries(generator, options, values)
-    node = container
-    query_file = dirs.tmpdir + "queries.#{label(values)}.txt"
-    node.execute("#{compile_generator(generator, node)} " +
-                 "--vectors #{find_data_file(QUERIES_FILE, node)} " +
-                 "--num-queries #{@num_queries_for_benchmark} --tensor-field embedding " +
-                 "--approximate #{values.fetch(:approximate)} --target-hits #{values.fetch(:target_hits)} " +
-                 "--explore-hits #{values.fetch(:explore_hits)} #{options} > #{query_file}")
-    query_file
-  end
-
-  def write_unfiltered_queries(values)
-    write_queries("make_filtered_queries", "", values)
-  end
-
-  def write_uncorrelated_queries(hit_ratio, values)
-    write_queries("make_filtered_queries", "--hit-ratio #{hit_ratio}", values)
+  def query_vector_file(node)
+    find_data_file(QUERIES_FILE, node)
   end
 
 end

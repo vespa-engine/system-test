@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_ng/ann_common'
+require 'performance/nearest_neighbor_ng/ann_base'
 
 # Base class for tests of nearest neighbor search with filters, for different hit ratios (fraction of the documents passing
 # the filter). The test sets @hit_ratios and runs
@@ -16,7 +16,7 @@ require 'performance/nearest_neighbor_ng/ann_common'
 #   write_uncorrelated_queries(hit_ratio, values)             writes the queries with an uncorrelated filter
 #   write_correlated_queries(filter_type, hit_ratio, values)  writes the queries with a POSITIVE or NEGATIVE filter
 #   cluster_level(hit_ratio)                                  the cluster level of the correlated filters (shown in the results)
-class AnnFiltered < AnnCommon
+class AnnFiltered < AnnBase
 
   UNFILTERED = "unfiltered"
   UNCORRELATED = "uncorrelated"
@@ -36,7 +36,7 @@ class AnnFiltered < AnnCommon
 
   # Deploys the schema in schemas/<schema>/test.sd, starts Vespa, and feeds the documents.
   # nnr: additional NearestNeighborRecallSearcher parameters without the prefix 'nnr.', e.g., {"exactField" => "embedding_f32"}
-  # substitutions: placeholders in the schema to replace (see AnnCommon#setup_test)
+  # substitutions: placeholders in the schema to replace (see AnnBase#setup_test)
   def setup_filtered_test(schema, threads_per_search: 1, nnr: {}, substitutions: {})
     setup_test(schema, threads_per_search: threads_per_search, substitutions: substitutions)
     feed_filtered_documents(@hit_ratios)
