@@ -21,18 +21,19 @@ require 'performance/fbench'
 #        benchmark_and_calc_recall(query_file, values, num_queries_for_recall)
 #
 # Files in nearest_neighbor_new/:
-#   common/                                                  independent of the data set: this class,
-#                                                            NearestNeighborRecallSearcher.java, and the document and
-#                                                            query generators in generators/ (from parquet-vectors)
+#   common_ann_base.rb, NearestNeighborRecallSearcher.java   independent of the data set
+#   <data set>_base.rb                                       the base class of a data set, e.g., cohere_base.rb
 #   <data set>_<test>.rb                                     the tests, each a subclass of the base class of the data set
-#   <data set>/                                              everything specific to the data set: its base class, the
-#                                                            data, and the schemas, e.g., cohere/ and sift/
+#   <data set>-data/                                         the data of a data set (downloaded if missing)
+#   schemas/<data set>_<name>/test.sd                        the schemas
+#   generators/                                              the document and query generators (from parquet-vectors)
 class CommonAnnBase < PerformanceTest
 
-  COMMON_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
+  ANN_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
   # The document and query generators (C++ programs from parquet-vectors, see the readme there). They read the vectors
   # from .fvecs files of any dimension, and take the name of the tensor field as an option (see --help of each program).
-  GENERATORS_DIR = COMMON_DIR + "generators/"
+  GENERATORS_DIR = ANN_DIR + "generators/"
+  SCHEMAS_DIR = ANN_DIR + "schemas/"
 
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5
@@ -71,7 +72,7 @@ class CommonAnnBase < PerformanceTest
 
   # Returns an application with the schema and NearestNeighborRecallSearcher in the default search chain.
   def create_app(sd_file, feeding_concurrency: 0.3)
-    add_bundle(COMMON_DIR + "NearestNeighborRecallSearcher.java")
+    add_bundle(ANN_DIR + "NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
     app = SearchApp.new.sd(sd_file).
@@ -148,7 +149,7 @@ class CommonAnnBase < PerformanceTest
     end
   end
 
-  # Compiles the generator common/generators/<name>.cpp on the node (once per node) and returns the path of the binary.
+  # Compiles the generator generators/<name>.cpp on the node (once per node) and returns the path of the binary.
   def compile_generator(name, node)
     compile_cpp(GENERATORS_DIR + "#{name}.cpp", node)
   end

@@ -1,13 +1,13 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/cohere/cohere_base'
+require 'performance/nearest_neighbor_new/cohere_base'
 
 # Tests nearest neighbor search (HNSW) over the Cohere embeddings with filters that are
 #   uncorrelated: on the field 'filter' (by document id), not correlated with the query vector
 #   positive:     'cluster_<level> in (...)', restricted to the clusters closest to the query vector
 #   negative:     'cluster_<level> in (...)', restricted to the clusters farthest from the query vector
 # for different hit ratios (fraction of the documents passing the filter). The schema needs the array<int> field 'filter'
-# and the int fields cluster_<level> (see cohere/schemas/filtered/).
+# and the int fields cluster_<level> (see schemas/cohere_filtered/).
 #
 # make_correlated_filtered_queries selects the closest or farthest clusters (from ranked_<level>.ivecs) of each query vector until they
 # contain the target fraction of the fed documents, such that the hit ratio is correct for any number of documents.
@@ -23,7 +23,7 @@ class AnnCohereFilteredPerfTest < CohereBase
   def setup
     super
     set_owner("boeker")
-    @num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs (e.g., 10_000 for development)
+    @num_documents = 2_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
     @hit_ratios = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
@@ -46,14 +46,14 @@ class AnnCohereFilteredPerfTest < CohereBase
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) with filters that are not, positively, and negatively correlated with the query vector " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
-    run_filtered_test(schema: "filtered",
+    run_filtered_test(schema: "cohere_filtered",
                       settings: settings)
   end
 
   def test_cohere_filtered_quantized
     settings = [
       # Always use HNSW, without the filter-first heuristic
-      {:name => "hnsw-q4", :target_hits => 100, # 4-bit quantized vectors (see cohere/schemas/filtered_quantized/)
+      {:name => "hnsw-q4", :target_hits => 100, # 4-bit quantized vectors (see schemas/cohere_filtered_quantized/)
        :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.01}
     ]
 
@@ -61,7 +61,7 @@ class AnnCohereFilteredPerfTest < CohereBase
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) over 4-bit quantized vectors with filters that are not, positively, and negatively correlated with the query vector " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
-    run_filtered_test(schema: "filtered_quantized",
+    run_filtered_test(schema: "cohere_filtered_quantized",
                       settings: settings,
                       nnr: {"exactField" => "embedding_f32"}) # Full-precision vectors as the exact ground truth
   end

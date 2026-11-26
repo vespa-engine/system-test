@@ -1,24 +1,21 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/common/common_ann_base'
+require 'performance/nearest_neighbor_new/common_ann_base'
 
 # Base class for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
 # (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), independent of the kind of test
 # (see cohere_filtered.rb and cohere_geo.rb).
 #
-# cohere/ contains everything specific to the data set: this base class, the data in cohere-data/, and the schemas in
-# schemas/<name>/test.sd. The document and query generators are in common/generators/.
+# The data is in cohere-data/ and the schemas in schemas/cohere_<name>/test.sd.
 #
 # The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
 class CohereBase < CommonAnnBase
-
-  COHERE_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
 
   # The data files, generated with make_test_data.py from parquet-vectors (see the readme there).
   # Each file is a sequence of little-endian records [int32 number of entries, entries]. A file missing in LOCAL_DIR is
   # decompressed from <file>.gz, which is downloaded from S3_DIR in the nearest-neighbor S3 folder if not present in
   # LOCAL_DIR (see CommonAnnBase.find_or_download_compressed_file).
-  LOCAL_DIR = COHERE_DIR + "cohere-data/"
+  LOCAL_DIR = ANN_DIR + "cohere-data/"
   S3_DIR = "cohere-data/" # https://data.vespa-cloud.com/tests/performance/nearest-neighbor/cohere-data/
   #                                                 Contents                                      Record
   DOCS_FILE_FORMAT     = "docs_%04d.fvecs"        # document vectors, DOCS_PER_FILE per file      [int32 1024, 1024 float32]
@@ -51,17 +48,17 @@ class CohereBase < CommonAnnBase
     end
   end
 
-  # Deploys the schema cohere/schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
+  # Deploys the schema schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
   # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
   # queries of each query file used to calculate the recall).
   def setup_cohere_test(schema)
     assert(@num_queries_for_recall <= @num_queries_for_benchmark)
-    deploy_app(create_app(COHERE_DIR + "schemas/#{schema}/test.sd"))
+    deploy_app(create_app(SCHEMAS_DIR + "#{schema}/test.sd"))
     start
     print_hardware_details
   end
 
-  # Feeds the documents printed by the document generator common/generators/<generator>.cpp with the given options.
+  # Feeds the documents printed by the document generator generators/<generator>.cpp with the given options.
   def feed_documents(generator, options)
     node = vespa.adminserver
     num_files = (@num_documents.to_f / DOCS_PER_FILE).ceil
@@ -81,7 +78,7 @@ class CohereBase < CommonAnnBase
     CLUSTERS_FILES.values.map { |name| find_or_download_compressed_file(name, node, local_dir: LOCAL_DIR, s3_dir: S3_DIR) }
   end
 
-  # Writes the queries printed by the query generator common/generators/<generator>.cpp with the given options for the
+  # Writes the queries printed by the query generator generators/<generator>.cpp with the given options for the
   # benchmark to a file (on the container), and returns the file. The values of the benchmark set the nearestNeighbor
   # operator: :approximate (true for approximate search with HNSW, false for exact search), :target_hits, and :explore_hits.
   def write_queries(generator, options, values)

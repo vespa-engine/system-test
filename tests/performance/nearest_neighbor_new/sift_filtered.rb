@@ -1,16 +1,16 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/sift/sift_base'
+require 'performance/nearest_neighbor_new/sift_base'
 
 # Tests nearest neighbor search (HNSW) over the SIFT vectors without a filter and with filters on the field 'filter' that are
 # not correlated with the query vectors, for different hit ratios (fraction of the documents passing the filter).
-# The schema needs the array<int> field 'filter' (see sift/schemas/filtered/).
+# The schema needs the array<int> field 'filter' (see schemas/sift_filtered/).
 class AnnSiftFilteredPerfTest < SiftBase
 
   def setup
     super
     set_owner("boeker")
-    @num_documents = 1_000_000 # All vectors of sift/sift-data/sift_base.fvecs (e.g., 10_000 for development)
+    @num_documents = 1_000_000 # All vectors of sift-data/sift_base.fvecs (e.g., 10_000 for development)
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
     @hit_ratios = [1.0, 0.5, 0.1, 0.05, 0.01, 0.005, 0.001] # 1.0: no filter
@@ -37,7 +37,7 @@ class AnnSiftFilteredPerfTest < SiftBase
 
     set_description("Test performance and recall of nearestNeighbor (hnsw vs brute force) without and with filters " +
                     "over SIFT vectors (128 dim)")
-    run_filtered_test(schema: "filtered",
+    run_filtered_test(schema: "sift_filtered",
                       settings: settings)
   end
 

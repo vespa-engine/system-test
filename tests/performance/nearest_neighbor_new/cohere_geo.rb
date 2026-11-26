@@ -1,22 +1,22 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/cohere/cohere_base'
+require 'performance/nearest_neighbor_new/cohere_base'
 
 # Tests nearest neighbor search (HNSW) over the Cohere embeddings with geoLocation filters: the documents within a radius
-# around the location of the query. The schema needs the position field 'latlng' (see cohere/schemas/geo/).
+# around the location of the query. The schema needs the position field 'latlng' (see schemas/cohere_geo/).
 #
 # The documents and queries are at random locations in the bounding box of the contiguous United States (the default of
 # the geo generators, the queries use a different random seed than the documents). The radii range from part of a city to
-# half of the country (see common/generators/make_geo_queries.cpp).
+# half of the country (see generators/make_geo_queries.cpp).
 class AnnCohereGeoPerfTest < CohereBase
 
   def setup
     super
     set_owner("boeker")
-    @num_documents = 2_000_000 # The first vectors of cohere/cohere-data/docs_*.fvecs (e.g., 10_000 for development)
+    @num_documents = 2_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
-    # Radii in km (see common/generators/make_geo_queries.cpp for the fraction of the documents within each radius)
+    # Radii in km (see generators/make_geo_queries.cpp for the fraction of the documents within each radius)
     @radii = [2000, # half of the country
               1100, # a large region, e.g., around Kansas City reaching Denver, Chicago, and Dallas
               500,  # multiple states, e.g., the Pacific Northwest
@@ -44,7 +44,7 @@ class AnnCohereGeoPerfTest < CohereBase
 
     set_description("Test performance and recall of nearestNeighbor (hnsw) with geoLocation filters " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
-    run_geo_test(schema: "geo",
+    run_geo_test(schema: "cohere_geo",
                  settings: settings)
   end
 
