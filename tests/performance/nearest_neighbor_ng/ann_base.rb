@@ -60,7 +60,7 @@ class AnnBase < PerformanceTest
   end
 
   # Returns an application with the schema and NearestNeighborRecallSearcher in the default search chain.
-  def create_app(sd_file, feeding_concurrency: 0.3, threads_per_search: 1)
+  def create_app(sd_file, feeding_concurrency: 0.5, threads_per_search: 1)
     add_bundle(selfdir + "NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
