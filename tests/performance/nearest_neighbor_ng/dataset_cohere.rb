@@ -49,6 +49,21 @@ module DatasetCohere
     find_data_file(QUERIES_FILE, node)
   end
 
+  # ---- Document generation ----
+
+  # Feeds the documents with the field 'filter' for the hit ratios and the fields cluster_<level> (see AnnFiltered).
+  def feed_filtered_documents(hit_ratios)
+    node = vespa.adminserver
+    cluster_files = CLUSTERS_FILES.values.map { |name| find_data_file(name, node) }
+    cluster_fields = CLUSTERS_FILES.keys.map { |level| "cluster_#{level}" }
+    feed_documents("#{compile_generator("make_filtered_docs", node)} " +
+                   "--vectors #{doc_vector_files(node).join(',')} --num-docs #{@num_documents} --tensor-field embedding " +
+                   "--hit-ratios #{hit_ratios.join(',')} " +
+                   "--cluster-files #{cluster_files.join(',')} --cluster-fields #{cluster_fields.join(',')}")
+  end
+
+  # ---- Query generation ----
+
   # Returns the cluster level (the field cluster_<level>) used for the correlated filters with the hit ratio.
   # The level is chosen such that the queries contain about 5 to 25 clusters (hit ratio * number of clusters of the level),
   # which keeps the queries small while the selected clusters contain close to the target fraction of the documents.
@@ -64,27 +79,18 @@ module DatasetCohere
     end
   end
 
-  # ---- Document generation ----
-
-  # Feeds the documents with the field 'filter' for the hit ratios and the fields cluster_<level> (see AnnFiltered).
-  def feed_filtered_documents(hit_ratios)
-    cluster_files = CLUSTERS_FILES.values.map { |name| find_data_file(name, vespa.adminserver) }
-    cluster_fields = CLUSTERS_FILES.keys.map { |level| "cluster_#{level}" }
-    feed_documents("make_filtered_docs",
-                   "--hit-ratios #{hit_ratios.join(',')} " +
-                   "--cluster-files #{cluster_files.join(',')} --cluster-fields #{cluster_fields.join(',')}")
-  end
-
-  # ---- Query generation ----
-
   # Writes the queries with a filter on the clusters (of the level of the hit ratio) closest to the query vector for
   # AnnFiltered::POSITIVE or farthest from it for AnnFiltered::NEGATIVE, which contain the hit ratio of the fed documents.
   def write_correlated_queries(filter_type, hit_ratio, values)
+    node = container
     level = cluster_level(hit_ratio)
     selection = (filter_type == AnnFiltered::POSITIVE) ? "closest" : "farthest"
-    write_queries("make_correlated_filtered_queries",
-                  "--ranked-clusters #{find_data_file(RANKED_CLUSTERS_FILES[level], container)} " +
-                  "--doc-clusters #{find_data_file(CLUSTERS_FILES[level], container)} --cluster-field cluster_#{level} " +
+    write_queries("#{compile_generator("make_correlated_filtered_queries", node)} " +
+                  "--vectors #{query_vector_file(node)} --num-queries #{@num_queries_for_benchmark} --tensor-field embedding " +
+                  "--approximate #{values.fetch(:approximate)} --target-hits #{values.fetch(:target_hits)} " +
+                  "--explore-hits #{values.fetch(:explore_hits)} " +
+                  "--ranked-clusters #{find_data_file(RANKED_CLUSTERS_FILES[level], node)} " +
+                  "--doc-clusters #{find_data_file(CLUSTERS_FILES[level], node)} --cluster-field cluster_#{level} " +
                   "--num-docs #{@num_documents} --selection #{selection} --target-fraction #{hit_ratio}",
                   values)
   end
