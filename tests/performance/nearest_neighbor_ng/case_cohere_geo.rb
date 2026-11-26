@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/ann_geo'
-require 'performance/nearest_neighbor_new/dataset_cohere'
+require 'performance/nearest_neighbor_ng/ann_geo'
+require 'performance/nearest_neighbor_ng/dataset_cohere'
 
 # Tests nearest neighbor search (HNSW) over the Cohere embeddings with geoLocation filters (see AnnGeo and
 # schemas/cohere_geo/).

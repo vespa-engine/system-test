@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/ann_filtered'
-require 'performance/nearest_neighbor_new/dataset_sift'
+require 'performance/nearest_neighbor_ng/ann_filtered'
+require 'performance/nearest_neighbor_ng/dataset_sift'
 
 # Tests nearest neighbor search (HNSW vs. brute force) over the SIFT vectors without a filter and with uncorrelated filters
 # (see AnnFiltered). The schema needs the array<int> field 'filter' (see schemas/sift_filtered/).

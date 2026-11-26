@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/ann_common'
+require 'performance/nearest_neighbor_ng/ann_common'
 
 # Base class for tests of nearest neighbor search with filters, for different hit ratios (fraction of the documents passing
 # the filter). The test sets @hit_ratios and runs
@@ -25,8 +25,9 @@ class AnnFiltered < AnnCommon
 
   # Deploys the schema in schemas/<schema>/test.sd, starts Vespa, and feeds the documents.
   # nnr: additional NearestNeighborRecallSearcher parameters without the prefix 'nnr.', e.g., {"exactField" => "embedding_f32"}
-  def setup_filtered_test(schema, threads_per_search: 1, nnr: {})
-    setup_test(schema, threads_per_search: threads_per_search)
+  # substitutions: placeholders in the schema to replace (see AnnCommon#setup_test)
+  def setup_filtered_test(schema, threads_per_search: 1, nnr: {}, substitutions: {})
+    setup_test(schema, threads_per_search: threads_per_search, substitutions: substitutions)
     feed_filtered_documents(@hit_ratios)
     @nnr = nnr
     @unfiltered_results = {} # parameters => {:qps, :avg_ms, :p95_ms}

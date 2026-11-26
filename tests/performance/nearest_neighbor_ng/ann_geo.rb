@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/ann_common'
+require 'performance/nearest_neighbor_ng/ann_common'
 
 # Base class for tests of nearest neighbor search with geoLocation filters: the documents within a radius around the
 # location of the query. The test sets @radii (in km) and runs
@@ -18,8 +18,9 @@ require 'performance/nearest_neighbor_new/ann_common'
 class AnnGeo < AnnCommon
 
   # Deploys the schema in schemas/<schema>/test.sd, starts Vespa, and feeds the documents.
-  def setup_geo_test(schema, threads_per_search: 1)
-    setup_test(schema, threads_per_search: threads_per_search)
+  # substitutions: placeholders in the schema to replace (see AnnCommon#setup_test)
+  def setup_geo_test(schema, threads_per_search: 1, substitutions: {})
+    setup_test(schema, threads_per_search: threads_per_search, substitutions: substitutions)
     feed_geo_documents
     @results = {} # parameters => {radius => {:recall, :qps, :avg_ms, :p95_ms}}
   end

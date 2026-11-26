@@ -26,7 +26,7 @@ schema test {
       attribute {
         distance-metric: dotproduct
         quantization {
-          bits: 4
+          bits: %{QUANTIZATION_BITS}
         }
       }
       index {

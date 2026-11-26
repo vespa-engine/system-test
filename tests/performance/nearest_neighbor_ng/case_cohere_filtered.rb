@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/ann_filtered'
-require 'performance/nearest_neighbor_new/dataset_cohere'
+require 'performance/nearest_neighbor_ng/ann_filtered'
+require 'performance/nearest_neighbor_ng/dataset_cohere'
 
 # Tests nearest neighbor search (HNSW) over the Cohere embeddings with uncorrelated, positively, and negatively correlated
 # filters (see AnnFiltered). The schema needs the array<int> field 'filter' and the int fields cluster_<level>
@@ -42,18 +42,24 @@ class AnnCohereFilteredPerfTest < AnnFiltered
     print_results
   end
 
-  def test_cohere_filtered_quantized
+  def test_cohere_filtered_quantized_4_bits
+    run_quantized_test(bits: 4)
+  end
+
+  # bits: the quantization level of the vectors (see %{QUANTIZATION_BITS} in schemas/cohere_filtered_quantized/)
+  def run_quantized_test(bits:)
     test_parameters = [
       # Always use HNSW, without the filter-first heuristic
-      {:name => "hnsw-q4", :approximate => true, :target_hits => 100, :explore_hits => 0, # 4-bit quantized vectors (see schemas/cohere_filtered_quantized/)
+      {:name => "hnsw-q#{bits}", :approximate => true, :target_hits => 100, :explore_hits => 0,
        :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.01}
     ]
 
     set_label_format("%{name}-th%{target_hits}-%{filter_type}-hr%{hit_ratio}-at%{approximate_threshold}")
 
-    set_description("Test performance and recall of nearestNeighbor (hnsw) over 4-bit quantized vectors with filters that are not, positively, and negatively correlated with the query vector " +
+    set_description("Test performance and recall of nearestNeighbor (hnsw) over #{bits}-bit quantized vectors with filters that are not, positively, and negatively correlated with the query vector " +
                     "over Cohere Wikipedia embeddings (1024 dim)")
     setup_filtered_test("cohere_filtered_quantized",
+                        substitutions: {"QUANTIZATION_BITS" => bits},
                         nnr: {"exactField" => "embedding_f32"}) # Full-precision vectors as the exact ground truth
     run_unfiltered_test(test_parameters)
     run_uncorrelated_test(test_parameters)

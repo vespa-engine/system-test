@@ -79,11 +79,31 @@ class AnnCommon < PerformanceTest
   # Deploys the schema schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
   # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
   # queries of each query file used to calculate the recall).
-  def setup_test(schema, threads_per_search: 1)
+  # substitutions: placeholders %{<key>} in the schema to replace, e.g., {"QUANTIZATION_BITS" => 4} (see templated_schema).
+  def setup_test(schema, threads_per_search: 1, substitutions: {})
     assert(@num_queries_for_recall <= @num_queries_for_benchmark)
-    deploy_app(create_app(selfdir + "schemas/#{schema}/test.sd", threads_per_search: threads_per_search))
+    sd_file = templated_schema(selfdir + "schemas/#{schema}/test.sd", substitutions)
+    deploy_app(create_app(sd_file, threads_per_search: threads_per_search))
     start
     print_hardware_details
+  end
+
+  # Returns the path of a copy of the schema file with each placeholder %{<key>} replaced by its value in substitutions,
+  # or the schema file itself if there are no substitutions. Fails if a key is not in the schema or a placeholder is left.
+  def templated_schema(sd_file, substitutions)
+    return sd_file if substitutions.empty?
+    sd = File.read(sd_file)
+    substitutions.each do |key, value|
+      assert(sd.include?("%{#{key}}"), "Placeholder %{#{key}} not found in #{sd_file}")
+      sd = sd.gsub("%{#{key}}", value.to_s)
+    end
+    left = sd[/%\{\w+\}/]
+    assert(left.nil?, "No substitution for placeholder #{left} in #{sd_file}")
+    gen_dir = dirs.tmpdir + "templated_schema/"
+    FileUtils.mkdir_p(gen_dir)
+    gen_file = gen_dir + File.basename(sd_file)
+    File.write(gen_file, sd)
+    gen_file
   end
 
   def container
@@ -96,7 +116,7 @@ class AnnCommon < PerformanceTest
     container.execute('lscpu', :exceptiononfailure => false)
   end
 
-  # Returns the path on the node of the data file at the path relative to nearest_neighbor_new/, e.g., cohere-data/queries.fvecs:
+  # Returns the path on the node of the data file at the path relative to nearest_neighbor_ng/, e.g., cohere-data/queries.fvecs:
   # the local file if present (e.g., downloaded or generated for manual testing), otherwise the file downloaded (once) from
   # the same path in the S3 folder https://data.vespa-cloud.com/tests/performance/nearest-neighbor/.
   def find_or_download_file(path, node)
