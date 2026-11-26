@@ -1,22 +1,17 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'performance/nearest_neighbor_new/common_ann_base'
-
-# Base class for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
-# (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), independent of the kind of test
-# (see cohere_filtered.rb and cohere_geo.rb).
+# Data set module (see AnnCommon) for tests over the Cohere embeddings (1024 dimensions, normalized) of Wikipedia passages
+# (https://huggingface.co/datasets/Cohere/wikipedia-2023-11-embed-multilingual-v3), for AnnFiltered (with correlated
+# filters) and AnnGeo.
 #
-# The data is in cohere-data/ and the schemas in schemas/cohere_<name>/test.sd.
+# The data is downloaded from cohere-data/ in the S3 folder (a local copy in cohere-data/ is used if present).
+# The schemas are in schemas/cohere_<name>/test.sd.
 #
 # The documents have the tensor field 'embedding', and the queries search it with nearestNeighbor and the query tensor q_vec.
-class CohereBase < CommonAnnBase
+module DatasetCohere
 
-  # The data files, generated with make_test_data.py from parquet-vectors (see the readme there).
-  # Each file is a sequence of little-endian records [int32 number of entries, entries]. A file missing in LOCAL_DIR is
-  # decompressed from <file>.gz, which is downloaded from S3_DIR in the nearest-neighbor S3 folder if not present in
-  # LOCAL_DIR (see CommonAnnBase.find_or_download_compressed_file).
-  LOCAL_DIR = ANN_DIR + "cohere-data/"
-  S3_DIR = "cohere-data/" # https://data.vespa-cloud.com/tests/performance/nearest-neighbor/cohere-data/
+  # The data files, derived from the Cohere data set and downloaded as <file>.gz (see AnnCommon.find_or_download_compressed_file).
+  # Each file is a sequence of little-endian records [int32 number of entries, entries].
   #                                                 Contents                                      Record
   DOCS_FILE_FORMAT     = "docs_%04d.fvecs"        # document vectors, DOCS_PER_FILE per file      [int32 1024, 1024 float32]
   QUERIES_FILE         = "queries.fvecs"          # 10k query vectors (not among the documents)   [int32 1024, 1024 float32]
@@ -27,13 +22,20 @@ class CohereBase < CommonAnnBase
   RANKED_MEDIUM_FILE   = "ranked_medium.ivecs"    # the 200 medium clusters for each query vector  [int32 200, 200 int32 clusters]
   RANKED_COARSE_FILE   = "ranked_coarse.ivecs"    # the 50 coarse clusters for each query vector   [int32 50, 50 int32 clusters]
   DOCS_PER_FILE = 1_000_000
+  NUM_DOCUMENTS = 2_000_000
   # The documents are clustered with spherical k-means. The ranked clusters are ordered from closest to farthest.
 
   # Cluster level => the files of the level
   CLUSTERS_FILES = {"fine" => CLUSTERS_FINE_FILE, "medium" => CLUSTERS_MEDIUM_FILE, "coarse" => CLUSTERS_COARSE_FILE}
   RANKED_CLUSTERS_FILES = {"fine" => RANKED_FINE_FILE, "medium" => RANKED_MEDIUM_FILE, "coarse" => RANKED_COARSE_FILE}
 
-  # Returns the cluster level (the field cluster_<level>) used for the positive and negative filters with the hit ratio.
+  # ---- Helpers ----
+
+  def find_data_file(name, node)
+    find_or_download_compressed_file("cohere-data/" + name, node)
+  end
+
+  # Returns the cluster level (the field cluster_<level>) used for the correlated filters with the hit ratio.
   # The level is chosen such that the queries contain about 5 to 25 clusters (hit ratio * number of clusters of the level),
   # which keeps the queries small while the selected clusters contain close to the target fraction of the documents.
   # For hit ratios below 0.005, there are only a few clusters per query, so the selected clusters can contain several
@@ -48,22 +50,15 @@ class CohereBase < CommonAnnBase
     end
   end
 
-  # Deploys the schema schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
-  # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
-  # queries of each query file used to calculate the recall).
-  def setup_cohere_test(schema)
-    assert(@num_queries_for_recall <= @num_queries_for_benchmark)
-    deploy_app(create_app(SCHEMAS_DIR + "#{schema}/test.sd"))
-    start
-    print_hardware_details
-  end
+  # ---- Document generation ----
 
   # Feeds the documents printed by the document generator generators/<generator>.cpp with the given options.
   def feed_documents(generator, options)
+    assert(@num_documents <= NUM_DOCUMENTS, "The data set has only #{NUM_DOCUMENTS} documents")
     node = vespa.adminserver
     num_files = (@num_documents.to_f / DOCS_PER_FILE).ceil
     doc_vectors = (0...num_files).map do |i|
-      find_or_download_compressed_file(format(DOCS_FILE_FORMAT, i), node, local_dir: LOCAL_DIR, s3_dir: S3_DIR)
+      find_data_file(format(DOCS_FILE_FORMAT, i), node)
     end
     feed_from_command("#{compile_generator(generator, node)} --vectors #{doc_vectors.join(',')} " +
                       "--num-docs #{@num_documents} --tensor-field embedding #{options}",
@@ -72,11 +67,20 @@ class CohereBase < CommonAnnBase
     report_nni_stats("test", "embedding")
   end
 
-  # Downloads the file with the cluster of each document at each level (see CLUSTERS_FILES) to the node (if needed)
-  # and returns their paths on the node: [fine, medium, coarse].
-  def download_cluster_files(node)
-    CLUSTERS_FILES.values.map { |name| find_or_download_compressed_file(name, node, local_dir: LOCAL_DIR, s3_dir: S3_DIR) }
+  # Feeds the documents with the field 'filter' for the hit ratios and the fields cluster_<level> (see AnnFiltered).
+  def feed_filtered_documents(hit_ratios)
+    cluster_files = CLUSTERS_FILES.values.map { |name| find_data_file(name, vespa.adminserver) }
+    cluster_fields = CLUSTERS_FILES.keys.map { |level| "cluster_#{level}" }
+    feed_documents("make_filtered_docs",
+                   "--hit-ratios #{hit_ratios.join(',')} " +
+                   "--cluster-files #{cluster_files.join(',')} --cluster-fields #{cluster_fields.join(',')}")
   end
+
+  def feed_geo_documents
+    feed_documents("make_geo_docs", "")
+  end
+
+  # ---- Query generation ----
 
   # Writes the queries printed by the query generator generators/<generator>.cpp with the given options for the
   # benchmark to a file (on the container), and returns the file. The values of the benchmark set the nearestNeighbor
@@ -85,11 +89,35 @@ class CohereBase < CommonAnnBase
     node = container
     query_file = dirs.tmpdir + "queries.#{label(values)}.txt"
     node.execute("#{compile_generator(generator, node)} " +
-                 "--vectors #{find_or_download_compressed_file(QUERIES_FILE, node, local_dir: LOCAL_DIR, s3_dir: S3_DIR)} " +
+                 "--vectors #{find_data_file(QUERIES_FILE, node)} " +
                  "--num-queries #{@num_queries_for_benchmark} --tensor-field embedding " +
                  "--approximate #{values.fetch(:approximate)} --target-hits #{values.fetch(:target_hits)} " +
                  "--explore-hits #{values.fetch(:explore_hits)} #{options} > #{query_file}")
     query_file
+  end
+
+  def write_unfiltered_queries(values)
+    write_queries("make_filtered_queries", "", values)
+  end
+
+  def write_uncorrelated_queries(hit_ratio, values)
+    write_queries("make_filtered_queries", "--hit-ratio #{hit_ratio}", values)
+  end
+
+  # Writes the queries with a filter on the clusters (of the level of the hit ratio) closest to the query vector for
+  # AnnFiltered::POSITIVE or farthest from it for AnnFiltered::NEGATIVE, which contain the hit ratio of the fed documents.
+  def write_correlated_queries(filter_type, hit_ratio, values)
+    level = cluster_level(hit_ratio)
+    selection = (filter_type == AnnFiltered::POSITIVE) ? "closest" : "farthest"
+    write_queries("make_correlated_filtered_queries",
+                  "--ranked-clusters #{find_data_file(RANKED_CLUSTERS_FILES[level], container)} " +
+                  "--doc-clusters #{find_data_file(CLUSTERS_FILES[level], container)} --cluster-field cluster_#{level} " +
+                  "--num-docs #{@num_documents} --selection #{selection} --target-fraction #{hit_ratio}",
+                  values)
+  end
+
+  def write_geo_queries(radius, values)
+    write_queries("make_geo_queries", "--radius #{radius}", values)
   end
 
 end

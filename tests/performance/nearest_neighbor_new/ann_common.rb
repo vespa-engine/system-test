@@ -10,30 +10,19 @@ require 'performance/fbench'
 #
 # Usage:
 #   1. Deploy a schema (with a document summary 'minimal' containing 'id') and start Vespa:
-#        deploy_app(create_app("test.sd")); start
+#        setup_test("cohere_filtered")
 #   2. Feed the documents:
 #        feed_from_command("#{compile_generator("make_filtered_docs", vespa.adminserver)} --vectors docs.fvecs ...", fillers)
 #   3. Map the values of a benchmark to request parameters and labels:
 #        set_request_parameters({"hits" => :target_hits, "ranking.matching.approximateThreshold" => :approximate_threshold})
 #        set_label_format("%{name}-th%{target_hits}-hr%{hit_ratio}")
 #   4. For each benchmark, write a query file and benchmark it with its values (reported as parameters):
-#        values = {:name => "hnsw", :target_hits => 100, :approximate_threshold => 0.05, :hit_ratio => 0.01}
+#        values = {:name => "hnsw", :approximate => true, :target_hits => 100, :explore_hits => 0, :hit_ratio => 0.01}
 #        benchmark_and_calc_recall(query_file, values, num_queries_for_recall)
 #
-# Files in nearest_neighbor_new/:
-#   common_ann_base.rb, NearestNeighborRecallSearcher.java   independent of the data set
-#   <data set>_base.rb                                       the base class of a data set, e.g., cohere_base.rb
-#   <data set>_<test>.rb                                     the tests, each a subclass of the base class of the data set
-#   <data set>-data/                                         the data of a data set (downloaded if missing)
-#   schemas/<data set>_<name>/test.sd                        the schemas
-#   generators/                                              the document and query generators (from parquet-vectors)
-class CommonAnnBase < PerformanceTest
-
-  ANN_DIR = File.expand_path(File.dirname(__FILE__)) + "/"
-  # The document and query generators (C++ programs from parquet-vectors, see the readme there). They read the vectors
-  # from .fvecs files of any dimension, and take the name of the tensor field as an option (see --help of each program).
-  GENERATORS_DIR = ANN_DIR + "generators/"
-  SCHEMAS_DIR = ANN_DIR + "schemas/"
+# A data set module feeds the documents and writes the queries (with the generators) for each kind of test it supports,
+# see AnnFiltered and AnnGeo.
+class AnnCommon < PerformanceTest
 
   FBENCH_RUNTIME = 10 # Seconds per query file
   RECALL_THREADS = 5
@@ -71,12 +60,12 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Returns an application with the schema and NearestNeighborRecallSearcher in the default search chain.
-  def create_app(sd_file, feeding_concurrency: 0.3)
-    add_bundle(ANN_DIR + "NearestNeighborRecallSearcher.java")
+  def create_app(sd_file, feeding_concurrency: 0.3, threads_per_search: 1)
+    add_bundle(selfdir + "NearestNeighborRecallSearcher.java")
     searching = Searching.new
     searching.chain(Chain.new("default", "vespa").add(Searcher.new("ai.vespa.test.NearestNeighborRecallSearcher")))
     app = SearchApp.new.sd(sd_file).
-      threads_per_search(1).
+      threads_per_search(threads_per_search).
       container(Container.new("combinedcontainer").
                 jvmoptions('-Xms8g -Xmx8g').
                 search(searching).
@@ -85,6 +74,16 @@ class CommonAnnBase < PerformanceTest
       indexing("combinedcontainer")
     app.tune_searchnode({:feeding => {:concurrency => feeding_concurrency}})
     app
+  end
+
+  # Deploys the schema schemas/<schema>/test.sd and starts Vespa. The test sets @num_documents (the first vectors of
+  # the data set are fed), @num_queries_for_benchmark (the queries in each query file), and @num_queries_for_recall (the first
+  # queries of each query file used to calculate the recall).
+  def setup_test(schema, threads_per_search: 1)
+    assert(@num_queries_for_recall <= @num_queries_for_benchmark)
+    deploy_app(create_app(selfdir + "schemas/#{schema}/test.sd", threads_per_search: threads_per_search))
+    start
+    print_hardware_details
   end
 
   def container
@@ -97,21 +96,22 @@ class CommonAnnBase < PerformanceTest
     container.execute('lscpu', :exceptiononfailure => false)
   end
 
-  # Returns the path of the file on the node: <local_dir><name> if present (e.g., downloaded or generated for manual testing),
-  # otherwise the file downloaded (once) from <s3_dir><name> in the S3 folder nearest-neighbor, i.e., from
-  # https://data.vespa-cloud.com/tests/performance/nearest-neighbor/<s3_dir><name>.
-  def find_or_download_file(name, node, local_dir:, s3_dir:)
-    local_file = local_dir + name
+  # Returns the path on the node of the data file at the path relative to nearest_neighbor_new/, e.g., cohere-data/queries.fvecs:
+  # the local file if present (e.g., downloaded or generated for manual testing), otherwise the file downloaded (once) from
+  # the same path in the S3 folder https://data.vespa-cloud.com/tests/performance/nearest-neighbor/.
+  def find_or_download_file(path, node)
+    local_file = selfdir + path
     if File.exist?(local_file)
       puts "Using local file #{local_file}"
       return local_file
     end
 
-    node_file = dirs.tmpdir + s3_dir + name
+    node_file = dirs.tmpdir + path
     if node.file?(node_file)
       puts "Using already downloaded file #{node_file}"
     else
-      url = "https://data.vespa-cloud.com/tests/performance/nearest-neighbor/#{s3_dir}"
+      url = "https://data.vespa-cloud.com/tests/performance/nearest-neighbor/#{File.dirname(path)}/"
+      name = File.basename(path)
       puts "Downloading #{name} from #{url} ..."
       node.execute("mkdir -p #{File.dirname(node_file)}")
       node.fetchfiles(:testdata_url => url, :file => name, :destination_file => node_file)
@@ -119,20 +119,20 @@ class CommonAnnBase < PerformanceTest
     node_file
   end
 
-  # Returns the path of the file on the node: <local_dir><name> if present, otherwise the file decompressed (once) from
-  # <name>.gz, which is found or downloaded with find_or_download_file.
-  def find_or_download_compressed_file(name, node, local_dir:, s3_dir:)
-    local_file = local_dir + name
+  # Returns the path on the node of the data file at the path (see find_or_download_file): the local file if present,
+  # otherwise the file decompressed (once) from <path>.gz, which is found or downloaded with find_or_download_file.
+  def find_or_download_compressed_file(path, node)
+    local_file = selfdir + path
     if File.exist?(local_file)
       puts "Using local file #{local_file}"
       return local_file
     end
 
-    node_file = dirs.tmpdir + s3_dir + name
+    node_file = dirs.tmpdir + path
     if node.file?(node_file)
       puts "Using already decompressed file #{node_file}"
     else
-      compressed = find_or_download_file(name + ".gz", node, local_dir: local_dir, s3_dir: s3_dir)
+      compressed = find_or_download_file(path + ".gz", node)
       puts "Decompressing #{compressed} to #{node_file}"
       node.execute("mkdir -p #{File.dirname(node_file)} && gzip -dc #{compressed} > #{node_file}.tmp && mv #{node_file}.tmp #{node_file}")
     end
@@ -150,8 +150,10 @@ class CommonAnnBase < PerformanceTest
   end
 
   # Compiles the generator generators/<name>.cpp on the node (once per node) and returns the path of the binary.
+  # The generators are C++ programs from parquet-vectors (see the readme there). They read the vectors from .fvecs files
+  # of any dimension, and take the name of the tensor field as an option (see --help of each program).
   def compile_generator(name, node)
-    compile_cpp(GENERATORS_DIR + "#{name}.cpp", node)
+    compile_cpp(selfdir + "generators/#{name}.cpp", node)
   end
 
   # Feeds the JSON feed file (on the admin server) and reports the feed performance.
@@ -178,17 +180,21 @@ class CommonAnnBase < PerformanceTest
                  [metric_filler("nni.unreachable", stats["reachability_analysis"]["nodes_not_found_pct"].to_f)])
   end
 
+  # Benchmarks the query file (on the container). Returns {:qps, :avg_ms, :p95_ms}.
+  def benchmark(query_file, values)
+    fancy_puts "Benchmarking #{label(values)}"
+    result = benchmark_queries(query_file, values)
+    {:qps => result.metric('qps').to_f,
+     :avg_ms => result.metric('avgresponsetime').to_f,
+     :p95_ms => result.metric('95 percentile').to_f}
+  end
+
   # Benchmarks the query file (on the container) and calculates the recall of its first num_queries_for_recall queries.
   # nnr: additional parameters for NearestNeighborRecallSearcher, e.g., {"exactField" => "embedding_f32"}.
   # Returns {:recall, :qps, :avg_ms, :p95_ms}.
   def benchmark_and_calc_recall(query_file, values, num_queries_for_recall, nnr: {})
-    fancy_puts "Benchmarking and checking recall for #{label(values)}"
-    benchmark = benchmark_queries(query_file, values)
-    recall = calc_recall(query_file, values, num_queries_for_recall, nnr: nnr)
-    {:recall => recall,
-     :qps => benchmark.metric('qps').to_f,
-     :avg_ms => benchmark.metric('avgresponsetime').to_f,
-     :p95_ms => benchmark.metric('95 percentile').to_f}
+    result = benchmark(query_file, values)
+    result.merge({:recall => calc_recall(query_file, values, num_queries_for_recall, nnr: nnr)})
   end
 
   # Runs fbench with the query file (on the container) and returns the result (with the metrics 'qps', 'avgresponsetime', ...).
@@ -242,6 +248,23 @@ class CommonAnnBase < PerformanceTest
     write_report([parameter_filler("type", "recall")] + report_fillers(values) +
                  [metric_filler("recall.avg", avg), metric_filler("recall.median", median)])
     avg
+  end
+
+  BENCHMARK_HEADERS = ["qps", "avg ms", "p95 ms"]
+  BENCHMARK_NOTE = "(qps: queries per second with 1 client, avg/p95 ms: average/95th percentile response time)"
+  RESULT_HEADERS = ["recall"] + BENCHMARK_HEADERS
+  RESULT_NOTE = "(recall: average recall in %, qps: queries per second with 1 client, avg/p95 ms: average/95th percentile response time)"
+
+  def benchmark_cells(result)
+    [format('%.1f', result[:qps]), format('%.2f', result[:avg_ms]), format('%.2f', result[:p95_ms])]
+  end
+
+  def result_cells(result)
+    [format('%.1f', result[:recall])] + benchmark_cells(result)
+  end
+
+  def results_title(parameters)
+    "Results for #{@num_documents} documents: " + parameters.map { |key, value| "#{key} #{value}" }.join(", ")
   end
 
   # Prints a table with the header rows and the rows (arrays of values of the same length), each column right-aligned
