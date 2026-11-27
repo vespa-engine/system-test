@@ -29,6 +29,7 @@ class AnnFiltered < AnnBase
     super
     set_request_parameters({"summary" => "minimal",
                             "hits" => :target_hits,
+                            "timeout" => "20s",
                             "ranking.matching.approximateThreshold" => :approximate_threshold,
                             "ranking.matching.filterFirstThreshold" => :filter_first_threshold,
                             "ranking.matching.filterFirstExploration" => :filter_first_exploration})
