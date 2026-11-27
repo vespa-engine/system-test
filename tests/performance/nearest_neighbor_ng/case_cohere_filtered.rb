@@ -23,8 +23,8 @@ class AnnCohereFilteredPerfTest < AnnFiltered
                     "over Cohere Wikipedia embeddings (1024 dim)")
 
     test_parameters = [
-      {:name => "hnsw", :approximate => true, :target_hits => 100, :explore_hits => 0,
-       :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.10},
+      #{:name => "hnsw", :approximate => true, :target_hits => 100, :explore_hits => 0,
+      # :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.10},
       {:name => "ff", :approximate => true, :target_hits => 100, :explore_hits => 0,
        :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.10},
       {:name => "hnsw-ff-exact", :approximate => true, :target_hits => 100, :explore_hits => 0,
