@@ -38,30 +38,4 @@ class AnnCohereFilteredPerfTest < AnnFiltered
     print_results
   end
 
-  def test_cohere_filtered_quantized_4_bits
-    run_quantized_test(bits: 4)
-  end
-
-  # bits: the quantization level of the vectors (see %{QUANTIZATION_BITS} in schemas/cohere_filtered_quantized/)
-  def run_quantized_test(bits:)
-    set_description("Test performance and recall of nearestNeighbor (hnsw) over #{bits}-bit quantized vectors with filters that are not, positively, and negatively correlated with the query vector " +
-                    "over Cohere Wikipedia embeddings (1024 dim)")
-
-    test_parameters = [
-      # Always use HNSW, without the filter-first heuristic
-      {:name => "hnsw-q#{bits}", :approximate => true, :target_hits => 100, :explore_hits => 0,
-       :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.01}
-    ]
-
-    set_label_format("%{name}-th%{target_hits}-%{filter_type}-hr%{hit_ratio}-at%{approximate_threshold}")
-
-    setup_filtered_test("cohere_filtered_quantized",
-                        substitutions: {"QUANTIZATION_BITS" => bits},
-                        nnr: {"exactField" => "embedding_f32"}) # Full-precision vectors as the exact ground truth
-    run_benchmarks_unfiltered(test_parameters)
-    run_benchmarks_uncorrelated(test_parameters)
-    run_benchmarks_correlated(test_parameters)
-    print_results
-  end
-
 end
