@@ -12,10 +12,10 @@ class AnnCohereFilteredPerfTest < AnnFiltered
   def setup
     super
     set_owner("boeker")
-    @num_documents = 2_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
+    @num_documents = 1_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
-    @hit_ratios = [0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
+    @hit_ratios = [0.9, 0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001]
   end
 
   def test_cohere_filtered
@@ -23,9 +23,12 @@ class AnnCohereFilteredPerfTest < AnnFiltered
                     "over Cohere Wikipedia embeddings (1024 dim)")
 
     test_parameters = [
-      # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
-      {:name => "hnsw-filter-first", :approximate => true, :target_hits => 100, :explore_hits => 0,
-       :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.01}
+      {:name => "hnsw", :approximate => true, :target_hits => 100, :explore_hits => 0,
+       :approximate_threshold => 0.00, :filter_first_threshold => 0.00, :filter_first_exploration => 0.10},
+      {:name => "ff", :approximate => true, :target_hits => 100, :explore_hits => 0,
+       :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.10},
+      {:name => "hnsw-ff-exact", :approximate => true, :target_hits => 100, :explore_hits => 0,
+       :approximate_threshold => 0.02, :filter_first_threshold => 0.25, :filter_first_exploration => 0.10}
     ]
 
     set_label_format("%{name}-th%{target_hits}-%{filter_type}-hr%{hit_ratio}-at%{approximate_threshold}" +
