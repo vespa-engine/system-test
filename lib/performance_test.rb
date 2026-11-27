@@ -2,6 +2,7 @@
 
 require 'performance/configloadtester'
 require 'performance/fbench'
+require 'performance/proton_memory_sampler'
 require 'performance/resultmodel'
 require 'performance/stat'
 require 'environment'
@@ -253,6 +254,7 @@ class PerformanceTest < TestCase
     fillers.each do |filler|
       filler.call(@rep_result)
     end
+    @proton_memory_sampler.fill_and_end_phase(@rep_result) if @proton_memory_sampler
     @rep_result.add_parameter('hosts', hostlist.join(","))
 
     out = @resultoutputdir + Time.now.strftime('%Y-%m-%d-%H-%M-%S') + '_' + @magic_number.to_s + '.xml'
@@ -274,6 +276,7 @@ class PerformanceTest < TestCase
   end
 
   def teardown
+    stop_proton_memory_sampler
     vespa_destination_stop
     profiler_stop
     profiler_report
@@ -282,6 +285,7 @@ class PerformanceTest < TestCase
   end
 
   def setup
+    start_proton_memory_sampler
     profiler_start
     remote_node = vespa.nodeproxies.values[0]
     remote_node.execute("grep '^PRETTY_NAME' /etc/os-release")
@@ -304,6 +308,38 @@ class PerformanceTest < TestCase
       puts "Snapshot at setup time: #{@node_procfs_snapshot_at_setup_time}"
       puts "Snapshot now: #{procfs_snapshot_now}"
     end
+  end
+
+  # Override and return false to disable sampling of proton memory usage
+  def sample_proton_memory?
+    true
+  end
+
+  # Proton memory usage (RSS) is sampled every second during the whole test, and every report
+  # written gets RSS stats (memory.proton.rss.{max,avg,last}) for the period since the previous
+  # report, or since the last call to proton_memory_phase.
+  def start_proton_memory_sampler
+    return unless sample_proton_memory?
+    stop_proton_memory_sampler
+    @proton_memory_sampler = Perf::ProtonMemorySampler.new(lambda { vespa.nodeproxies.values })
+    @proton_memory_sampler.start
+  end
+
+  def stop_proton_memory_sampler
+    return unless @proton_memory_sampler
+    @proton_memory_sampler.stop
+    puts @proton_memory_sampler.summary
+    @proton_memory_sampler = nil
+  end
+
+  # Starts a new memory sampling phase, used to exclude e.g. setup work from the next report's stats
+  def proton_memory_phase(label = nil)
+    @proton_memory_sampler.new_phase(label) if @proton_memory_sampler
+  end
+
+  # Filler with proton memory stats for the whole test so far
+  def proton_memory_summary_filler
+    @proton_memory_sampler ? @proton_memory_sampler.summary_filler : Proc.new { |result| }
   end
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
