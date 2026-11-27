@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_streaming_search_test'
+require 'json'
 
 class FieldPath < IndexedStreamingSearchTest
 
@@ -10,7 +11,7 @@ class FieldPath < IndexedStreamingSearchTest
 
     deploy_app(SearchApp.new.sd(selfdir + "test_field_path.sd"))
     start
-    feedfile(selfdir + "feed.json")
+    feedbuffer(JSON.dump(ALL_DOCS.map { |docid| initial_put(docid) }))
   end
 
   # Document 1 as fed.
@@ -61,6 +62,29 @@ class FieldPath < IndexedStreamingSearchTest
     "idx_attr_str" => ["b", "x"]
   )
 
+  # Element remove at index 1.
+  AFTER_REMOVE_ELEMENT = BEFORE.merge(
+    "attr_int"     => [1, 3],
+    "doc_int"      => [1, 3],
+    "attr_str"     => ["a", "c"],
+    "doc_str"      => ["a", "c"],
+    "idx_str"      => ["a", "c"],
+    "idx_attr_str" => ["a", "c"]
+  )
+
+  # Element remove at index 0 followed by element remove at index 1. The second
+  # remove observes the shrunken array: ["a","b","c"] -> ["b","c"] -> ["b"].
+  # Holds whether the two operations arrive in one update or in consecutive
+  # updates within the same commit window.
+  AFTER_REMOVE_TWO_ELEMENTS = BEFORE.merge(
+    "attr_int"     => [2],
+    "doc_int"      => [2],
+    "attr_str"     => ["b"],
+    "doc_str"      => ["b"],
+    "idx_str"      => ["b"],
+    "idx_attr_str" => ["b"]
+  )
+
   # Document ids, one per scenario.
   ASSIGN_ELEMENT                     = 1
   OUT_OF_BOUNDS                      = 2
@@ -68,9 +92,14 @@ class FieldPath < IndexedStreamingSearchTest
   REMOVE_THEN_ASSIGN                 = 4
   REMOVE_THEN_ASSIGN_CONSECUTIVE     = 5
   ASSIGN_ELEMENT_USING_MATCH         = 6
+  REMOVE_ELEMENT                     = 7
+  REMOVE_OUT_OF_BOUNDS               = 8
+  REMOVE_TWO_ELEMENTS                = 9
+  REMOVE_TWO_ELEMENTS_CONSECUTIVE    = 10
 
   ALL_DOCS = [ASSIGN_ELEMENT, OUT_OF_BOUNDS, ASSIGN_EVERY_ELEMENT, REMOVE_THEN_ASSIGN,
-              REMOVE_THEN_ASSIGN_CONSECUTIVE, ASSIGN_ELEMENT_USING_MATCH]
+              REMOVE_THEN_ASSIGN_CONSECUTIVE, ASSIGN_ELEMENT_USING_MATCH, REMOVE_ELEMENT,
+              REMOVE_OUT_OF_BOUNDS, REMOVE_TWO_ELEMENTS, REMOVE_TWO_ELEMENTS_CONSECUTIVE]
 
   def test_field_path_updates
     ALL_DOCS.each do |docid|
@@ -86,6 +115,10 @@ class FieldPath < IndexedStreamingSearchTest
     feedfile(selfdir + "update_assign_every_element.json")
     feedfile(selfdir + "update_remove_then_assign.json")
     feedfile(selfdir + "update_remove_then_assign_sequence.json")
+    feedfile(selfdir + "update_remove_element.json")
+    feedfile(selfdir + "update_remove_out_of_bounds.json")
+    feedfile(selfdir + "update_remove_two_elements.json")
+    feedfile(selfdir + "update_remove_two_elements_sequence.json")
 
     # Element assign to index 0 / map key "a".
     assert_document(ASSIGN_ELEMENT, AFTER_ASSIGN_ELEMENT)
@@ -107,6 +140,22 @@ class FieldPath < IndexedStreamingSearchTest
       assert_search(docid, %w[idx_attr_str:x], %w[idx_attr_str:a idx_attr_str:c])
     end
 
+    # Element remove at index 1.
+    assert_document(REMOVE_ELEMENT, AFTER_REMOVE_ELEMENT)
+    assert_search(REMOVE_ELEMENT, %w[attr_int:1 attr_int:3 idx_str:a idx_str:c idx_attr_str:a idx_attr_str:c],
+                  %w[attr_int:2 idx_str:b idx_attr_str:b])
+
+    # Out of bounds element removes are a no-op in every representation.
+    assert_document(REMOVE_OUT_OF_BOUNDS, BEFORE)
+    assert_search(REMOVE_OUT_OF_BOUNDS, %w[attr_int:1 attr_int:2 attr_int:3 idx_str:c idx_attr_str:c], [])
+
+    # Two element removes, in one update and in consecutive updates.
+    [REMOVE_TWO_ELEMENTS, REMOVE_TWO_ELEMENTS_CONSECUTIVE].each do |docid|
+      assert_document(docid, AFTER_REMOVE_TWO_ELEMENTS)
+      assert_search(docid, %w[attr_int:2 idx_str:b idx_attr_str:b],
+                    %w[attr_int:1 attr_int:3 idx_str:a idx_str:c idx_attr_str:a idx_attr_str:c])
+    end
+
     # Documents not targeted by any update above are untouched.
     assert_document(ASSIGN_ELEMENT_USING_MATCH, BEFORE)
   end
@@ -120,6 +169,11 @@ class FieldPath < IndexedStreamingSearchTest
 
     assert_document(ASSIGN_ELEMENT_USING_MATCH, AFTER_ASSIGN_ELEMENT_USING_MATCH)
     assert_search(ASSIGN_ELEMENT_USING_MATCH, %w[attr_int:4 idx_str:d idx_attr_str:d], %w[attr_int:1 idx_str:a idx_attr_str:a])
+  end
+
+  # Every scenario starts from the same document content, BEFORE.
+  def initial_put(docid)
+    {"put" => "id:default:test_field_path::#{docid}", "fields" => BEFORE.merge("docid" => docid)}
   end
 
   # Asserts the document content served by summary, field by field. Fields
