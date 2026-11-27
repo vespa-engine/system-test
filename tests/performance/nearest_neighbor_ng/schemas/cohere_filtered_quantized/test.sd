@@ -1,0 +1,59 @@
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    # Filter values uncorrelated with the vectors (see common/generators/make_filtered_docs.cpp)
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    # The cluster of the document at each cluster level
+    field cluster_fine type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field cluster_medium type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field cluster_coarse type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field embedding type tensor<float>(x[1024]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: dotproduct
+        quantization {
+          bits: %{QUANTIZATION_BITS}
+        }
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  # Full-precision copy of the vectors, used as the exact ground truth when calculating the recall.
+  # The copy is made during document processing, so the input is the full-precision tensor and not the quantized one.
+  field embedding_f32 type tensor<float>(x[1024]) {
+    indexing: input embedding | attribute
+    attribute {
+      distance-metric: dotproduct
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(q_vec) tensor<float>(x[1024])
+    }
+    first-phase {
+      expression: closeness(label, nns)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
