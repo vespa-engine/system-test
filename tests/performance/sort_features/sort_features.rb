@@ -43,6 +43,7 @@ class SortFeaturesPerfTest < PerformanceTest
     @perf_recording = 'proton'
     deploy_app(create_app(32))
     @container = vespa.container.values.first
+    @proton = vespa.search['search'].first
     compile_create_docs
     start
 
