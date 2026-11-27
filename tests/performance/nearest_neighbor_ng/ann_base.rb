@@ -130,7 +130,7 @@ class AnnBase < PerformanceTest
     if node.file?(node_file)
       puts "Using already downloaded file #{node_file}"
     else
-      url = "https://data.vespa-cloud.com/tests/performance/nearest-neighbor/#{File.dirname(path)}/"
+      url = "https://data.vespa-cloud.com/tests/performance/nearest-neighbor/#{File.dirname(path)}"
       name = File.basename(path)
       puts "Downloading #{name} from #{url} ..."
       node.execute("mkdir -p #{File.dirname(node_file)}")
