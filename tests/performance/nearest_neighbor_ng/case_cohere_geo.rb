@@ -11,7 +11,7 @@ class AnnCohereGeoPerfTest < AnnGeo
   def setup
     super
     set_owner("boeker")
-    @num_documents = 2_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
+    @num_documents = 1_000_000 # The first vectors of cohere-data/docs_*.fvecs (e.g., 10_000 for development)
     @num_queries_for_benchmark = 1000
     @num_queries_for_recall = 100 # e.g., 10 for development
     # Radii in km (see generators/make_geo_queries.cpp for the fraction of the documents within each radius)
@@ -20,6 +20,7 @@ class AnnCohereGeoPerfTest < AnnGeo
               500,  # multiple states, e.g., the Pacific Northwest
               200,  # a state such as Pennsylvania or Ohio
               75,   # multiple cities, e.g., the San Francisco Bay Area
+              30,
               15,   # a city such as Chicago or Los Angeles
               2]    # part of a city (with 2M documents, 20% of the queries have no document within the radius)
   end
@@ -29,13 +30,13 @@ class AnnCohereGeoPerfTest < AnnGeo
                     "over Cohere Wikipedia embeddings (1024 dim)")
 
     test_parameters = [
-      # Always use HNSW, with the filter-first heuristic for hit ratios below 20%
-      {:name => "hnsw-filter-first", :approximate => true, :target_hits => 100, :explore_hits => 0,
-       :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.01, :lazy_filter => false}
+      {:name => "hnsw-ff-exact", :approximate => true, :target_hits => 100, :explore_hits => 0,
+       :approximate_threshold => 0.02, :filter_first_threshold => 0.25, :filter_first_exploration => 0.10, :lazy_filter => false},
+      {:name => "hnsw-ff-exact", :approximate => true, :target_hits => 100, :explore_hits => 0,
+       :approximate_threshold => 0.02, :filter_first_threshold => 0.25, :filter_first_exploration => 0.10, :lazy_filter => true}
     ]
 
-    set_label_format("%{name}-th%{target_hits}-geo-r%{radius_km}km-at%{approximate_threshold}" +
-                     "-fft%{filter_first_threshold}-ffe%{filter_first_exploration}-lf%{lazy_filter}")
+    set_label_format("%{name}-th%{target_hits}-geo-r%{radius_km}km-lf%{lazy_filter}")
 
     setup_geo_test("cohere_geo")
     run_benchmarks_geo(test_parameters)
